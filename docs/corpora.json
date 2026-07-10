@@ -1,0 +1,63 @@
+{
+  "_comment": "Machine-readable corpus registry. Executable source of truth: metrics_lib.select_corpus (src/metrics_lib.py). Schemas: docs/architecture.md; prose: docs/dataset.md.",
+  "main30": {
+    "config": "configs/config_deepseek.yaml",
+    "instrument_version": "pre-revision",
+    "language": "ru",
+    "selector": "setup_ts == 1774562457 (metrics_lib.MAIN_BATCH_TS); use metrics_lib.select_corpus(games, 'main30')",
+    "notes": "Legacy 30-game main batch behind the originally published numbers. Old demand-characteristic social_map wording, no probe chaining, no state.jsonl snapshots. The historical 'paper32' selector adds two pilot runs (one aborted)."
+  },
+  "en_demo": {
+    "config": "configs/config_en_demo.yaml",
+    "instrument_version": "revised",
+    "language": "en",
+    "game_ids": [
+      "36594b66-05d1-434c-be65-13360eafca9e",
+      "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+      "e6fbee66-7f0a-42c3-9af7-ad582f8153e5",
+      "0da78714-88e0-4445-b161-f2eaf029184c",
+      "e8dfa6ea-6cff-4a4f-8998-baeb52f81e77"
+    ],
+    "notes": "EN demo corpus (2026-07-10, wave B1). Clean social_map wording, probe chaining, snapshots on. Mafia won 5/5. Game 36594b66 is the featured demo/screencast game."
+  },
+  "ablation_demand": {
+    "config": "configs/config_ablation_demand.yaml",
+    "instrument_version": "revised chaining + pre-revision (demand) social_map wording",
+    "language": "ru",
+    "game_ids": [
+      "0e2ba387-fe5b-445a-a87d-418cdb346d1c",
+      "c7fe57de-1aed-48df-ac6a-da9a82f2f737",
+      "797fd017-0bf4-4e73-af05-90a5eed57fbb",
+      "c9e66a2a-277d-4183-80b9-2529d2235db3",
+      "f2510502-8441-439e-9511-884551eda9fd"
+    ],
+    "notes": "Demand-phrase ablation arm: exact copy of config_deepseek.yaml except the OLD social_map wording. Matched arm: ru_clean. state.jsonl of f2510502 (151 MB, 15 rounds) is omitted from the public repo (GitHub 100 MB limit)."
+  },
+  "ru_clean": {
+    "config": "configs/config_deepseek.yaml",
+    "instrument_version": "revised",
+    "language": "ru",
+    "game_ids": [
+      "186742a9-6eca-4eed-bb2e-890ba6897020",
+      "444a8c24-5471-4d33-a065-b8eb46ede8f9",
+      "4a48b59c-8559-4247-9573-0580d24fe36c",
+      "532d5f19-00c2-4723-8462-4c9bdcbc1ef9",
+      "7b600523-7ea0-4f89-8b5a-948240a4d8fe"
+    ],
+    "notes": "RU clean-wording batch (config_deepseek.yaml post-fix) — the matched arm for ablation_demand."
+  },
+  "corpus_v2": {
+    "config": "configs/config_deepseek.yaml",
+    "instrument_version": "revised",
+    "language": "ru",
+    "selector": "forthcoming — ~250 RU games, generation in progress at snapshot time; game ids will be registered here in a follow-up release",
+    "notes": "Not yet included in the public dataset."
+  },
+  "replay_forks": {
+    "config": "parent game's config (configs/config_en_demo.yaml for the 36594b66 experiment)",
+    "instrument_version": "revised",
+    "language": "en",
+    "selector": "game.jsonl setup record has forked_from != null (32 games: 2 pilot + 30 full-run forks of 36594b66)",
+    "notes": "Counterfactual replay branches (src/replay.py, src/replay_experiment.py; docs/replay_experiment.md). Excluded from every corpus by metrics_lib.select_corpus."
+  }
+}

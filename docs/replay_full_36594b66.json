@@ -1,0 +1,1458 @@
+{
+  "experiment": "pivotal_utterance_attribution",
+  "design": "reroll-variance (M1-M2): PRE arm forks before U, POST arm forks after U; no utterance editing (M3 interventions not implemented)",
+  "parent_game_id": "36594b66-05d1-434c-be65-13360eafca9e",
+  "config": "/home/ki/repos/mafia/configs/config_en_demo.yaml",
+  "probes_mode": "suspicion",
+  "num_rerolls_per_arm": 5,
+  "target": "Gray",
+  "created": "2026-07-10T15:52:47",
+  "utterances": [
+    {
+      "utterance": {
+        "round": 1,
+        "msg_seq": 7,
+        "kind": "day_discuss",
+        "speaker": "Logan",
+        "text": "Alright, let's not waste time dancing around it. Jordan was loud and pushing for action—makes sense the Mafia took them out fast. But here's what I'm noticing: Gray's already trying to steer suspicion toward the \"quiet voices\" being innocent, which is a convenient way to protect themselves or a teammate. And Alex is nervous but pointing fingers at the calm players—seems like a scared innocent, honestly.\n\nI'm keeping my eyes on Gray and Bailey for now. Gray's too smooth with their analysis this early, and Bailey's been quiet as a mouse. That combo smells off to me."
+      },
+      "pre_fork": [
+        1,
+        6
+      ],
+      "post_fork": [
+        1,
+        7
+      ],
+      "factual": {
+        "vote_tally": {
+          "Gray": 5,
+          "Bailey": 1
+        },
+        "votes": {
+          "Alex": "Gray",
+          "Gray": "Bailey",
+          "Logan": "Gray",
+          "Finley": "Gray",
+          "Casey": "Gray",
+          "Bailey": "Gray"
+        },
+        "eliminated": "Gray",
+        "winner": "Mafia",
+        "rounds": 2,
+        "suspicion_vote_time": {
+          "Alex": 0.56,
+          "Bailey": 0.76,
+          "Casey": 0.2929,
+          "Finley": 0.3077,
+          "Gray": 0.9615,
+          "Logan": 0.552
+        },
+        "suspicion_n_probes": {
+          "Alex": 25,
+          "Bailey": 25,
+          "Casey": 28,
+          "Finley": 26,
+          "Gray": 26,
+          "Logan": 25
+        }
+      },
+      "pre": {
+        "replicas": [
+          {
+            "replica_idx": 0,
+            "game_id": "ef1d5d11-0094-44cf-82ab-991a50b9291b",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 3,
+                "Alex": 2,
+                "Logan": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Alex",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.7222,
+                "Bailey": 0.3214,
+                "Casey": 0.4,
+                "Finley": 0.4167,
+                "Gray": 0.9778,
+                "Logan": 0.5983
+              },
+              "suspicion_n_probes": {
+                "Alex": 27,
+                "Bailey": 28,
+                "Casey": 27,
+                "Finley": 27,
+                "Gray": 27,
+                "Logan": 29
+              }
+            }
+          },
+          {
+            "replica_idx": 1,
+            "game_id": "27798859-8088-4903-9055-917f525fb446",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Alex": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.776,
+                "Bailey": 0.352,
+                "Casey": 0.3583,
+                "Finley": 0.2308,
+                "Gray": 1.0,
+                "Logan": 0.72
+              },
+              "suspicion_n_probes": {
+                "Alex": 25,
+                "Bailey": 25,
+                "Casey": 24,
+                "Finley": 26,
+                "Gray": 25,
+                "Logan": 25
+              }
+            }
+          },
+          {
+            "replica_idx": 2,
+            "game_id": "5d6bde04-d117-463b-a3f1-329d9058185e",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Logan": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.6593,
+                "Bailey": 0.4222,
+                "Casey": 0.3846,
+                "Finley": 0.2538,
+                "Gray": 1.0,
+                "Logan": 0.7643
+              },
+              "suspicion_n_probes": {
+                "Alex": 27,
+                "Bailey": 27,
+                "Casey": 26,
+                "Finley": 26,
+                "Gray": 26,
+                "Logan": 28
+              }
+            }
+          },
+          {
+            "replica_idx": 3,
+            "game_id": "22477997-343a-4906-b0ef-675bc2a86b27",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 5,
+                "Gray": 1
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Logan",
+                "Casey": "Logan",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Logan",
+              "winner": "Villagers",
+              "rounds": 4,
+              "suspicion_vote_time": {
+                "Alex": 0.6261,
+                "Bailey": 0.65,
+                "Casey": 0.4696,
+                "Finley": 0.2455,
+                "Gray": 0.6417,
+                "Logan": 0.9167
+              },
+              "suspicion_n_probes": {
+                "Alex": 23,
+                "Bailey": 24,
+                "Casey": 23,
+                "Finley": 22,
+                "Gray": 24,
+                "Logan": 24
+              }
+            }
+          },
+          {
+            "replica_idx": 4,
+            "game_id": "e1a9bed1-455a-40bd-8f0d-0c80192f6afe",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 3,
+                "Alex": 3
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Gray": "Alex",
+                "Logan": "Alex",
+                "Finley": "Alex",
+                "Casey": "Logan",
+                "Bailey": "Logan"
+              },
+              "eliminated": null,
+              "winner": "Mafia",
+              "rounds": 3,
+              "suspicion_vote_time": {
+                "Alex": 0.78,
+                "Bailey": 0.276,
+                "Casey": 0.5852,
+                "Finley": 0.3115,
+                "Gray": 0.562,
+                "Logan": 0.8796
+              },
+              "suspicion_n_probes": {
+                "Alex": 25,
+                "Bailey": 25,
+                "Casey": 27,
+                "Finley": 26,
+                "Gray": 25,
+                "Logan": 27
+              }
+            }
+          }
+        ],
+        "aggregate": {
+          "n": 5,
+          "errors": 0,
+          "elim_dist": {
+            "Gray": 3,
+            "Logan": 1,
+            "None": 1
+          },
+          "p_mafia_win": 0.8,
+          "mean_rounds": 2.6,
+          "mean_suspicion": {
+            "Alex": 0.7127,
+            "Bailey": 0.4043,
+            "Casey": 0.4395,
+            "Finley": 0.2917,
+            "Gray": 0.8363,
+            "Logan": 0.7758
+          }
+        }
+      },
+      "post": {
+        "replicas": [
+          {
+            "replica_idx": 0,
+            "game_id": "5906a405-d252-4f31-9fa3-cb44dafa1390",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 4,
+                "Logan": 2
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Logan",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Villagers",
+              "rounds": 3,
+              "suspicion_vote_time": {
+                "Alex": 0.5458,
+                "Bailey": 0.3,
+                "Casey": 0.4885,
+                "Finley": 0.2942,
+                "Gray": 0.9846,
+                "Logan": 0.8469
+              },
+              "suspicion_n_probes": {
+                "Alex": 28,
+                "Bailey": 26,
+                "Casey": 26,
+                "Finley": 26,
+                "Gray": 26,
+                "Logan": 27
+              }
+            }
+          },
+          {
+            "replica_idx": 1,
+            "game_id": "135bb63e-271e-4058-ae40-d0f5b8df8f39",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 5,
+                "Gray": 1
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Logan",
+                "Casey": "Logan",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Logan",
+              "winner": "Mafia",
+              "rounds": 4,
+              "suspicion_vote_time": {
+                "Alex": 0.4407,
+                "Bailey": 0.3778,
+                "Casey": 0.7069,
+                "Finley": 0.2815,
+                "Gray": 0.7481,
+                "Logan": 0.9571
+              },
+              "suspicion_n_probes": {
+                "Alex": 27,
+                "Bailey": 27,
+                "Casey": 29,
+                "Finley": 27,
+                "Gray": 27,
+                "Logan": 28
+              }
+            }
+          },
+          {
+            "replica_idx": 2,
+            "game_id": "45b17f8f-5662-4505-a9b0-d670fa9626b2",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Logan": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.4462,
+                "Bailey": 0.6182,
+                "Casey": 0.313,
+                "Finley": 0.3333,
+                "Gray": 0.9652,
+                "Logan": 0.7818
+              },
+              "suspicion_n_probes": {
+                "Alex": 26,
+                "Bailey": 22,
+                "Casey": 23,
+                "Finley": 24,
+                "Gray": 23,
+                "Logan": 22
+              }
+            }
+          },
+          {
+            "replica_idx": 3,
+            "game_id": "d0286836-b545-425d-b4e1-f68457759aa5",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Alex": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.6538,
+                "Bailey": 0.6643,
+                "Casey": 0.2692,
+                "Finley": 0.3037,
+                "Gray": 1.0,
+                "Logan": 0.6222
+              },
+              "suspicion_n_probes": {
+                "Alex": 26,
+                "Bailey": 28,
+                "Casey": 26,
+                "Finley": 27,
+                "Gray": 26,
+                "Logan": 27
+              }
+            }
+          },
+          {
+            "replica_idx": 4,
+            "game_id": "3d7f813b-614b-4165-90ad-b435aaef88ad",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Casey": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Casey",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.3417,
+                "Bailey": 0.652,
+                "Casey": 0.7923,
+                "Finley": 0.2404,
+                "Gray": 0.9808,
+                "Logan": 0.4827
+              },
+              "suspicion_n_probes": {
+                "Alex": 24,
+                "Bailey": 25,
+                "Casey": 26,
+                "Finley": 26,
+                "Gray": 26,
+                "Logan": 26
+              }
+            }
+          }
+        ],
+        "aggregate": {
+          "n": 5,
+          "errors": 0,
+          "elim_dist": {
+            "Gray": 4,
+            "Logan": 1
+          },
+          "p_mafia_win": 0.8,
+          "mean_rounds": 2.6,
+          "mean_suspicion": {
+            "Alex": 0.4856,
+            "Bailey": 0.5225,
+            "Casey": 0.514,
+            "Finley": 0.2906,
+            "Gray": 0.9357,
+            "Logan": 0.7381
+          }
+        }
+      },
+      "delta_post_minus_pre": {
+        "suspicion": {
+          "Alex": -0.2271,
+          "Bailey": 0.1182,
+          "Casey": 0.0745,
+          "Finley": -0.0011,
+          "Gray": 0.0994,
+          "Logan": -0.0377
+        },
+        "p_mafia_win": 0.0,
+        "p_eliminate_target": {
+          "target": "Gray",
+          "pre": 0.6,
+          "post": 0.8,
+          "delta": 0.2
+        }
+      }
+    },
+    {
+      "utterance": {
+        "round": 1,
+        "msg_seq": 8,
+        "kind": "day_discuss",
+        "speaker": "Finley",
+        "text": "That's rough about Jordan. I think Gray's quick analysis pointing toward quiet players being innocent is a little too neat for this early on—feels like a way to steer suspicion without much to back it up. For now, I'm more interested in hearing from Bailey, since they've been pretty quiet so far and that could be deliberate."
+      },
+      "pre_fork": [
+        1,
+        7
+      ],
+      "post_fork": [
+        1,
+        8
+      ],
+      "factual": {
+        "vote_tally": {
+          "Gray": 5,
+          "Bailey": 1
+        },
+        "votes": {
+          "Alex": "Gray",
+          "Gray": "Bailey",
+          "Logan": "Gray",
+          "Finley": "Gray",
+          "Casey": "Gray",
+          "Bailey": "Gray"
+        },
+        "eliminated": "Gray",
+        "winner": "Mafia",
+        "rounds": 2,
+        "suspicion_vote_time": {
+          "Alex": 0.56,
+          "Bailey": 0.76,
+          "Casey": 0.2929,
+          "Finley": 0.3077,
+          "Gray": 0.9615,
+          "Logan": 0.552
+        },
+        "suspicion_n_probes": {
+          "Alex": 25,
+          "Bailey": 25,
+          "Casey": 28,
+          "Finley": 26,
+          "Gray": 26,
+          "Logan": 25
+        }
+      },
+      "pre": {
+        "replicas": [
+          {
+            "replica_idx": 0,
+            "game_id": "0a8a70f5-d50a-4535-93f7-3a738a9de2a7",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 2,
+                "Gray": 4
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.4696,
+                "Bailey": 0.56,
+                "Casey": 0.3417,
+                "Finley": 0.425,
+                "Gray": 0.808,
+                "Logan": 0.8
+              },
+              "suspicion_n_probes": {
+                "Alex": 23,
+                "Bailey": 25,
+                "Casey": 24,
+                "Finley": 24,
+                "Gray": 25,
+                "Logan": 24
+              }
+            }
+          },
+          {
+            "replica_idx": 1,
+            "game_id": "f78faa29-509f-4519-a631-a72028c28f7e",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Alex": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.5571,
+                "Bailey": 0.5214,
+                "Casey": 0.4138,
+                "Finley": 0.4214,
+                "Gray": 1.0,
+                "Logan": 0.669
+              },
+              "suspicion_n_probes": {
+                "Alex": 28,
+                "Bailey": 28,
+                "Casey": 29,
+                "Finley": 28,
+                "Gray": 28,
+                "Logan": 29
+              }
+            }
+          },
+          {
+            "replica_idx": 2,
+            "game_id": "4ffefcec-1c8f-411f-805f-a148f1a5143b",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 3,
+                "Bailey": 3
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Gray": "Logan",
+                "Logan": "Bailey",
+                "Finley": "Bailey",
+                "Casey": "Bailey",
+                "Bailey": "Logan"
+              },
+              "eliminated": null,
+              "winner": "Mafia",
+              "rounds": 3,
+              "suspicion_vote_time": {
+                "Alex": 0.3962,
+                "Bailey": 0.7839,
+                "Casey": 0.4,
+                "Finley": 0.2788,
+                "Gray": 0.6815,
+                "Logan": 0.8846
+              },
+              "suspicion_n_probes": {
+                "Alex": 26,
+                "Bailey": 28,
+                "Casey": 27,
+                "Finley": 26,
+                "Gray": 27,
+                "Logan": 26
+              }
+            }
+          },
+          {
+            "replica_idx": 3,
+            "game_id": "bcc412bc-6480-40c6-b000-e7c6a1408628",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 5,
+                "Gray": 1
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Logan",
+                "Casey": "Logan",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Logan",
+              "winner": "Mafia",
+              "rounds": 3,
+              "suspicion_vote_time": {
+                "Alex": 0.686,
+                "Bailey": 0.4667,
+                "Casey": 0.3,
+                "Finley": 0.378,
+                "Gray": 0.648,
+                "Logan": 1.0
+              },
+              "suspicion_n_probes": {
+                "Alex": 25,
+                "Bailey": 24,
+                "Casey": 25,
+                "Finley": 25,
+                "Gray": 25,
+                "Logan": 26
+              }
+            }
+          },
+          {
+            "replica_idx": 4,
+            "game_id": "43cb0579-6a92-40be-8192-ac278bf9f5ed",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 2,
+                "Gray": 1,
+                "Bailey": 1
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Logan": "Gray",
+                "Finley": "Bailey",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Logan",
+              "winner": "Villagers",
+              "rounds": 4,
+              "suspicion_vote_time": {
+                "Alex": 0.2833,
+                "Bailey": 0.7833,
+                "Casey": 0.3364,
+                "Finley": 0.5364,
+                "Gray": 0.5727,
+                "Logan": 0.9385
+              },
+              "suspicion_n_probes": {
+                "Alex": 24,
+                "Bailey": 24,
+                "Casey": 22,
+                "Finley": 22,
+                "Gray": 22,
+                "Logan": 26
+              }
+            }
+          }
+        ],
+        "aggregate": {
+          "n": 5,
+          "errors": 0,
+          "elim_dist": {
+            "Gray": 2,
+            "None": 1,
+            "Logan": 2
+          },
+          "p_mafia_win": 0.8,
+          "mean_rounds": 2.8,
+          "mean_suspicion": {
+            "Alex": 0.4784,
+            "Bailey": 0.6231,
+            "Casey": 0.3584,
+            "Finley": 0.4079,
+            "Gray": 0.742,
+            "Logan": 0.8584
+          }
+        }
+      },
+      "post": {
+        "replicas": [
+          {
+            "replica_idx": 0,
+            "game_id": "c8732c29-161d-4077-a040-72e0a7f1df16",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Logan": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.48,
+                "Bailey": 0.5808,
+                "Casey": 0.288,
+                "Finley": 0.4404,
+                "Gray": 0.9538,
+                "Logan": 0.7759
+              },
+              "suspicion_n_probes": {
+                "Alex": 25,
+                "Bailey": 26,
+                "Casey": 25,
+                "Finley": 26,
+                "Gray": 26,
+                "Logan": 27
+              }
+            }
+          },
+          {
+            "replica_idx": 1,
+            "game_id": "a8f1b123-e550-410a-b4c6-49dff8dc034a",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Logan": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.4625,
+                "Bailey": 0.6071,
+                "Casey": 0.5722,
+                "Finley": 0.2556,
+                "Gray": 0.9857,
+                "Logan": 0.6444
+              },
+              "suspicion_n_probes": {
+                "Alex": 28,
+                "Bailey": 28,
+                "Casey": 27,
+                "Finley": 27,
+                "Gray": 28,
+                "Logan": 27
+              }
+            }
+          },
+          {
+            "replica_idx": 2,
+            "game_id": "f8fdc84a-6141-4a90-9fd9-6834aa22d13f",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 4,
+                "Logan": 2
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.287,
+                "Bailey": 0.64,
+                "Casey": 0.5417,
+                "Finley": 0.3826,
+                "Gray": 0.936,
+                "Logan": 0.736
+              },
+              "suspicion_n_probes": {
+                "Alex": 23,
+                "Bailey": 25,
+                "Casey": 24,
+                "Finley": 23,
+                "Gray": 25,
+                "Logan": 25
+              }
+            }
+          },
+          {
+            "replica_idx": 3,
+            "game_id": "f35f92cf-09c4-48e4-a070-924656be5f62",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 3,
+                "Gray": 3
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Logan"
+              },
+              "eliminated": null,
+              "winner": "Villagers",
+              "rounds": 4,
+              "suspicion_vote_time": {
+                "Alex": 0.5038,
+                "Bailey": 0.4646,
+                "Casey": 0.3333,
+                "Finley": 0.437,
+                "Gray": 0.8625,
+                "Logan": 0.9
+              },
+              "suspicion_n_probes": {
+                "Alex": 26,
+                "Bailey": 24,
+                "Casey": 24,
+                "Finley": 23,
+                "Gray": 24,
+                "Logan": 24
+              }
+            }
+          },
+          {
+            "replica_idx": 4,
+            "game_id": "ca6809ce-7db4-4199-8dfc-b0d17451615d",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 3,
+                "Alex": 1,
+                "Logan": 2
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Gray",
+                "Finley": "Logan",
+                "Casey": "Gray",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.55,
+                "Bailey": 0.5909,
+                "Casey": 0.45,
+                "Finley": 0.3684,
+                "Gray": 0.8818,
+                "Logan": 0.7091
+              },
+              "suspicion_n_probes": {
+                "Alex": 20,
+                "Bailey": 22,
+                "Casey": 20,
+                "Finley": 19,
+                "Gray": 22,
+                "Logan": 22
+              }
+            }
+          }
+        ],
+        "aggregate": {
+          "n": 5,
+          "errors": 0,
+          "elim_dist": {
+            "Gray": 4,
+            "None": 1
+          },
+          "p_mafia_win": 0.8,
+          "mean_rounds": 2.4,
+          "mean_suspicion": {
+            "Alex": 0.4567,
+            "Bailey": 0.5767,
+            "Casey": 0.437,
+            "Finley": 0.3768,
+            "Gray": 0.924,
+            "Logan": 0.7531
+          }
+        }
+      },
+      "delta_post_minus_pre": {
+        "suspicion": {
+          "Alex": -0.0217,
+          "Bailey": -0.0464,
+          "Casey": 0.0786,
+          "Finley": -0.0311,
+          "Gray": 0.182,
+          "Logan": -0.1053
+        },
+        "p_mafia_win": 0.0,
+        "p_eliminate_target": {
+          "target": "Gray",
+          "pre": 0.4,
+          "post": 0.8,
+          "delta": 0.4
+        }
+      }
+    },
+    {
+      "utterance": {
+        "round": 1,
+        "msg_seq": 9,
+        "kind": "day_discuss",
+        "speaker": "Casey",
+        "text": "Alright, let's dig into this. Jordan was outspoken and got taken out first—classic Mafia move to silence someone who'd be hard to manipulate later.\n\nGray's already framing the \"quiet voices as innocent\" narrative, which feels like a way to protect themselves or a teammate. And Logan's right that Bailey's been super quiet—that silence could go either way, but I'm more suspicious of Gray trying to control the story too early.\n\nI'd rather hear more from Bailey before making up my mind, but Gray's smooth logic is giving me a weird vibe."
+      },
+      "pre_fork": [
+        1,
+        8
+      ],
+      "post_fork": [
+        1,
+        9
+      ],
+      "factual": {
+        "vote_tally": {
+          "Gray": 5,
+          "Bailey": 1
+        },
+        "votes": {
+          "Alex": "Gray",
+          "Gray": "Bailey",
+          "Logan": "Gray",
+          "Finley": "Gray",
+          "Casey": "Gray",
+          "Bailey": "Gray"
+        },
+        "eliminated": "Gray",
+        "winner": "Mafia",
+        "rounds": 2,
+        "suspicion_vote_time": {
+          "Alex": 0.56,
+          "Bailey": 0.76,
+          "Casey": 0.2929,
+          "Finley": 0.3077,
+          "Gray": 0.9615,
+          "Logan": 0.552
+        },
+        "suspicion_n_probes": {
+          "Alex": 25,
+          "Bailey": 25,
+          "Casey": 28,
+          "Finley": 26,
+          "Gray": 26,
+          "Logan": 25
+        }
+      },
+      "pre": {
+        "replicas": [
+          {
+            "replica_idx": 0,
+            "game_id": "9b6dd27b-9546-48da-a2da-9ccbe3c27b9d",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Logan": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.325,
+                "Bailey": 0.7021,
+                "Casey": 0.4146,
+                "Finley": 0.4458,
+                "Gray": 0.952,
+                "Logan": 0.65
+              },
+              "suspicion_n_probes": {
+                "Alex": 24,
+                "Bailey": 24,
+                "Casey": 24,
+                "Finley": 24,
+                "Gray": 25,
+                "Logan": 24
+              }
+            }
+          },
+          {
+            "replica_idx": 1,
+            "game_id": "51c25855-3192-4eb5-942a-db6225ac6335",
+            "metrics": {
+              "vote_tally": {
+                "Bailey": 4,
+                "Casey": 2
+              },
+              "votes": {
+                "Alex": "Bailey",
+                "Gray": "Casey",
+                "Logan": "Bailey",
+                "Finley": "Bailey",
+                "Casey": "Bailey",
+                "Bailey": "Casey"
+              },
+              "eliminated": "Bailey",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.424,
+                "Bailey": 0.925,
+                "Casey": 0.6833,
+                "Finley": 0.3167,
+                "Gray": 0.6833,
+                "Logan": 0.5167
+              },
+              "suspicion_n_probes": {
+                "Alex": 25,
+                "Bailey": 24,
+                "Casey": 24,
+                "Finley": 24,
+                "Gray": 24,
+                "Logan": 24
+              }
+            }
+          },
+          {
+            "replica_idx": 2,
+            "game_id": "408570fd-9545-4413-8ba0-ec42167a750b",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Alex": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.58,
+                "Bailey": 0.4479,
+                "Casey": 0.314,
+                "Finley": 0.6038,
+                "Gray": 0.963,
+                "Logan": 0.5
+              },
+              "suspicion_n_probes": {
+                "Alex": 25,
+                "Bailey": 24,
+                "Casey": 25,
+                "Finley": 26,
+                "Gray": 27,
+                "Logan": 26
+              }
+            }
+          },
+          {
+            "replica_idx": 3,
+            "game_id": "b8e64065-e8e1-47cf-89f3-3718746aac48",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Alex": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.6889,
+                "Bailey": 0.6,
+                "Casey": 0.3222,
+                "Finley": 0.4259,
+                "Gray": 0.9926,
+                "Logan": 0.5518
+              },
+              "suspicion_n_probes": {
+                "Alex": 27,
+                "Bailey": 27,
+                "Casey": 27,
+                "Finley": 29,
+                "Gray": 27,
+                "Logan": 28
+              }
+            }
+          },
+          {
+            "replica_idx": 4,
+            "game_id": "238eb78a-5600-4d41-b4cb-bd84a083853c",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Logan": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.4093,
+                "Bailey": 0.5692,
+                "Casey": 0.375,
+                "Finley": 0.492,
+                "Gray": 1.0,
+                "Logan": 0.6615
+              },
+              "suspicion_n_probes": {
+                "Alex": 27,
+                "Bailey": 26,
+                "Casey": 26,
+                "Finley": 25,
+                "Gray": 25,
+                "Logan": 26
+              }
+            }
+          }
+        ],
+        "aggregate": {
+          "n": 5,
+          "errors": 0,
+          "elim_dist": {
+            "Gray": 4,
+            "Bailey": 1
+          },
+          "p_mafia_win": 1.0,
+          "mean_rounds": 2.0,
+          "mean_suspicion": {
+            "Alex": 0.4854,
+            "Bailey": 0.6488,
+            "Casey": 0.4218,
+            "Finley": 0.4568,
+            "Gray": 0.9182,
+            "Logan": 0.576
+          }
+        }
+      },
+      "post": {
+        "replicas": [
+          {
+            "replica_idx": 0,
+            "game_id": "2baff38d-36f0-4c0a-9bd8-b2d9ff53e285",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Bailey": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Bailey",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.4417,
+                "Bailey": 0.7432,
+                "Casey": 0.4595,
+                "Finley": 0.2575,
+                "Gray": 0.8952,
+                "Logan": 0.5568
+              },
+              "suspicion_n_probes": {
+                "Alex": 24,
+                "Bailey": 22,
+                "Casey": 21,
+                "Finley": 20,
+                "Gray": 21,
+                "Logan": 22
+              }
+            }
+          },
+          {
+            "replica_idx": 1,
+            "game_id": "410c5e24-51c2-41e0-90fe-00826cd89dbf",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Alex": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.5083,
+                "Bailey": 0.5481,
+                "Casey": 0.3417,
+                "Finley": 0.448,
+                "Gray": 0.9583,
+                "Logan": 0.6769
+              },
+              "suspicion_n_probes": {
+                "Alex": 24,
+                "Bailey": 27,
+                "Casey": 24,
+                "Finley": 25,
+                "Gray": 24,
+                "Logan": 26
+              }
+            }
+          },
+          {
+            "replica_idx": 2,
+            "game_id": "ab86327b-c1df-474b-8187-d9087184730d",
+            "metrics": {
+              "vote_tally": {
+                "Logan": 5,
+                "Gray": 1
+              },
+              "votes": {
+                "Alex": "Logan",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Logan",
+                "Casey": "Logan",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Logan",
+              "winner": "Mafia",
+              "rounds": 4,
+              "suspicion_vote_time": {
+                "Alex": 0.4217,
+                "Bailey": 0.4525,
+                "Casey": 0.7,
+                "Finley": 0.25,
+                "Gray": 0.7475,
+                "Logan": 0.9364
+              },
+              "suspicion_n_probes": {
+                "Alex": 23,
+                "Bailey": 20,
+                "Casey": 20,
+                "Finley": 20,
+                "Gray": 20,
+                "Logan": 22
+              }
+            }
+          },
+          {
+            "replica_idx": 3,
+            "game_id": "7746beea-e063-4a7a-9af8-2224042cf110",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 5,
+                "Alex": 1
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Alex",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Gray"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.6375,
+                "Bailey": 0.6,
+                "Casey": 0.552,
+                "Finley": 0.344,
+                "Gray": 0.992,
+                "Logan": 0.392
+              },
+              "suspicion_n_probes": {
+                "Alex": 24,
+                "Bailey": 24,
+                "Casey": 25,
+                "Finley": 25,
+                "Gray": 25,
+                "Logan": 25
+              }
+            }
+          },
+          {
+            "replica_idx": 4,
+            "game_id": "5bb3ec7b-db40-4ed7-9290-9de21de06581",
+            "metrics": {
+              "vote_tally": {
+                "Gray": 4,
+                "Logan": 2
+              },
+              "votes": {
+                "Alex": "Gray",
+                "Gray": "Logan",
+                "Logan": "Gray",
+                "Finley": "Gray",
+                "Casey": "Gray",
+                "Bailey": "Logan"
+              },
+              "eliminated": "Gray",
+              "winner": "Mafia",
+              "rounds": 2,
+              "suspicion_vote_time": {
+                "Alex": 0.4519,
+                "Bailey": 0.63,
+                "Casey": 0.3833,
+                "Finley": 0.334,
+                "Gray": 0.9852,
+                "Logan": 0.744
+              },
+              "suspicion_n_probes": {
+                "Alex": 26,
+                "Bailey": 25,
+                "Casey": 27,
+                "Finley": 25,
+                "Gray": 27,
+                "Logan": 25
+              }
+            }
+          }
+        ],
+        "aggregate": {
+          "n": 5,
+          "errors": 0,
+          "elim_dist": {
+            "Gray": 4,
+            "Logan": 1
+          },
+          "p_mafia_win": 1.0,
+          "mean_rounds": 2.4,
+          "mean_suspicion": {
+            "Alex": 0.4922,
+            "Bailey": 0.5948,
+            "Casey": 0.4873,
+            "Finley": 0.3267,
+            "Gray": 0.9156,
+            "Logan": 0.6612
+          }
+        }
+      },
+      "delta_post_minus_pre": {
+        "suspicion": {
+          "Alex": 0.0068,
+          "Bailey": -0.054,
+          "Casey": 0.0655,
+          "Finley": -0.1301,
+          "Gray": -0.0026,
+          "Logan": 0.0852
+        },
+        "p_mafia_win": 0.0,
+        "p_eliminate_target": {
+          "target": "Gray",
+          "pre": 0.8,
+          "post": 0.8,
+          "delta": 0.0
+        }
+      }
+    }
+  ]
+}

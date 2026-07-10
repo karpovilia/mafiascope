@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MafiaScope — Cross-game Dashboard</title>
+<script src="d3.v7.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0d1117; color: #c9d1d9; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px; padding-bottom: 40px;
+}
+#header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 16px; background: #161b22; border-bottom: 1px solid #30363d;
+}
+#header h1 { font-size: 14px; font-weight: 600; color: #58a6ff; }
+#header a { color: #c9d1d9; font-size: 11px; text-decoration: none; border: 1px solid #30363d;
+  border-radius: 4px; padding: 4px 12px; background: #21262d; }
+#header a:hover { background: #30363d; }
+#summary { display: flex; gap: 10px; padding: 12px 16px; flex-wrap: wrap; }
+.tile {
+  border: 1px solid #30363d; border-radius: 6px; background: #161b22;
+  padding: 10px 18px; min-width: 130px;
+}
+.tile .v { font-size: 22px; font-weight: 700; color: #e6edf3; }
+.tile .l { font-size: 10px; color: #8b949e; margin-top: 2px; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px; }
+.panel {
+  border: 1px solid #30363d; border-radius: 6px; background: #0d1117; overflow: hidden;
+}
+.panel-title {
+  padding: 5px 10px; font-size: 11px; font-weight: 600;
+  background: #161b22; border-bottom: 1px solid #30363d;
+}
+.panel svg { display: block; width: 100%; }
+.legend { display: flex; gap: 14px; padding: 4px 10px; font-size: 10px; color: #8b949e; flex-wrap: wrap; }
+.legend .sw { display: inline-block; width: 10px; height: 3px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+table { border-collapse: collapse; width: 100%; font-size: 11px; }
+th, td { padding: 4px 10px; border-bottom: 1px solid #21262d; text-align: left; }
+th { color: #8b949e; font-size: 10px; background: #161b22; }
+.axis-label { font-size: 9px; fill: #6e7681; }
+.mono-note { padding: 6px 16px; font-size: 10px; color: #6e7681; }
+</style>
+</head>
+<body>
+<div id="header">
+  <h1>MafiaScope — Cross-game Dashboard</h1>
+  <a href="viewer.html">← Viewer</a>
+  <span id="hdr-info" style="margin-left:auto;color:#8b949e;font-size:11px"></span>
+</div>
+<div id="summary"></div>
+<div class="grid" id="grid"></div>
+<div class="mono-note">Accuracy = share of alive others whose role an agent names correctly (role_assessment, fallback role_beliefs), averaged per model over agents and games. Round x-axis uses each round's last recorded step. Branches (forked games) are excluded from aggregates.</div>
+
+<script>
+// Okabe-Ito categorical palette (colorblind-safe)
+const MODEL_PALETTE = ['#E69F00','#56B4E9','#009E73','#F0E442','#0072B2','#D55E00','#CC79A7','#999999'];
+const ROLE_SET = ['Mafia','Doctor','Sheriff','Villager'];
+
+function assessMapOf(b){
+  const m={};
+  if(!b||!b.has_data) return m;
+  if(Array.isArray(b.role_assessment)&&b.role_assessment.length){
+    b.role_assessment.forEach(e=>{if(e&&e.player)m[e.player]={role:e.guessed_role||'Unknown',confidence:e.confidence||0};});
+    return m;
+  }
+  const rb=b.role_beliefs;
+  if(rb&&typeof rb==='object')Object.entries(rb).forEach(([pl,v])=>{m[pl]={role:(v&&v.role)||'Unknown',confidence:(v&&v.confidence)||0};});
+  return m;
+}
+
+async function load(){
+  let games=[];
+  try{ const r=await fetch('all_games.json?t='+Date.now()); if(r.ok) games=await r.json(); }catch(e){}
+  if(!games.length){ document.getElementById('summary').innerHTML='<div class="tile"><div class="v">no data</div><div class="l">all_games.json missing</div></div>'; return; }
+  const roots=games.filter(g=>!g.forked_from);
+  render(roots.length?roots:games, games);
+}
+
+function render(games, allGames){
+  const models=[...new Set(games.flatMap(g=>g.players.map(p=>p.model)))].sort();
+  const mColor=m=>MODEL_PALETTE[models.indexOf(m)%MODEL_PALETTE.length];
+
+  // ── summary tiles ──
+  const mafiaWins=games.filter(g=>g.winner==='Mafia').length;
+  const done=games.filter(g=>g.winner!=='Pending');
+  const meanRounds=d3.mean(games,g=>g.steps.length?g.steps[g.steps.length-1].round:0);
+  const psOk=d3.sum(games,g=>g.parse_stats?g.parse_stats.ok:0), psTot=d3.sum(games,g=>g.parse_stats?g.parse_stats.total:0);
+  const branches=allGames.filter(g=>g.forked_from).length;
+  document.getElementById('hdr-info').textContent=`${games.length} root games · ${branches} branches · models: ${models.join(', ')}`;
+  document.getElementById('summary').innerHTML=[
+    [games.length,'root games'],
+    [`${Math.round(100*mafiaWins/Math.max(1,done.length))}%`,'mafia win rate'],
+    [meanRounds?meanRounds.toFixed(1):'—','mean rounds'],
+    [psTot?Math.round(100*psOk/psTot)+'%':'—','probe parse rate'],
+    [branches,'counterfactual branches'],
+  ].map(([v,l])=>`<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+
+  // ── per-game per-round metrics ──
+  // acc[model][round] -> [values]; recall[round] -> [values]
+  const acc={}, recall={};
+  games.forEach(g=>{
+    const names=g.players.map(p=>p.name);
+    const mafia=names.filter(n=>g.truth[n].role==='Mafia');
+    const lastStep={};
+    g.steps.forEach(s=>{ if(s.round>=1) lastStep[s.round]=s; });
+    Object.entries(lastStep).forEach(([rnd,s])=>{
+      const alive=new Set(s.alive);
+      const amaps={}; names.forEach(n=>{amaps[n]=assessMapOf(s.player_beliefs[n]);});
+      names.forEach(n=>{
+        if(!alive.has(n))return;
+        let ok=0,tot=0;
+        names.forEach(t=>{
+          if(t===n||!alive.has(t))return;
+          const gs=amaps[n][t]; if(!gs)return;
+          tot++; if(gs.role===g.truth[t].role)ok++;
+        });
+        if(tot){
+          const m=g.truth[n].model;
+          ((acc[m]=acc[m]||{})[rnd]=acc[m][rnd]||[]).push(ok/tot);
+        }
+      });
+      // crowd recall
+      const aliveMafia=mafia.filter(m=>alive.has(m));
+      let det=0,evaluable=0;
+      aliveMafia.forEach(m=>{
+        let yes=0,tot=0;
+        names.forEach(o=>{
+          if(o===m||!alive.has(o)||g.truth[o].role==='Mafia')return;
+          const gs=amaps[o][m]; if(!gs)return;
+          tot++; if(gs.role==='Mafia')yes++;
+        });
+        if(tot){evaluable++; if(yes/tot>0.5)det++;}
+      });
+      if(evaluable)(recall[rnd]=recall[rnd]||[]).push(det/evaluable);
+    });
+  });
+
+  // ── calibration per model ──
+  const calib={}; // model -> bins[5] {n, ok}
+  games.forEach(g=>{
+    const prevJson={};
+    g.steps.forEach(s=>{
+      const alive=new Set(s.alive);
+      g.players.forEach(p=>{
+        const n=p.name, b=s.player_beliefs[n];
+        if(!b||!b.has_data||!Array.isArray(b.role_assessment))return;
+        const j=JSON.stringify(b.role_assessment);
+        if(prevJson[n]===j)return;
+        prevJson[n]=j;
+        const m=g.truth[n].model;
+        const bins=calib[m]=calib[m]||Array.from({length:5},()=>({n:0,ok:0}));
+        b.role_assessment.forEach(e=>{
+          if(!e||!e.player||e.player===n||!alive.has(e.player))return;
+          const gr=e.guessed_role;
+          if(!gr||gr==='Unknown'||!(e.player in g.truth))return;
+          const c=Math.max(0,Math.min(100,+e.confidence||0));
+          const bi=Math.min(4,Math.floor(c/20));
+          bins[bi].n++;
+          if(gr===g.truth[e.player].role)bins[bi].ok++;
+        });
+      });
+    });
+  });
+
+  // ── matchup table (model composition, incl. mixed setups) ──
+  const matchups={};
+  games.forEach(g=>{
+    const mafiaModels=[...new Set(g.players.filter(p=>p.role==='Mafia').map(p=>p.model))].sort().join(' + ');
+    const townModels=[...new Set(g.players.filter(p=>p.role!=='Mafia').map(p=>p.model))].sort().join(' + ');
+    const key=`${mafiaModels} ⚔ ${townModels}`;
+    const mm=matchups[key]=matchups[key]||{mafia:0,villagers:0,other:0,rounds:[]};
+    if(g.winner==='Mafia')mm.mafia++; else if(g.winner==='Villagers')mm.villagers++; else mm.other++;
+    if(g.steps.length)mm.rounds.push(g.steps[g.steps.length-1].round);
+  });
+
+  // ── render panels ──
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+
+  // accuracy per model by round
+  const maxRound=Math.max(2,...Object.values(acc).flatMap(o=>Object.keys(o).map(Number)));
+  const accSeries=models.map(m=>({
+    name:m,color:mColor(m),
+    values:d3.range(1,maxRound+1).map(r=>acc[m]&&acc[m][r]?d3.mean(acc[m][r]):null)
+  })).filter(s=>s.values.some(v=>v!==null));
+  grid.appendChild(linePanel('1st-order accuracy by round (mean per model)',accSeries,maxRound));
+
+  // crowd recall
+  const recallSeries=[{name:'crowd mafia recall',color:'#f0883e',
+    values:d3.range(1,maxRound+1).map(r=>recall[r]?d3.mean(recall[r]):null)}];
+  grid.appendChild(linePanel('Crowd mafia recall by round (all games)',recallSeries,maxRound));
+
+  // calibration grouped bars
+  grid.appendChild(calibPanel(calib,models,mColor));
+
+  // matchup table
+  const tbl=document.createElement('div'); tbl.className='panel';
+  tbl.innerHTML='<div class="panel-title">Matchups — model composition vs outcome</div>'+
+    '<table><tr><th>mafia models ⚔ town models</th><th>games</th><th>mafia</th><th>villagers</th><th>med. rounds</th></tr>'+
+    Object.entries(matchups).map(([k,v])=>{
+      const tot=v.mafia+v.villagers+v.other;
+      return `<tr><td>${k}</td><td>${tot}</td><td style="color:#D55E00">${v.mafia}</td>`+
+        `<td style="color:#56B4E9">${v.villagers}</td><td>${v.rounds.length?d3.median(v.rounds):'—'}</td></tr>`;
+    }).join('')+'</table>';
+  grid.appendChild(tbl);
+}
+
+function linePanel(title,series,maxRound){
+  const el=document.createElement('div'); el.className='panel';
+  el.innerHTML=`<div class="panel-title">${title}</div>`+
+    `<div class="legend">${series.map(s=>`<span><span class="sw" style="background:${s.color}"></span>${s.name}</span>`).join('')}</div>`;
+  const W=560,H=220,L=34,R=10,T=10,B=24;
+  const svg=d3.create('svg').attr('viewBox',`0 0 ${W} ${H}`);
+  const x=r=>L+(W-L-R)*(maxRound<=1?0:(r-1)/(maxRound-1));
+  const y=v=>T+(H-T-B)*(1-v);
+  [0,0.5,1].forEach(v=>{
+    svg.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v)).attr('stroke','#21262d');
+    svg.append('text').attr('class','axis-label').attr('x',L-4).attr('y',y(v)+3).attr('text-anchor','end').text(v);
+  });
+  d3.range(1,maxRound+1).forEach(r=>{
+    svg.append('text').attr('class','axis-label').attr('x',x(r)).attr('y',H-8).attr('text-anchor','middle').text('R'+r);
+  });
+  const line=d3.line().defined(p=>p[1]!==null).x(p=>x(p[0])).y(p=>y(p[1]));
+  series.forEach(s=>{
+    const pts=s.values.map((v,i)=>[i+1,v]);
+    svg.append('path').attr('d',line(pts)).attr('fill','none').attr('stroke',s.color).attr('stroke-width',1.8);
+    pts.filter(p=>p[1]!==null).forEach(p=>{
+      svg.append('circle').attr('cx',x(p[0])).attr('cy',y(p[1])).attr('r',2.2).attr('fill',s.color);
+    });
+  });
+  el.appendChild(svg.node());
+  return el;
+}
+
+function calibPanel(calib,models,mColor){
+  const el=document.createElement('div'); el.className='panel';
+  el.innerHTML='<div class="panel-title">Calibration — confidence bin vs accuracy per model</div>'+
+    `<div class="legend">${models.filter(m=>calib[m]).map(m=>`<span><span class="sw" style="background:${mColor(m)}"></span>${m}</span>`).join('')}</div>`;
+  const W=560,H=220,L=34,R=10,T=10,B=24;
+  const svg=d3.create('svg').attr('viewBox',`0 0 ${W} ${H}`);
+  const bins=['0–19','20–39','40–59','60–79','80–100'];
+  const x=i=>L+(W-L-R)*(i+0.5)/5;
+  const y=v=>T+(H-T-B)*(1-v);
+  [0,0.5,1].forEach(v=>{
+    svg.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v)).attr('stroke','#21262d');
+    svg.append('text').attr('class','axis-label').attr('x',L-4).attr('y',y(v)+3).attr('text-anchor','end').text(v);
+  });
+  // perfect calibration diagonal
+  svg.append('path').attr('d',d3.line()(bins.map((b,i)=>[x(i),y((i*20+ (i===4?90:10))/100)])))
+    .attr('fill','none').attr('stroke','#6e7681').attr('stroke-dasharray','5 4');
+  bins.forEach((b,i)=>{
+    svg.append('text').attr('class','axis-label').attr('x',x(i)).attr('y',H-8).attr('text-anchor','middle').text(b);
+  });
+  const present=models.filter(m=>calib[m]);
+  const gw=(W-L-R)/5*0.7, bw=gw/Math.max(1,present.length);
+  present.forEach((m,mi)=>{
+    calib[m].forEach((bin,i)=>{
+      if(!bin.n)return;
+      const a=bin.ok/bin.n;
+      const lowN=bin.n<10; // dim unreliable bins
+      const rect=svg.append('rect').attr('x',x(i)-gw/2+mi*bw).attr('y',y(a))
+        .attr('width',bw-1).attr('height',y(0)-y(a))
+        .attr('fill',mColor(m)).attr('fill-opacity',lowN?0.25:0.8).attr('rx',1.5);
+      if(lowN)rect.attr('stroke','#6e7681').attr('stroke-dasharray','3 2');
+      rect.append('title').text(`${m} · conf ${bins[i]} → ${Math.round(100*a)}% acc (n=${bin.n})${lowN?' — n<10, unreliable':''}`);
+    });
+  });
+  el.appendChild(svg.node());
+  return el;
+}
+
+load();
+</script>
+</body>
+</html>

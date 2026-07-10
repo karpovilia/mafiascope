@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mafia Introspection Viewer</title>
+<script src="d3.v7.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0d1117; color: #c9d1d9; font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 13px; overflow: hidden; height: 100vh;
+}
+
+/* Header */
+#header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 6px 16px; background: #161b22; border-bottom: 1px solid #30363d;
+}
+#header h1 { font-size: 14px; font-weight: 600; color: #58a6ff; white-space: nowrap; }
+#games-btn {
+  background: #21262d; color: #c9d1d9; border: 1px solid #30363d;
+  border-radius: 4px; padding: 4px 12px; font-family: inherit; font-size: 11px;
+  cursor: pointer; white-space: nowrap;
+}
+#games-btn:hover { background: #30363d; }
+
+/* Sidebar */
+#sidebar {
+  position: fixed; top: 0; left: -360px; width: 360px; height: 100vh;
+  background: #161b22; border-right: 2px solid #30363d;
+  z-index: 200; transition: left 0.25s ease;
+  display: flex; flex-direction: column;
+}
+#sidebar.open { left: 0; }
+#sidebar-header {
+  padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid #30363d;
+}
+#sidebar-header h2 { font-size: 14px; color: #58a6ff; }
+#sidebar-close {
+  background: none; border: none; color: #8b949e; font-size: 18px; cursor: pointer;
+}
+#sidebar-close:hover { color: #f85149; }
+#sidebar-list {
+  flex: 1; overflow-y: auto; padding: 4px 0;
+}
+.game-card {
+  padding: 8px 14px; border-bottom: 1px solid #21262d; cursor: pointer;
+  transition: background 0.1s;
+}
+.game-card:hover { background: #21262d; }
+.game-card.active { background: #1c2333; border-left: 3px solid #58a6ff; }
+.game-card-date { font-size: 12px; color: #e6edf3; font-weight: 600; }
+.game-card-meta { font-size: 10px; color: #8b949e; margin-top: 2px; }
+.game-card-winner { font-size: 11px; font-weight: 600; margin-top: 2px; }
+#sidebar-overlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: #00000066; z-index: 199;
+}
+#sidebar-overlay.open { display: block; }
+#step-info { color: #8b949e; font-size: 11px; margin-left: auto; }
+#impersonate-badge {
+  display: none; background: #f0883e; color: #fff; padding: 2px 10px;
+  border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer;
+}
+
+/* Timeline */
+#timeline {
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 16px; background: #161b22; border-bottom: 1px solid #30363d;
+}
+#timeline-bar { flex: 1; height: 24px; background: #21262d; border-radius: 4px; display: flex; cursor: pointer; overflow: hidden; }
+.step-tick { flex: 1; height: 100%; border-right: 1px solid #0d1117; transition: background 0.1s; }
+.step-tick.night { background: #1a2744; }
+.step-tick.day_discuss { background: #1a3a1a; }
+.step-tick.day_vote { background: #3a2a0a; }
+.step-tick.night_analysis { background: #2a1a3a; }
+.step-tick.intro { background: #1a3a3a; }
+.step-tick.round_end { background: #2a2a2a; }
+.step-tick.active { background: #58a6ff !important; }
+.step-tick:hover { filter: brightness(1.5); }
+#timeline-label { min-width: 80px; text-align: center; font-weight: 600; color: #58a6ff; font-size: 12px; }
+
+/* Main grid */
+#main-grid {
+  display: grid; height: calc(100vh - 68px); padding: 4px; gap: 4px;
+}
+body.metrics-open #main-grid { height: calc(100vh - 68px - 200px); }
+
+/* Metrics panel */
+#metrics-panel {
+  display: none; height: 200px; padding: 0 4px 4px 4px; gap: 4px;
+  grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 16px 1fr;
+}
+body.metrics-open #metrics-panel { display: grid; }
+#metrics-legend {
+  grid-column: 1 / -1; display: flex; gap: 12px; align-items: center;
+  font-size: 10px; color: #8b949e; padding: 0 6px; overflow: hidden; white-space: nowrap;
+}
+.legend-item { display: inline-flex; align-items: center; gap: 4px; cursor: default; }
+.legend-swatch { width: 10px; height: 3px; border-radius: 2px; display: inline-block; }
+.metric-box {
+  border: 1px solid #30363d; border-radius: 6px; background: #0d1117;
+  display: flex; flex-direction: column; min-width: 0; min-height: 0;
+}
+.metric-box .panel-title { font-size: 10px; }
+.metric-box svg { flex: 1; cursor: crosshair; }
+.metric-axis-label { font-size: 8px; fill: #6e7681; }
+
+/* Header badges/buttons */
+.hdr-btn {
+  background: #21262d; color: #c9d1d9; border: 1px solid #30363d;
+  border-radius: 4px; padding: 4px 12px; font-family: inherit; font-size: 11px;
+  cursor: pointer; white-space: nowrap;
+}
+.hdr-btn:hover { background: #30363d; }
+.hdr-btn.on { border-color: #58a6ff; color: #58a6ff; }
+#parse-badge {
+  display: none; padding: 2px 8px; border-radius: 4px; font-size: 10px;
+  font-weight: 700; color: #fff; cursor: help; white-space: nowrap;
+}
+
+/* Ego agreement score (impersonate mode) */
+.ego-score { font-size: 10px; font-weight: 700; margin-left: auto; margin-right: 6px; }
+
+/* Calibration modal */
+#calib-overlay {
+  display: none; position: fixed; inset: 0; background: #000000aa; z-index: 300;
+  align-items: center; justify-content: center;
+}
+#calib-overlay.open { display: flex; }
+#calib-modal {
+  background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+  width: 640px; max-width: 92vw; padding: 14px 18px;
+  box-shadow: 0 8px 32px #000000cc;
+}
+#calib-modal h2 { font-size: 13px; color: #58a6ff; margin-bottom: 4px; }
+#calib-modal .calib-sub { font-size: 10px; color: #8b949e; margin-bottom: 8px; }
+#calib-modal select {
+  background: #21262d; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px;
+  font-family: inherit; font-size: 11px; padding: 2px 6px; margin-bottom: 8px;
+}
+
+/* Counterfactual replay: branches / fork dialog / outcome strip */
+#outcome-strip {
+  display: none; align-items: center; gap: 10px; font-size: 11px; height: 22px;
+  padding: 0 16px; background: #1a1208; border-bottom: 1px solid #30363d; color: #c9d1d9;
+}
+body.strip-open #main-grid { height: calc(100vh - 68px - 22px); }
+body.strip-open.metrics-open #main-grid { height: calc(100vh - 68px - 222px); }
+#outcome-strip .strip-bar {
+  flex: 1; display: flex; height: 8px; border-radius: 4px; overflow: hidden;
+  background: #21262d; max-width: 300px;
+}
+.step-tick.has-branch { box-shadow: inset 0 -3px 0 #f0883e; }
+.batch-header {
+  padding: 5px 14px 3px 22px; font-size: 10px; color: #f0883e;
+  border-bottom: 1px solid #21262d; background: #16120b;
+}
+.game-card.branch { padding-left: 34px; background: #0e1117; }
+.game-card.branch .game-card-date { font-size: 11px; font-weight: 400; }
+#fork-overlay {
+  display: none; position: fixed; inset: 0; background: #000000aa; z-index: 300;
+  align-items: center; justify-content: center;
+}
+#fork-overlay.open { display: flex; }
+#fork-modal {
+  background: #161b22; border: 1px solid #f0883e; border-radius: 8px;
+  width: 420px; max-width: 92vw; padding: 14px 18px; box-shadow: 0 8px 32px #000000cc;
+}
+#fork-modal h2 { font-size: 13px; color: #f0883e; margin-bottom: 6px; }
+#fork-modal .fork-row { display: flex; gap: 8px; align-items: center; margin: 8px 0; font-size: 11px; }
+#fork-modal input {
+  background: #21262d; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px;
+  font-family: inherit; font-size: 11px; padding: 3px 6px; width: 80px;
+}
+#fork-modal .fork-note { font-size: 10px; color: #8b949e; margin: 6px 0; }
+#fork-error { color: #f85149; font-size: 10px; min-height: 14px; margin-top: 4px; }
+#fork-toast {
+  display: none; position: fixed; bottom: 14px; left: 14px; z-index: 250;
+  background: #1a1208; border: 1px solid #f0883e; color: #f0883e;
+  border-radius: 6px; padding: 8px 14px; font-size: 12px; font-weight: 600;
+  box-shadow: 0 4px 16px #00000088;
+}
+
+/* Panel */
+.panel {
+  border: 1px solid #30363d; border-radius: 6px;
+  background: #0d1117; overflow: hidden; display: flex; flex-direction: column;
+  min-width: 0; min-height: 0;
+}
+.panel-title {
+  padding: 3px 8px; font-size: 11px; font-weight: 600;
+  background: #161b22; border-bottom: 1px solid #30363d;
+  display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+}
+.panel.speaking { border-color: #f0883e; box-shadow: 0 0 10px #f0883e44; }
+.panel.stale { opacity: 0.5; }
+
+/* GT panel */
+#gt-panel { border-color: #f0883e; border-width: 2px; }
+#gt-panel .panel-title { background: #1a1208; }
+#gt-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+#gt-graph { height: 200px; flex-shrink: 0; }
+#gt-log {
+  flex: 1; border-top: 1px solid #30363d;
+  overflow-y: auto; padding: 8px 12px; font-size: 12px; line-height: 1.7;
+}
+
+/* Log entries */
+.log-entry { padding: 4px 0; border-bottom: 1px solid #1c2128; word-wrap: break-word; overflow-wrap: break-word; }
+.log-entry.current { background: #161b22; border-left: 3px solid #58a6ff; padding-left: 8px; }
+.log-phase { color: #6e7681; font-size: 9px; }
+.log-event { color: #f0883e; font-weight: 600; padding: 4px 0; border-bottom: 1px solid #30363d; font-size: 12px; }
+
+/* Public message = sans-serif, reasoning = mono italic */
+.log-public {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px; color: #e6edf3;
+  white-space: pre-wrap; word-wrap: break-word;
+}
+.log-reasoning {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 11px; color: #8b949e; font-style: italic;
+  margin-top: 2px; padding-left: 12px; border-left: 2px solid #30363d;
+  white-space: pre-wrap; word-wrap: break-word;
+}
+.log-speaker { font-weight: 700; cursor: pointer; }
+.log-speaker:hover { text-decoration: underline; }
+.log-faded {
+  color: #7d8590; font-size: 11px; font-style: italic;
+}
+
+/* Agent panel */
+.agent-svg { flex: 1; }
+
+/* Impersonate panel */
+.imp-panel {
+  border: 2px solid #f0883e; border-radius: 6px;
+  background: #0d1117; overflow: hidden; display: flex; flex-direction: column;
+}
+.imp-panel .panel-title { background: #1a1208; border-bottom: 1px solid #30363d; }
+.imp-log {
+  flex: 1; overflow-y: auto; padding: 8px 12px; font-size: 12px; line-height: 1.7;
+}
+
+/* Role badges — Okabe-Ito colorblind-safe palette */
+.role-badge { padding: 1px 6px; border-radius: 3px; font-size: 9px; font-weight: 700; }
+.role-Mafia { background: #D55E00; color: #fff; }
+.role-Doctor { background: #009E73; color: #fff; }
+.role-Villager { background: #56B4E9; color: #0d1117; }
+.role-Sheriff { background: #CC79A7; color: #0d1117; }
+.role-Unknown { background: #6e7681; color: #c9d1d9; }
+
+/* SVG */
+.node text {
+  font-size: 10px; fill: #e6edf3; text-anchor: middle; pointer-events: none; font-weight: 600;
+  paint-order: stroke; stroke: #0d1117; stroke-width: 2.5px; stroke-linejoin: round;
+}
+.node .conf-text { font-size: 8px; fill: #8b949e; font-weight: 400; }
+.node.dead circle { stroke-dasharray: 4,3; opacity: 0.2; }
+.node.dead text { opacity: 0.2; }
+.node.clickable { cursor: pointer; }
+
+/* Tooltip */
+#tooltip {
+  position: fixed; display: none; background: #1c2128; border: 1px solid #58a6ff;
+  border-radius: 6px; padding: 10px 14px; font-size: 11px; max-width: 320px;
+  z-index: 100; pointer-events: none; line-height: 1.6; box-shadow: 0 4px 16px #00000088;
+}
+#tooltip .tt-name { font-weight: 700; color: #58a6ff; }
+
+#hint { position: fixed; bottom: 6px; right: 12px; color: #484f58; font-size: 10px; }
+</style>
+</head>
+<body>
+
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+<div id="sidebar">
+  <div id="sidebar-header">
+    <h2>Games</h2>
+    <button id="sidebar-close" onclick="closeSidebar()">&times;</button>
+  </div>
+  <div id="sidebar-list"></div>
+</div>
+<div id="header">
+  <h1>Mafia Viewer</h1>
+  <button id="games-btn" onclick="toggleSidebar()">Games</button>
+  <button id="metrics-btn" class="hdr-btn" onclick="toggleMetrics()">Metrics</button>
+  <button id="calib-btn" class="hdr-btn" onclick="openCalibration()">Calibration</button>
+  <a href="dashboard.html" class="hdr-btn" style="text-decoration:none">Dashboard</a>
+  <span id="parse-badge"></span>
+  <div id="impersonate-badge" onclick="exitImpersonate()"></div>
+  <div id="step-info"></div>
+</div>
+<div id="outcome-strip"></div>
+<div id="timeline">
+  <div id="timeline-label">-</div>
+  <div id="timeline-bar"></div>
+  <button id="branch-btn" class="hdr-btn" onclick="openForkDialog()" title="Counterfactual replay: fork the game from the selected step">⑂ Branch</button>
+</div>
+<div id="main-grid"></div>
+<div id="metrics-panel">
+  <div id="metrics-legend"></div>
+  <div class="metric-box">
+    <div class="panel-title"><span title="Per agent: share of alive others whose role the agent names correctly. x: timeline step, y: accuracy 0-1.">1st-order accuracy — beliefs vs ground truth</span></div>
+    <svg id="m-acc" viewBox="0 0 320 150" preserveAspectRatio="none"></svg>
+  </div>
+  <div class="metric-box">
+    <div class="panel-title"><span title="Solid: share of alive mafiosi a majority of informed non-mafia observers names as Mafia. Dashed: per-mafioso deception success (share of observers NOT naming them Mafia). x: timeline step, y: 0-1.">Crowd mafia recall &amp; deception success (dashed)</span></div>
+    <svg id="m-recall" viewBox="0 0 320 150" preserveAspectRatio="none"></svg>
+  </div>
+  <div class="metric-box">
+    <div class="panel-title"><span title="Per agent: own social_map.toward_me prediction vs counterpart's elicited role guess of the agent (guess maps to suspects/trusts only at confidence >= 50, else neutral). Mafia-Mafia pairs are excluded: a partner's verdict reflects role knowledge, not inference. x: timeline step, y: consistency 0-1.">2nd-order consistency — social_map vs actual beliefs (Mafia–Mafia excl., conf≥50)</span></div>
+    <svg id="m-second" viewBox="0 0 320 150" preserveAspectRatio="none"></svg>
+  </div>
+</div>
+<div id="calib-overlay" onclick="if(event.target===this)closeCalibration()">
+  <div id="calib-modal">
+    <h2>Calibration — stated confidence vs actual accuracy</h2>
+    <div class="calib-sub">Fresh role_assessment probes only, self and "Unknown" guesses excluded. Diagonal = perfect calibration.<br>
+    Hatched bars = overconfident (accuracy below bin midpoint). Whiskers = 95% CI (Wilson). Bins with n&lt;10 are dimmed — too few observations.</div>
+    <select id="calib-agent" onchange="renderCalibration()"></select>
+    <svg id="calib-chart" width="600" height="300" viewBox="0 0 600 300"></svg>
+  </div>
+</div>
+<div id="fork-overlay" onclick="if(event.target===this)closeForkDialog()">
+  <div id="fork-modal">
+    <h2>⑂ Branch from here</h2>
+    <div class="fork-note">Fork point: <b id="fork-point-label"></b> — replays the recorded game from this exact step. Outcomes form a distribution (LLM sampling is stochastic by design).</div>
+    <div class="fork-row">Replays: <input id="fork-n" type="number" min="1" max="50" value="5"></div>
+    <div class="fork-row">Backend override: <input id="fork-backend" type="text" placeholder="(same)" style="width:120px"></div>
+    <div class="fork-note">Probes stay on in branches; cost ≈ parent game × replays.</div>
+    <div id="fork-error"></div>
+    <div class="fork-row" style="justify-content:flex-end">
+      <button class="hdr-btn" onclick="closeForkDialog()">Cancel</button>
+      <button class="hdr-btn" style="border-color:#f0883e;color:#f0883e" onclick="submitFork()">⑂ Fork</button>
+    </div>
+  </div>
+</div>
+<div id="fork-toast"></div>
+<div id="tooltip"></div>
+<div id="hint">← → navigate | click name to impersonate | M metrics | Esc to exit</div>
+
+<script>
+// Okabe-Ito colorblind-safe palette (distinguishable under deuteranopia/protanopia)
+const ROLE_COLORS = {
+  Mafia: '#D55E00', Doctor: '#009E73', Sheriff: '#CC79A7',
+  Villager: '#56B4E9', Unknown: '#6e7681',
+};
+
+let ALL_GAMES = {}, DATA = null, currentStep = 0, fixedPositions = {};
+let conversationLog = [];
+let impersonating = null; // player name or null
+
+// ── Load ───────────────────────────────────
+async function loadData() {
+  let loaded = false;
+  try { const r = await fetch('all_games.json?t='+Date.now()); if(r.ok){(await r.json()).forEach(d=>ALL_GAMES[d.game_id]=d);loaded=true;}} catch{}
+  if(!loaded) try { const r = await fetch('viewer_data.json?t='+Date.now()); if(r.ok){const d=await r.json();ALL_GAMES[d.game_id]=d;loaded=true;}} catch{}
+  if(!loaded){document.getElementById('main-grid').innerHTML='<p style="padding:20px;color:#f85149;">No data. Run: python serve_viewer.py</p>';return;}
+  populateGameSelect();
+  const newest = Object.entries(ALL_GAMES).sort((a,b)=>(b[1].started_at||0)-(a[1].started_at||0));
+  switchGame(newest[0][0]);
+  // Deep links: #metrics opens the metrics panel, #calibration the calibration
+  // view, #imp=Name enters impersonate mode, #step=N seeks the timeline
+  if(location.hash.includes('metrics')) toggleMetrics();
+  if(location.hash.includes('calib')) openCalibration();
+  const stepM = location.hash.match(/step=(\d+)/);
+  if(stepM) setStep(+stepM[1]);
+  const impM = location.hash.match(/imp=([A-Za-z]+)/);
+  if(impM && DATA.players.some(p=>p.name===impM[1])) enterImpersonate(impM[1]);
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+function mkGameCard(d, isBranch) {
+  const card = document.createElement('div');
+  card.className = 'game-card' + (isBranch ? ' branch' : '');
+  card.dataset.gid = d.game_id;
+
+  const ts = d.started_at ? new Date(d.started_at * 1000) : null;
+  const dateStr = ts ? ts.toLocaleString('ru-RU', {
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit'
+  }) : '??';
+  const title = isBranch ? `run#${d.replica_idx ?? '?'} · ${d.game_id.slice(0,8)}` : dateStr;
+
+  const rounds = d.steps.length > 0 ? d.steps[d.steps.length - 1].round : '?';
+  const isPending = d.winner === 'Pending';
+  const winColor = d.winner === 'Mafia' ? '#D55E00' : d.winner === 'Villagers' ? '#56B4E9' : isPending ? '#f0883e' : '#8b949e';
+  const winText = isPending ? 'Pending' : `${d.winner} wins`;
+  const ps = d.parse_stats;
+  const parseStr = (ps && ps.total) ? ` · parse ${Math.round(100*ps.ok/ps.total)}%` : '';
+
+  card.innerHTML = `
+    <div class="game-card-date">${title}</div>
+    <div class="game-card-meta">${d.players.length} players · ${d.total_steps} steps · ${rounds} rounds${parseStr}</div>
+    <div class="game-card-winner" style="color:${winColor}">${winText}</div>
+  `;
+  card.addEventListener('click', () => {
+    switchGame(d.game_id);
+    closeSidebar();
+  });
+  return card;
+}
+
+function populateGameSelect() {
+  const list = document.getElementById('sidebar-list');
+  list.innerHTML = '';
+  const all = Object.values(ALL_GAMES);
+  // Branch tree: roots first, each followed by its fork batches
+  const roots = all.filter(d => !d.forked_from || !ALL_GAMES[d.forked_from])
+    .sort((a,b)=>(b.started_at||0)-(a.started_at||0));
+  const byParent = {};
+  all.forEach(d => {
+    if (d.forked_from && ALL_GAMES[d.forked_from])
+      (byParent[d.forked_from] = byParent[d.forked_from] || []).push(d);
+  });
+  roots.forEach(root => {
+    list.appendChild(mkGameCard(root, false));
+    const batches = {};
+    (byParent[root.game_id] || []).forEach(k => {
+      const key = k.fork_batch_id || k.game_id;
+      (batches[key] = batches[key] || []).push(k);
+    });
+    Object.values(batches).forEach(runs => {
+      runs.sort((a,b)=>(a.replica_idx||0)-(b.replica_idx||0));
+      const fp = runs[0].fork_point || ['?','?'];
+      const wins = {};
+      runs.forEach(r => { wins[r.winner] = (wins[r.winner]||0)+1; });
+      const hdr = document.createElement('div');
+      hdr.className = 'batch-header';
+      hdr.textContent = `⑂ @R${fp[0]}.${fp[1]} — ${runs.length} runs — ` +
+        Object.entries(wins).map(([w,c])=>`${w} ${c}`).join(' / ');
+      list.appendChild(hdr);
+      runs.forEach(r => list.appendChild(mkGameCard(r, true)));
+    });
+  });
+  updateGameCards();
+}
+
+function updateGameCards() {
+  document.querySelectorAll('.game-card').forEach(c => {
+    c.classList.toggle('active', DATA && c.dataset.gid === DATA.game_id);
+  });
+  // Update button text
+  if (DATA) {
+    const ts = DATA.started_at ? new Date(DATA.started_at * 1000) : null;
+    const ds = ts ? ts.toLocaleString('ru-RU', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '??';
+    document.getElementById('games-btn').textContent = `${ds} — ${DATA.winner}`;
+  }
+}
+
+function switchGame(gid) {
+  DATA = ALL_GAMES[gid];
+  fixedPositions = computePositions(300, 200);
+  conversationLog = []; currentStep = 0; impersonating = null;
+  METRICS = null;
+  updateGameCards(); updateParseBadge();
+  buildTimeline(); buildLayout(); renderStep(0);
+}
+
+function computePositions(w, h) {
+  const names = DATA.players.map(p=>p.name), n = names.length;
+  const cx=w/2, cy=h/2, rx=w*0.32, ry=h*0.35, pos={};
+  names.forEach((name,i)=>{const a=2*Math.PI*i/n-Math.PI/2;pos[name]={x:cx+rx*Math.cos(a),y:cy+ry*Math.sin(a)};});
+  return pos;
+}
+
+// ── Keyboard ───────────────────────────────
+document.addEventListener('keydown', e=>{
+  if(e.target.tagName==='SELECT')return;
+  if(e.target.tagName==='INPUT')return;
+  if(e.key==='Escape'&&document.getElementById('fork-overlay').classList.contains('open')){closeForkDialog();return;}
+  if(e.key==='Escape'&&document.getElementById('calib-overlay').classList.contains('open')){closeCalibration();return;}
+  if(e.key==='Escape'&&impersonating){exitImpersonate();return;}
+  if(e.key==='ArrowRight'||e.key==='l')setStep(currentStep+1);
+  else if(e.key==='ArrowLeft'||e.key==='h')setStep(currentStep-1);
+  else if(e.key==='Home')setStep(0);
+  else if(e.key==='End')setStep(DATA.total_steps-1);
+  else if(e.key==='m')toggleMetrics();
+});
+function setStep(idx){if(!DATA)return;idx=Math.max(0,Math.min(DATA.total_steps-1,idx));currentStep=idx;renderStep(idx);}
+
+// ── Timeline ───────────────────────────────
+function buildTimeline(){
+  const bar=document.getElementById('timeline-bar');bar.innerHTML='';
+  // steps that already have branches forked from them
+  const forkSteps=new Map();
+  Object.values(ALL_GAMES).forEach(d=>{
+    if(d.forked_from===DATA.game_id&&Array.isArray(d.fork_point)){
+      const idx=DATA.steps.findIndex(s=>s.round===d.fork_point[0]&&s.msg_seq===d.fork_point[1]);
+      if(idx>=0)forkSteps.set(idx,(forkSteps.get(idx)||0)+1);
+    }
+  });
+  DATA.steps.forEach((s,i)=>{
+    const t=document.createElement('div');t.className=`step-tick ${s.phase}`;
+    t.title=`${s.label} ${s.phase}`;
+    if(forkSteps.has(i)){t.classList.add('has-branch');t.title+=` — ⑂ ${forkSteps.get(i)} branch(es)`;}
+    t.addEventListener('click',()=>setStep(i));bar.appendChild(t);
+  });
+  updateOutcomeStrip();
+}
+
+// ── Counterfactual replay UI ────────────────
+function updateOutcomeStrip(){
+  const el=document.getElementById('outcome-strip');
+  if(!DATA||!DATA.fork_batch_id){el.style.display='none';document.body.classList.remove('strip-open');return;}
+  document.body.classList.add('strip-open');
+  const runs=Object.values(ALL_GAMES).filter(d=>d.fork_batch_id===DATA.fork_batch_id);
+  const wins={};runs.forEach(r=>{wins[r.winner]=(wins[r.winner]||0)+1;});
+  const fp=DATA.fork_point||['?','?'];
+  const colors={Mafia:'#D55E00',Villagers:'#56B4E9',Pending:'#f0883e'};
+  const total=runs.length||1;
+  const bars=Object.entries(wins).map(([w,c])=>
+    `<span style="width:${100*c/total}%;background:${colors[w]||'#6e7681'}" title="${w}: ${c}/${total}"></span>`).join('');
+  const parentLink=DATA.forked_from&&ALL_GAMES[DATA.forked_from]
+    ? `<a href="#" onclick="switchGame('${DATA.forked_from}');return false" style="color:#58a6ff">${DATA.forked_from.slice(0,8)}</a>`
+    : (DATA.forked_from||'?').slice(0,8);
+  el.innerHTML=`<span>⑂ branch of ${parentLink} @R${fp[0]}.${fp[1]} · run#${DATA.replica_idx??'?'}</span>`+
+    `<span class="strip-bar">${bars}</span>`+
+    `<span>${Object.entries(wins).map(([w,c])=>`${w} ${c}/${total}`).join(' · ')}</span>`+
+    (DATA.intervention?`<span style="color:#f0883e">intervention: ${esc(JSON.stringify(DATA.intervention))}</span>`:'');
+  el.style.display='flex';
+}
+
+function openForkDialog(){
+  if(!DATA||!DATA.steps.length)return;
+  const s=DATA.steps[currentStep];
+  document.getElementById('fork-point-label').textContent=`${s.label} (round ${s.round}, seq ${s.msg_seq}, ${s.phase.replace(/_/g,' ')})`;
+  document.getElementById('fork-error').textContent='';
+  document.getElementById('fork-overlay').classList.add('open');
+}
+function closeForkDialog(){document.getElementById('fork-overlay').classList.remove('open');}
+
+async function submitFork(){
+  const s=DATA.steps[currentStep];
+  const n=Math.max(1,Math.min(50,+document.getElementById('fork-n').value||5));
+  const backend=document.getElementById('fork-backend').value.trim();
+  try{
+    const r=await fetch('/api/fork',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({game_id:DATA.game_id,round:s.round,seq:s.msg_seq,
+                           n_replays:n,backend_override:backend||null})});
+    const j=await r.json();
+    if(j.error)throw new Error(j.error);
+    closeForkDialog();
+    pollForkBatch(j.fork_batch_id,j.total);
+  }catch(e){
+    document.getElementById('fork-error').textContent =
+      /fetch|network/i.test(e.message)?'Fork API unavailable — run: python serve_viewer.py':e.message;
+  }
+}
+
+function pollForkBatch(batchId,total){
+  const toast=document.getElementById('fork-toast');
+  toast.style.display='block';
+  toast.textContent=`⑂ Fork 0/${total}…`;
+  const iv=setInterval(async()=>{
+    try{
+      const j=await(await fetch(`/api/fork/${batchId}/status`)).json();
+      toast.textContent=`⑂ Fork ${(j.done||0)+(j.failed||0)}/${j.total}`+
+        (j.failed?` (${j.failed} failed)`:'')+(j.running?'…':' — done');
+      if(!j.running){
+        clearInterval(iv);
+        await reloadGames();
+        setTimeout(()=>{toast.style.display='none';},8000);
+      }
+    }catch(e){clearInterval(iv);toast.textContent='⑂ status poll failed';}
+  },3000);
+}
+
+async function reloadGames(){
+  try{
+    const r=await fetch('all_games.json?t='+Date.now());
+    if(r.ok){
+      (await r.json()).forEach(d=>ALL_GAMES[d.game_id]=d);
+      populateGameSelect();buildTimeline();renderStep(currentStep);
+    }
+  }catch(e){}
+}
+function updateTimeline(idx){
+  document.querySelectorAll('.step-tick').forEach((el,i)=>el.classList.toggle('active',i===idx));
+  const s=DATA.steps[idx];document.getElementById('timeline-label').textContent=s.label;
+  const imp=impersonating?` [${impersonating}]`:'';
+  document.getElementById('step-info').textContent=`${idx+1}/${DATA.total_steps} | ${s.phase.replace(/_/g,' ')} | ${s.speaker||'—'} | ${DATA.winner} wins${imp}`;
+}
+
+// ── Layout ─────────────────────────────────
+function buildLayout(){
+  const grid=document.getElementById('main-grid');grid.innerHTML='';
+  updateImpersonateBadge();
+  if(impersonating) return buildImpersonateLayout(grid);
+  buildNormalLayout(grid);
+}
+
+function buildNormalLayout(grid){
+  const N=DATA.players.length, leftCount=Math.ceil(N/2);
+  grid.style.gridTemplateColumns='1fr 2.5fr 1fr'; grid.style.gridTemplateRows='1fr';
+  const leftCol=mkCol(), rightCol=mkCol();
+  const gt=mkGTPanel();
+  DATA.players.forEach((p,i)=>{const panel=mkAgentPanel(p);(i<leftCount?leftCol:rightCol).appendChild(panel);});
+  grid.appendChild(leftCol); grid.appendChild(gt); grid.appendChild(rightCol);
+}
+
+function mkCol(){const d=document.createElement('div');d.style.cssText='display:flex;flex-direction:column;gap:4px;min-height:0';return d;}
+
+function mkGTPanel(){
+  const gt=document.createElement('div');gt.className='panel';gt.id='gt-panel';
+  const t=document.createElement('div');t.className='panel-title';
+  t.innerHTML='<span>Ground Truth</span><span class="role-badge" style="background:#f0883e;color:#fff">TRUTH</span>';
+  const c=document.createElement('div');c.id='gt-content';
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.id='gt-graph';svg.setAttribute('width','100%');svg.setAttribute('height','100%');svg.setAttribute('viewBox','0 0 300 200');
+  const log=document.createElement('div');log.id='gt-log';
+  c.appendChild(svg);c.appendChild(log);gt.appendChild(t);gt.appendChild(c);return gt;
+}
+
+function mkAgentPanel(p){
+  const panel=document.createElement('div');panel.className='panel';panel.id=`panel-${p.name}`;
+  panel.style.cssText='flex:1;min-height:0';
+  const t=document.createElement('div');t.className='panel-title';
+  t.innerHTML=`<span>${p.name}</span><span class="role-badge role-${p.role}">${p.role}</span>`;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.classList.add('agent-svg');svg.setAttribute('width','100%');svg.setAttribute('height','100%');svg.setAttribute('viewBox','0 0 300 200');
+  panel.appendChild(t);panel.appendChild(svg);return panel;
+}
+
+// ── Impersonate ────────────────────────────
+function enterImpersonate(name){impersonating=name;buildLayout();renderStep(currentStep);}
+function exitImpersonate(){impersonating=null;buildLayout();renderStep(currentStep);}
+function updateImpersonateBadge(){
+  const b=document.getElementById('impersonate-badge');
+  if(impersonating){b.style.display='inline-block';b.textContent=`${impersonating} — ESC to exit`;}
+  else b.style.display='none';
+}
+
+function buildImpersonateLayout(grid){
+  // 3 columns: [GT] [My World] [Ego-graph]
+  grid.style.gridTemplateColumns='1fr 2fr 1fr'; grid.style.gridTemplateRows='1fr';
+
+  // Left: GT graph + log
+  const gtPanel=document.createElement('div');gtPanel.className='imp-panel';
+  const gtTitle=document.createElement('div');gtTitle.className='panel-title';
+  gtTitle.innerHTML='<span>Ground Truth</span><span class="role-badge" style="background:#f0883e;color:#fff">TRUTH</span>';
+  const gtSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  gtSvg.id='imp-gt-graph';gtSvg.setAttribute('width','100%');gtSvg.setAttribute('height','200');gtSvg.setAttribute('viewBox','0 0 300 200');
+  const gtLog=document.createElement('div');gtLog.id='imp-gt-log';gtLog.className='imp-log';
+  gtPanel.appendChild(gtTitle);gtPanel.appendChild(gtSvg);gtPanel.appendChild(gtLog);
+
+  // Center: My world (beliefs + reasoning log)
+  const pInfo = DATA.players.find(p=>p.name===impersonating);
+  const myPanel=document.createElement('div');myPanel.className='imp-panel';myPanel.style.borderColor='#58a6ff';
+  const myTitle=document.createElement('div');myTitle.className='panel-title';
+  myTitle.innerHTML=`<span>${impersonating}'s World</span><span class="role-badge role-${pInfo.role}">${pInfo.role}</span>`;
+  const mySvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  mySvg.id='imp-my-graph';mySvg.setAttribute('width','100%');mySvg.setAttribute('height','220');mySvg.setAttribute('viewBox','0 0 300 200');
+  const myLog=document.createElement('div');myLog.id='imp-my-log';myLog.className='imp-log';
+  myPanel.appendChild(myTitle);myPanel.appendChild(mySvg);myPanel.appendChild(myLog);
+
+  // Right: split into two halves
+  const rightCol=document.createElement('div');
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:4px;min-height:0';
+
+  // Top: "How I think others see me" (from my social_map.toward_me)
+  const believedPanel=document.createElement('div');believedPanel.className='imp-panel';believedPanel.style.flex='1';believedPanel.style.minHeight='0';
+  believedPanel.style.borderColor='#f0883e';
+  const believedTitle=document.createElement('div');believedTitle.className='panel-title';
+  believedTitle.innerHTML=`<span>How I think they see me</span><span id="imp-believed-score" class="ego-score"></span><span class="role-badge" style="background:#f0883e;color:#fff">BELIEVED</span>`;
+  const believedSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  believedSvg.id='imp-believed-graph';believedSvg.setAttribute('width','100%');believedSvg.setAttribute('height','100%');believedSvg.setAttribute('viewBox','0 0 300 200');
+  const believedLog=document.createElement('div');believedLog.id='imp-believed-log';believedLog.className='imp-log';believedLog.style.maxHeight='80px';
+  believedPanel.appendChild(believedTitle);believedPanel.appendChild(believedSvg);believedPanel.appendChild(believedLog);
+
+  // Bottom: "How they actually see me" (from their role_assessment)
+  const actualPanel=document.createElement('div');actualPanel.className='imp-panel';actualPanel.style.flex='1';actualPanel.style.minHeight='0';
+  actualPanel.style.borderColor='#bc8cff';
+  const actualTitle=document.createElement('div');actualTitle.className='panel-title';
+  actualTitle.innerHTML=`<span>How they actually see me</span><span id="imp-actual-score" class="ego-score"></span><span class="role-badge" style="background:#bc8cff;color:#fff">ACTUAL</span>`;
+  const actualSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  actualSvg.id='imp-ego-graph';actualSvg.setAttribute('width','100%');actualSvg.setAttribute('height','100%');actualSvg.setAttribute('viewBox','0 0 300 200');
+  const actualLog=document.createElement('div');actualLog.id='imp-ego-log';actualLog.className='imp-log';actualLog.style.maxHeight='80px';
+  actualPanel.appendChild(actualTitle);actualPanel.appendChild(actualSvg);actualPanel.appendChild(actualLog);
+
+  rightCol.appendChild(believedPanel);
+  rightCol.appendChild(actualPanel);
+
+  grid.appendChild(gtPanel);grid.appendChild(myPanel);grid.appendChild(rightCol);
+}
+
+// ── Render ──────────────────────────────────
+function renderStep(idx){
+  try {
+    if(!DATA||!DATA.steps.length) return;
+    const step=DATA.steps[idx];updateTimeline(idx);buildConversationLog(idx);
+    if(impersonating) renderImpersonateStep(step,idx);
+    else { renderGTGraph(step);renderGTLog(idx);DATA.players.forEach(p=>renderAgentGraph(p,step)); }
+    updateMetricsCursor(idx);
+  } catch(e) { console.error('renderStep error:', e, e.stack); }
+}
+
+// ── Conversation log ───────────────────────
+function buildConversationLog(upToIdx){
+  conversationLog=[];let lastEvKey='';
+  for(let i=0;i<=upToIdx;i++){
+    const s=DATA.steps[i], events=s.events||[], evKey=events.map(e=>e.text).join('|');
+    if(evKey&&evKey!==lastEvKey){
+      const prev=new Set(lastEvKey.split('|'));
+      events.forEach(ev=>{if(!prev.has(ev.text))conversationLog.push({idx:i,label:s.label,phase:s.phase,type:'event',eventType:ev.type,text:ev.text});});
+      lastEvKey=evKey;
+    }
+    if(s.phase==='night_analysis'&&s.message) {
+      conversationLog.push({idx:i,label:s.label,phase:s.phase,type:'announcement',text:s.message});
+    } else if(s.speaker&&s.message) {
+      // Build thinking entry for the speaker
+      const b = s.player_beliefs[s.speaker];
+      const thinkParts = [];
+      if(b && b.has_data){
+        const action = b.planned_action;
+        if(action && typeof action==='object')
+          thinkParts.push(`Plan: ${action.action||'?'} → ${action.target||'?'} | ${action.reasoning||''}`);
+        const assess = b.role_assessment;
+        if(Array.isArray(assess))
+          thinkParts.push(assess.map(a=>`${a.player}: ${a.guessed_role} ${a.confidence}%`).join(', '));
+      }
+      const thinkEntry = thinkParts.length ? {idx:i,label:s.label,phase:s.phase,type:'thinking',
+        speaker:s.speaker, text:thinkParts.join('\n'),
+        color:DATA.truth[s.speaker]?ROLE_COLORS[DATA.truth[s.speaker].role]:'#484f58'} : null;
+
+      // Speaker: thinking BEFORE message (think → speak)
+      if(thinkEntry) conversationLog.push(thinkEntry);
+      conversationLog.push({idx:i,label:s.label,phase:s.phase,type:'message',speaker:s.speaker,text:s.message});
+
+      // Other players' reactions AFTER message (hear → think)
+      for(const pname of Object.keys(s.player_beliefs)){
+        if(pname===s.speaker) continue;
+        const ob=s.player_beliefs[pname];
+        if(!ob||!ob.has_data||ob.carried_forward) continue;
+        const rParts=[];
+        const oAction=ob.planned_action;
+        if(oAction&&typeof oAction==='object')
+          rParts.push(`Plan: ${oAction.action||'?'} → ${oAction.target||'?'} | ${oAction.reasoning||''}`);
+        if(rParts.length){
+          conversationLog.push({idx:i,label:s.label,phase:s.phase,type:'thinking',
+            speaker:pname,text:rParts.join('\n'),
+            color:DATA.truth[pname]?ROLE_COLORS[DATA.truth[pname].role]:'#484f58'});
+        }
+      }
+    }
+  }
+}
+
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function renderLogEntries(container, entries, currentIdx, opts={}){
+  if (!container) return;
+  const hideReasoning = opts.hideOthersReasoning || null;
+  container.innerHTML='';
+  entries.forEach(entry=>{
+    const div=document.createElement('div');
+    const isCurrent = entry.idx===currentIdx;
+    div.className=`log-entry ${isCurrent?'current':''}`;
+    let html='';
+    if(entry.type==='event'){
+      const icons={kill:'💀',save:'🛡️',eliminate:'⚖️',vote_tally:'🗳️'};
+      html=`<div class="log-event">${icons[entry.eventType]||'📢'} ${esc(entry.text)}</div>`;
+    } else if(entry.type==='announcement'){
+      html=`<div class="log-event">🌙 ${esc(entry.text)}</div>`;
+    } else if(entry.type==='message'){
+      const pData=DATA.truth[entry.speaker], color=pData?ROLE_COLORS[pData.role]:'#888';
+      const phase=entry.phase||'';
+      const phaseTag=phase==='night'?'🌙':phase==='day_vote'?'🗳️':'';
+      const isNight = phase === 'night';
+
+      // Only show reasoning/inner monologue for the CURRENT step
+      // Previous steps: reasoning fades away (only public part remains)
+      const isCurrentStep = isCurrent;
+
+      // Split text into reasoning (private) and public parts.
+      // Reasoning: lines starting with numbers (1. 2. 3.), or wrapped in (Мысли:...) / (Thoughts:...)
+      // Also: everything before an empty line if text starts with reasoning markers.
+      const text = entry.text || '';
+      let reasonPart = '', publicPart = '';
+
+      // Check if text starts with (Мысли: or (Thoughts:
+      const parenMatch = text.match(/^\s*\((?:Мысли|Thoughts?|Размышления)\s*:[\s\S]*?\)\s*\n/i);
+      if (parenMatch) {
+        reasonPart = parenMatch[0].trim();
+        publicPart = text.slice(parenMatch[0].length).trim();
+      } else {
+        // Split by empty line: reasoning block first, then public
+        const blocks = text.split(/\n\s*\n/);
+        if (blocks.length >= 2) {
+          const firstBlock = blocks[0].trim();
+          const hasReasoningMarkers = /^\d+[\.\)]|^(Think|Рассуждай|Plan:)/im.test(firstBlock);
+          if (hasReasoningMarkers) {
+            reasonPart = firstBlock;
+            publicPart = blocks.slice(1).join('\n\n').trim();
+          } else {
+            publicPart = text;
+          }
+        } else {
+          publicPart = text;
+        }
+      }
+      if (!publicPart && reasonPart) { publicPart = reasonPart; reasonPart = ''; }
+      const showReasoning = !hideReasoning || entry.speaker === hideReasoning;
+
+      html = `<span class="log-phase">${entry.label}</span> ${phaseTag}`;
+      html += `<span class="log-speaker" style="color:${color}" onclick="enterImpersonate('${entry.speaker}')">${entry.speaker}:</span> `;
+
+      // Extract ACTION/ДЕЙСТВИЕ line from text
+      const actionLine = text.match(/(?:ACTION|ДЕЙСТВИЕ|VOTE|ГОЛОС):\s*.+/i);
+
+      if (isNight) {
+        if (isCurrentStep) {
+          html += `<div class="log-reasoning log-faded">${esc(text)}</div>`;
+        } else if (actionLine) {
+          html += `<div class="log-reasoning log-faded">${esc(actionLine[0])}</div>`;
+        }
+      } else {
+        if (reasonPart && showReasoning && isCurrentStep) {
+          html += `<div class="log-reasoning log-faded">${esc(reasonPart)}</div>`;
+        }
+        html += `<span class="log-public">${esc(publicPart)}</span>`;
+      }
+    } else if(entry.type==='thinking'){
+      // Introspection reasoning — only show on current step, faded
+      if (isCurrent) {
+        html=`<div class="log-reasoning log-faded" style="border-left-color:${entry.color||'#30363d'}">${esc(entry.text)}</div>`;
+      }
+    }
+    div.innerHTML=html; div.title=entry.text||'';
+    container.appendChild(div);
+  });
+  const cur=container.querySelector('.current');if(cur)cur.scrollIntoView({block:'nearest'});
+}
+
+function renderGTLog(idx){ renderLogEntries(document.getElementById('gt-log'), conversationLog, idx); }
+
+// Filter conversation log to only what a specific player can see
+function filterLogForPlayer(log, playerName, playerRole) {
+  const result = [];
+  for (const entry of log) {
+    if (entry.type === 'event' || entry.type === 'announcement') {
+      result.push(entry);
+      continue;
+    }
+    if (entry.type === 'message') {
+      const phase = entry.phase || '';
+      if (phase === 'night') {
+        if (entry.speaker === playerName) {
+          // Own night message — show fully
+          result.push(entry);
+        } else if (playerRole === 'Mafia' && DATA.truth[entry.speaker]?.role === 'Mafia') {
+          // Ally mafia night message — show only the action, strip reasoning
+          const actionMatch = entry.text.match(/ACTION:\s*.+|ДЕЙСТВИЕ:\s*.+/i);
+          const actionOnly = actionMatch ? actionMatch[0] : '(chose target)';
+          result.push({...entry, text: `${entry.speaker}: ${actionOnly}`});
+        }
+        // Other night messages — invisible
+        continue;
+      }
+      // Day / intro / vote — everyone sees
+      result.push(entry);
+      continue;
+    }
+    result.push(entry);
+  }
+  return result;
+}
+
+// ── GT Graph ───────────────────────────────
+function renderGTGraph(step, svgId='#gt-graph'){
+  const svg=d3.select(svgId);svg.selectAll('*').remove();
+  const alive=new Set(step.alive), g=svg.append('g');
+  const mafiaNames=DATA.players.filter(p=>p.role==='Mafia').map(p=>p.name);
+  for(let i=0;i<mafiaNames.length;i++)for(let j=i+1;j<mafiaNames.length;j++){
+    const s=fixedPositions[mafiaNames[i]],t=fixedPositions[mafiaNames[j]];
+    g.append('line').attr('x1',s.x).attr('y1',s.y).attr('x2',t.x).attr('y2',t.y).attr('stroke','#D55E0066').attr('stroke-width',3);
+  }
+  const stepDeception = getMetrics().deception[step.idx] || {};
+  DATA.players.forEach(p=>{
+    const pos=fixedPositions[p.name],isAlive=alive.has(p.name),isSpeaker=step.speaker===p.name;
+    const trueB5=getTrueB5(p.name);
+    // Deception success: how well this mafioso hides from the informed crowd
+    const dec = (p.role==='Mafia'&&isAlive&&stepDeception[p.name]!==undefined) ? stepDeception[p.name] : null;
+    const ng=g.append('g').attr('class',`node ${isAlive?'':'dead'} clickable`).attr('transform',`translate(${pos.x},${pos.y})`)
+      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:p.role,model:p.model,b5_true:trueB5,deception:dec}))
+      .on('mouseout',hideTooltip).on('click',()=>enterImpersonate(p.name));
+    const r=isSpeaker?18:14;
+    ng.append('circle').attr('r',r).attr('fill',ROLE_COLORS[p.role]).attr('fill-opacity',0.85)
+      .attr('stroke',isSpeaker?'#f0883e':ROLE_COLORS[p.role]).attr('stroke-width',isSpeaker?3:2);
+    if(dec!==null){
+      // Okabe-Ito diverging: vermillion (exposed) -> sky blue (hidden);
+      // dashed ring additionally marks "mostly exposed" (< 50%) for CVD readers
+      const decColor=d3.interpolateRgb('#D55E00','#56B4E9')(dec);
+      ng.append('circle').attr('r',r+3.5).attr('fill','none')
+        .attr('stroke',decColor).attr('stroke-width',2.5).attr('stroke-opacity',0.95)
+        .attr('stroke-dasharray',dec<0.5?'3 2':null);
+      ng.append('text').attr('class','conf-text').attr('x',r+7).attr('y',3)
+        .attr('text-anchor','start').style('fill',decColor).attr('font-weight',700)
+        .text(`hid ${Math.round(dec*100)}%`);
+    }
+    ng.append('text').attr('dy',-20).text(p.name);
+    if(isAlive) renderB5Bars(g,trueB5,pos.x,pos.y,r);
+  });
+}
+
+// ── Agent graph ────────────────────────────
+function renderAgentGraph(player, step){
+  const panel=document.getElementById(`panel-${player.name}`);if(!panel)return;
+  const svg=d3.select(panel.querySelector('svg'));svg.selectAll('*').remove();
+  const alive=new Set(step.alive),isAlive=alive.has(player.name),beliefs=step.player_beliefs[player.name];
+  panel.classList.toggle('stale',!!(beliefs&&beliefs.carried_forward));
+  panel.classList.toggle('speaking',step.speaker===player.name);
+  if(!isAlive){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').attr('font-size',14).attr('font-weight',700).text('ELIMINATED');return;}
+  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').attr('font-size',12).text('No data yet');return;}
+  const roleBeliefs=beliefs.role_beliefs||{},assessment=beliefs.role_assessment||[],suspicion=beliefs.suspicion_ranking||[];
+  const suspMap={},assessMap={};
+  if(Array.isArray(suspicion))suspicion.forEach(s=>{suspMap[s.player]=s.score||0;});
+  if(Array.isArray(assessment))assessment.forEach(a=>{assessMap[a.player]=a;});
+  const g=svg.append('g');
+  DATA.players.forEach(p=>{if(p.name===player.name)return;const susp=suspMap[p.name]||0;if(susp>2){const s=fixedPositions[player.name],t=fixedPositions[p.name];g.append('line').attr('x1',s.x).attr('y1',s.y).attr('x2',t.x).attr('y2',t.y).attr('stroke',`rgba(213,94,0,${Math.min(0.6,susp/15)})`).attr('stroke-width',Math.max(0.5,susp/5));}});
+  DATA.players.forEach(p=>{
+    const pos=fixedPositions[p.name],isNodeAlive=alive.has(p.name),isSelf=p.name===player.name;
+    let guessedRole='Unknown',confidence=0,reason='';
+    if(assessMap[p.name]){guessedRole=assessMap[p.name].guessed_role||'Unknown';confidence=assessMap[p.name].confidence||0;reason=assessMap[p.name].reason||'';}
+    else if(roleBeliefs[p.name]){guessedRole=roleBeliefs[p.name].role||'Unknown';confidence=roleBeliefs[p.name].confidence||0;}
+    const color=ROLE_COLORS[guessedRole]||ROLE_COLORS.Unknown;
+    const guessedB5=getB5ForNode(step, player.name, p.name);
+    const trueB5=getTrueB5(p.name);
+    const ng=g.append('g').attr('class',`node ${isNodeAlive?'':'dead'} clickable`).attr('transform',`translate(${pos.x},${pos.y})`)
+      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:guessedRole,confidence,reason,suspicion:suspMap[p.name],b5_guessed:guessedB5,b5_true:trueB5}))
+      .on('mouseout',hideTooltip).on('click',()=>enterImpersonate(p.name));
+    const r=isSelf?16:12;
+    ng.append('circle').attr('r',r).attr('fill',color).attr('fill-opacity',0.35+confidence/150)
+      .attr('stroke',isSelf?'#f0883e':color).attr('stroke-width',isSelf?3:2);
+    ng.append('text').attr('dy',-18).text(p.name);
+    if(isNodeAlive&&!isSelf) renderB5Bars(g,guessedB5,pos.x,pos.y,r);
+  });
+}
+
+// ── Impersonate render ─────────────────────
+function renderImpersonateStep(step, idx){
+  updateImpersonateBadge();
+  const name = impersonating;
+  const pInfo = DATA.players.find(p=>p.name===name);
+  const beliefs = step.player_beliefs[name];
+
+  // Left: GT — filtered to only what THIS player can see
+  // No other players' private reasoning, no night actions they shouldn't see
+  renderGTGraph(step, '#imp-gt-graph');
+  const visibleLog = filterLogForPlayer(conversationLog, name, DATA.truth[name]?.role);
+  renderLogEntries(document.getElementById('imp-gt-log'), visibleLog, idx, {hideOthersReasoning: name});
+
+  // Center: My world graph + reasoning log
+  renderMyWorldGraph(step, beliefs, name);
+  renderMyWorldLog(step, idx, name);
+
+  // BELIEVED vs ACTUAL agreement — 2nd-order score for this step
+  const agree = computeEgoAgreement(step, name);
+  const scoreTxt = agree.total ? `match ${Math.round(100*agree.matched/agree.total)}% (${agree.matched}/${agree.total})` : '';
+  const scoreColor = !agree.total ? '#6e7681' : (agree.matched/agree.total>=0.75 ? '#009E73' : agree.matched/agree.total>=0.5 ? '#E69F00' : '#D55E00');
+  for(const id of ['imp-believed-score','imp-actual-score']){
+    const el=document.getElementById(id);
+    if(el){ el.textContent=scoreTxt; el.style.color=scoreColor; }
+  }
+
+  // Right top: how I think they see me (from my social_map)
+  renderBelievedEgoGraph(step, beliefs, name, agree.mismatch);
+  renderBelievedEgoLog(step, beliefs, name);
+
+  // Right bottom: how they actually see me (from their assessments)
+  renderEgoGraph(step, name, agree.mismatch);
+  renderEgoLog(step, idx, name);
+}
+
+// Believed attitude of each alive other toward `name`
+// (social_map.toward_me, fallback inferred from own role_assessment)
+function believedAttitudeMap(beliefs, name, alive){
+  const out={};
+  if(!beliefs||!beliefs.has_data) return out;
+  const towardMe = beliefs.social_map && Array.isArray(beliefs.social_map.toward_me) ? beliefs.social_map.toward_me : [];
+  towardMe.forEach(t=>{ if(t&&t.player&&t.player!==name&&alive.has(t.player)&&t.attitude) out[t.player]=t.attitude; });
+  if(!Object.keys(out).length && Array.isArray(beliefs.role_assessment)){
+    beliefs.role_assessment.forEach(a=>{
+      if(!a||!a.player||a.player===name||!alive.has(a.player)) return;
+      out[a.player]=guessToAttitude(a.guessed_role, a.confidence);
+    });
+  }
+  return out;
+}
+
+// Compare believed attitudes with the attitude implied by others' actual assessments of me
+function computeEgoAgreement(step, name){
+  const alive=new Set(step.alive);
+  const believed = believedAttitudeMap(step.player_beliefs[name], name, alive);
+  let matched=0, total=0; const mismatch=new Set();
+  const meMafia = DATA.truth[name] && DATA.truth[name].role==='Mafia';
+  DATA.players.forEach(p=>{
+    const t=p.name;
+    if(t===name||!alive.has(t)||!(t in believed)) return;
+    // skip mafia allies: they know my role, "Mafia" from them is trust, not suspicion
+    if(meMafia && DATA.truth[t] && DATA.truth[t].role==='Mafia') return;
+    const actualGuess = assessMapOf(step.player_beliefs[t])[name];
+    if(!actualGuess) return;
+    total++;
+    if(believed[t]===guessToAttitude(actualGuess.role, actualGuess.confidence)) matched++;
+    else mismatch.add(t);
+  });
+  return {matched, total, mismatch};
+}
+
+function renderMyWorldGraph(step, beliefs, name){
+  const svg=d3.select('#imp-my-graph');svg.selectAll('*').remove();
+  const alive=new Set(step.alive);
+  if(!alive.has(name)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').attr('font-size',16).text('ELIMINATED');return;}
+  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').text('No data');return;}
+  const roleBeliefs=beliefs.role_beliefs||{},assessment=beliefs.role_assessment||[],suspicion=beliefs.suspicion_ranking||[];
+  const suspMap={},assessMap={};
+  if(Array.isArray(suspicion))suspicion.forEach(s=>{suspMap[s.player]=s.score||0;});
+  if(Array.isArray(assessment))assessment.forEach(a=>{assessMap[a.player]=a;});
+  const g=svg.append('g');
+  // suspicion links
+  DATA.players.forEach(p=>{if(p.name===name)return;const susp=suspMap[p.name]||0;if(susp>2){const s=fixedPositions[name],t=fixedPositions[p.name];g.append('line').attr('x1',s.x).attr('y1',s.y).attr('x2',t.x).attr('y2',t.y).attr('stroke',`rgba(213,94,0,${Math.min(0.6,susp/15)})`).attr('stroke-width',Math.max(0.5,susp/5));}});
+  // nodes
+  DATA.players.forEach(p=>{
+    const pos=fixedPositions[p.name],isSelf=p.name===name,isNodeAlive=alive.has(p.name);
+    let guessedRole='Unknown',confidence=0,reason='';
+    if(assessMap[p.name]){guessedRole=assessMap[p.name].guessed_role||'Unknown';confidence=assessMap[p.name].confidence||0;reason=assessMap[p.name].reason||'';}
+    else if(roleBeliefs[p.name]){guessedRole=roleBeliefs[p.name].role||'Unknown';confidence=roleBeliefs[p.name].confidence||0;}
+    const color=ROLE_COLORS[guessedRole]||ROLE_COLORS.Unknown;
+    const ng=g.append('g').attr('class',`node ${isNodeAlive?'':'dead'}`).attr('transform',`translate(${pos.x},${pos.y})`)
+      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:guessedRole,confidence,reason,suspicion:suspMap[p.name]})).on('mouseout',hideTooltip);
+    ng.append('circle').attr('r',isSelf?18:13).attr('fill',color).attr('fill-opacity',0.4+confidence/140)
+      .attr('stroke',isSelf?'#f0883e':color).attr('stroke-width',isSelf?3:2);
+    ng.append('text').attr('dy',-20).text(p.name);
+    ng.append('text').attr('class','conf-text').attr('dy',22).text(`${guessedRole} ${confidence}%`);
+  });
+}
+
+function renderMyWorldLog(step, idx, name){
+  const log=document.getElementById('imp-my-log');
+  // Show this player's reasoning history up to current step
+  const entries=[];
+  for(let i=0;i<=idx;i++){
+    const s=DATA.steps[i], b=s.player_beliefs[name];
+    if(!b||!b.has_data) continue;
+    const action=b.planned_action;
+    if(action&&typeof action==='object'){
+      entries.push({idx:i,label:s.label,phase:s.phase,type:'thinking',
+        text:`[${s.label}] Plan: ${action.action||'?'} -> ${action.target||'?'} | ${action.reasoning||''}`,
+        color:'#58a6ff'});
+    }
+    const assess=b.role_assessment;
+    if(Array.isArray(assess)&&i===idx){
+      const summary=assess.map(a=>`${a.player}: ${a.guessed_role} ${a.confidence}% (${a.reason||''})`).join('\n');
+      entries.push({idx:i,label:s.label,phase:s.phase,type:'thinking',text:summary,color:'#009E73'});
+    }
+  }
+  renderLogEntries(log, entries, idx);
+}
+
+// Place node labels on the side of the node facing AWAY from the graph centre,
+// so labels of neighbouring nodes on the layout ellipse never stack onto each
+// other or onto the central "me" node (fixes label collisions in ego panels).
+function egoLabels(ng, pos, r, name, sub, nameSize){
+  const topHalf = pos.y < 100; // layout centre is (150,100) in the 300x200 viewBox
+  const nudge = Math.max(-12, Math.min(12, (pos.x-150)*0.12));
+  const nameY = topHalf ? -(r + (sub?13:5)) : (r + 11);
+  const subY  = topHalf ? -(r + 4) : (r + 20);
+  const t = ng.append('text').attr('x',nudge).attr('y',nameY).text(name);
+  if(nameSize) t.attr('font-size',nameSize);
+  if(sub) ng.append('text').attr('class','conf-text').attr('x',nudge).attr('y',subY).text(sub);
+}
+
+// ── Believed ego: how I THINK others see me (from my social_map.toward_me) ──
+function renderBelievedEgoGraph(step, beliefs, name, mismatch){
+  const svg=d3.select('#imp-believed-graph');svg.selectAll('*').remove();
+  const alive=new Set(step.alive), g=svg.append('g');
+  const myPos=fixedPositions[name];
+  const pInfo=DATA.players.find(p=>p.name===name);
+
+  if(!alive.has(name)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').text('ELIMINATED');return;}
+  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').text('No data');return;}
+
+  // Extract toward_me from social_map, with fallback to role_assessment
+  const socialMap=beliefs?.social_map;
+  const towardMe=(socialMap&&socialMap.toward_me)||[];
+  const attMap={};
+  if(Array.isArray(towardMe))towardMe.forEach(t=>{attMap[t.player]=t;});
+
+  // Fallback: infer from my role_assessment of others
+  // If I think someone is Mafia → I think they suspect me
+  // If I think someone is Villager/Doctor → I think they're neutral/trusting
+  const assessment=beliefs?.role_assessment||[];
+  const assessMap={};
+  if(Array.isArray(assessment))assessment.forEach(a=>{assessMap[a.player]=a;});
+
+  const hasSocial=Array.isArray(towardMe)&&towardMe.length>0;
+  if(!hasSocial&&!(Array.isArray(assessment)&&assessment.length)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').text('No social_map probe recorded');return;}
+  if(!hasSocial)svg.append('text').attr('x',150).attr('y',14).attr('text-anchor','middle').attr('fill','#E69F00').attr('font-size',9).text('inferred from role assessment (no social_map)');
+
+  const attColors={trusts:'#009E73',neutral:'#999999',suspects:'#D55E00'};
+
+  DATA.players.forEach(p=>{
+    if(p.name===name||!alive.has(p.name)) return;
+    const pos=fixedPositions[p.name];
+    let attitude='neutral', confidence=0, reason='';
+
+    const att=attMap[p.name];
+    if(att && att.attitude){
+      // social_map data available
+      attitude=att.attitude; confidence=att.confidence||0; reason=att.reason||'';
+    } else if(assessMap[p.name]){
+      // Fallback: infer from what I think their role is (same conf>=50 rule as scoring)
+      const a=assessMap[p.name];
+      const gr=a.guessed_role||'Unknown';
+      confidence=a.confidence||0;
+      attitude=guessToAttitude(gr, confidence);
+      reason=`I think ${p.name} is ${gr} (${confidence}%) → ${attitude==='neutral'?'no strong signal':`likely ${attitude} me`}`;
+    }
+
+    const color=attColors[attitude]||attColors.neutral;
+    // Link
+    g.append('line').attr('x1',pos.x).attr('y1',pos.y).attr('x2',myPos.x).attr('y2',myPos.y)
+      .attr('stroke',color).attr('stroke-opacity',Math.max(0.35,Math.min(0.9,confidence/100)))
+      .attr('stroke-width',Math.max(1.5,confidence/25))
+      .attr('stroke-dasharray',confidence<30?'4 3':null);
+    // Node
+    const ng=g.append('g').attr('class','node').attr('transform',`translate(${pos.x},${pos.y})`)
+      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:`I think: ${attitude}`,confidence,reason}))
+      .on('mouseout',hideTooltip);
+    ng.append('circle').attr('r',12).attr('fill',color).attr('fill-opacity',0.6).attr('stroke',color).attr('stroke-width',2);
+    if(mismatch&&mismatch.has(p.name))
+      ng.append('circle').attr('r',16).attr('fill','none').attr('stroke','#E69F00')
+        .attr('stroke-width',1.6).attr('stroke-dasharray','3 2');
+    egoLabels(ng, pos, 12, p.name, `${attitude} ${confidence}%`);
+  });
+  // Me
+  const ng=g.append('g').attr('class','node').attr('transform',`translate(${myPos.x},${myPos.y})`);
+  ng.append('circle').attr('r',18).attr('fill',ROLE_COLORS[pInfo.role]).attr('fill-opacity',0.9).attr('stroke','#f0883e').attr('stroke-width',3);
+  egoLabels(ng, myPos, 18, name, 'me', 12);
+}
+
+function renderBelievedEgoLog(step, beliefs, name){
+  const log=document.getElementById('imp-believed-log');
+  const entries=[];
+  const attColors={trusts:'#009E73',neutral:'#999999',suspects:'#D55E00'};
+
+  // Primary: social_map.toward_me
+  const socialMap=beliefs?.social_map;
+  const towardMe=(socialMap&&socialMap.toward_me)||[];
+  if(Array.isArray(towardMe)&&towardMe.length){
+    towardMe.forEach(t=>{
+      entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',
+        text:`${t.player}: ${t.attitude} ${t.confidence||0}% — ${t.reason||''}`,
+        color:attColors[t.attitude]||'#6e7681'});
+    });
+  } else {
+    // Fallback: infer from role_assessment
+    const assessment=beliefs?.role_assessment||[];
+    if(Array.isArray(assessment)&&assessment.length)
+      entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',text:'(no social_map — inferred from role assessment)',color:'#E69F00'});
+    if(Array.isArray(assessment)){
+      assessment.forEach(a=>{
+        if(a.player===name) return;
+        const gr=a.guessed_role||'Unknown';
+        const attitude=guessToAttitude(gr, a.confidence||0);
+        entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',
+          text:`${a.player}: ${attitude} ${a.confidence||0}% — I think they're ${gr}: ${a.reason||''}`,
+          color:attColors[attitude]||'#6e7681'});
+      });
+    }
+  }
+  if(!entries.length) entries.push({idx:0,label:'',phase:'',type:'thinking',text:'No data yet',color:'#6e7681'});
+  renderLogEntries(log,entries,step.idx);
+}
+
+// ── Actual ego: how others REALLY see me (from their role_assessment) ──
+function renderEgoGraph(step, name, mismatch){
+  const svg=d3.select('#imp-ego-graph');svg.selectAll('*').remove();
+  const alive=new Set(step.alive), g=svg.append('g');
+  const myPos=fixedPositions[name];
+  // For each OTHER alive player, show what they think about `name`
+  DATA.players.forEach(p=>{
+    if(p.name===name) return;
+    const pos=fixedPositions[p.name];
+    const b=step.player_beliefs[p.name];
+    if(!b||!b.has_data||!alive.has(p.name)) return;
+    const assess=b.role_assessment||[];
+    const assessMap={};
+    if(Array.isArray(assess))assess.forEach(a=>{assessMap[a.player]=a;});
+    const myAssess=assessMap[name];
+    if(!myAssess) return;
+    const guessedRole=myAssess.guessed_role||'Unknown';
+    const confidence=myAssess.confidence||0;
+    const color=ROLE_COLORS[guessedRole]||ROLE_COLORS.Unknown;
+    // Link from other player to me
+    const opacity=Math.min(0.9,confidence/100);
+    g.append('line').attr('x1',pos.x).attr('y1',pos.y).attr('x2',myPos.x).attr('y2',myPos.y)
+      .attr('stroke',color).attr('stroke-opacity',opacity).attr('stroke-width',Math.max(1,confidence/30));
+    // Other player node
+    const ng=g.append('g').attr('class','node').attr('transform',`translate(${pos.x},${pos.y})`)
+      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:`thinks I'm ${guessedRole}`,confidence,reason:myAssess.reason||''})).on('mouseout',hideTooltip);
+    ng.append('circle').attr('r',12).attr('fill',ROLE_COLORS[p.role]).attr('fill-opacity',0.7).attr('stroke',ROLE_COLORS[p.role]).attr('stroke-width',2);
+    if(mismatch&&mismatch.has(p.name))
+      ng.append('circle').attr('r',16).attr('fill','none').attr('stroke','#E69F00')
+        .attr('stroke-width',1.6).attr('stroke-dasharray','3 2');
+    egoLabels(ng, pos, 12, p.name, `${guessedRole} ${confidence}%`);
+  });
+  // Me in center
+  const pInfo=DATA.players.find(p=>p.name===name);
+  const ng=g.append('g').attr('class','node').attr('transform',`translate(${myPos.x},${myPos.y})`);
+  ng.append('circle').attr('r',18).attr('fill',ROLE_COLORS[pInfo.role]).attr('fill-opacity',0.9).attr('stroke','#f0883e').attr('stroke-width',3);
+  egoLabels(ng, myPos, 18, name, pInfo.role, 12);
+}
+
+function renderEgoLog(step, idx, name){
+  const log=document.getElementById('imp-ego-log');
+  const entries=[];
+  DATA.players.forEach(p=>{
+    if(p.name===name||!step.alive.includes(p.name)) return;
+    const b=step.player_beliefs[p.name];
+    if(!b||!b.has_data) return;
+    const assess=b.role_assessment||[];
+    const assessMap={};if(Array.isArray(assess))assess.forEach(a=>{assessMap[a.player]=a;});
+    const my=assessMap[name];
+    if(my){
+      const color=ROLE_COLORS[DATA.truth[p.name]?.role]||'#888';
+      entries.push({idx,label:step.label,phase:step.phase,type:'thinking',
+        text:`${p.name} thinks: ${my.guessed_role} ${my.confidence}% — ${my.reason||''}`,color});
+    }
+  });
+  renderLogEntries(log,entries,idx);
+}
+
+// ── Big Five helpers ────────────────────────
+const B5_LABELS = ['O','C','E','A','N'];
+const B5_COLORS = {O:'#E69F00',C:'#56B4E9',E:'#009E73',A:'#CC79A7',N:'#D55E00'};
+
+function getB5ForNode(step, observerName, targetName) {
+  // Get personality_profile data: what observer thinks about target's Big Five
+  if (!step || !observerName) return null;
+  const beliefs = step.player_beliefs[observerName];
+  if (!beliefs) return null;
+  const pp = beliefs.personality_profile;
+  if (!Array.isArray(pp)) return null;
+  const entry = pp.find(e => e.player === targetName);
+  return entry || null;
+}
+
+function getTrueB5(targetName) {
+  // Ground truth Big Five from config (stored in players array)
+  const p = DATA.players.find(p => p.name === targetName);
+  return p?.personality || null;
+}
+
+function renderB5Bars(g, b5, x, y, r) {
+  // Draw tiny 5-bar sparkline under the node
+  if (!b5) return;
+  const barW = 4, barH = 14, gap = 1;
+  const totalW = B5_LABELS.length * (barW + gap);
+  const startX = x - totalW / 2;
+  const startY = y + r + 4;
+  B5_LABELS.forEach((trait, i) => {
+    const val = b5[trait] || 0;
+    const h = (val / 100) * barH;
+    g.append('rect')
+      .attr('x', startX + i * (barW + gap))
+      .attr('y', startY + barH - h)
+      .attr('width', barW)
+      .attr('height', h)
+      .attr('fill', B5_COLORS[trait])
+      .attr('fill-opacity', 0.8)
+      .attr('rx', 1);
+  });
+}
+
+function b5ToHtml(b5, label) {
+  if (!b5) return '';
+  let h = `<div style="margin-top:6px;font-size:10px;color:#6e7681">${label}</div>`;
+  h += '<div style="display:flex;gap:6px;margin-top:2px">';
+  B5_LABELS.forEach(t => {
+    const v = b5[t] || 0;
+    h += `<span style="color:${B5_COLORS[t]};font-weight:600;font-size:11px">${t}:${v}</span>`;
+  });
+  h += '</div>';
+  if (b5.summary) h += `<div style="color:#8b949e;font-size:10px;margin-top:2px">${b5.summary}</div>`;
+  return h;
+}
+
+// ── Tooltip ────────────────────────────────
+function showTooltip(ev,d){
+  const tt=document.getElementById('tooltip');
+  let h=`<div class="tt-name">${d.id}</div><div style="color:${ROLE_COLORS[d.role]||'#888'};font-weight:600">${d.role}`;
+  if(d.confidence!==undefined)h+=` (${d.confidence}%)`;h+='</div>';
+  if(d.reason)h+=`<div style="color:#8b949e;font-style:italic;margin-top:4px">${d.reason}</div>`;
+  if(d.suspicion)h+=`<div style="margin-top:4px">Suspicion: ${d.suspicion}/10</div>`;
+  if(d.deception!==undefined&&d.deception!==null)h+=`<div style="margin-top:4px">Deception success: ${Math.round(d.deception*100)}% of informed crowd does NOT see Mafia</div>`;
+  if(d.model)h+=`<div style="color:#6e7681;margin-top:2px">${d.model}</div>`;
+  // Big Five
+  if(d.b5_true) h += b5ToHtml(d.b5_true, 'True Big Five:');
+  if(d.b5_guessed) h += b5ToHtml(d.b5_guessed, 'Guessed Big Five:');
+  tt.innerHTML=h;tt.style.display='block';tt.style.left=(ev.clientX+14)+'px';tt.style.top=(ev.clientY-12)+'px';
+}
+function hideTooltip(){document.getElementById('tooltip').style.display='none';}
+
+// ── Metrics (ToM measurement) ───────────────
+let METRICS = null;
+// Okabe-Ito categorical palette (colorblind-safe)
+const AGENT_PALETTE = ['#E69F00','#56B4E9','#009E73','#F0E442','#0072B2','#D55E00','#CC79A7','#999999'];
+function agentColor(name){ const i = DATA.players.findIndex(p=>p.name===name); return AGENT_PALETTE[(i<0?0:i) % AGENT_PALETTE.length]; }
+
+// Map a role guess to the attitude it implies toward the guessed player.
+// Unified with analyze_metrics.py: guess=Mafia & conf>=50 -> suspects;
+// guess in {Villager,Doctor,Sheriff} & conf>=50 -> trusts; otherwise neutral.
+const ATT_CONF_THRESHOLD = 50;
+function guessToAttitude(role, confidence){
+  if(confidence!==undefined && !(+confidence>=ATT_CONF_THRESHOLD)) return 'neutral';
+  if(role==='Mafia') return 'suspects';
+  if(!role||role==='Unknown') return 'neutral';
+  return 'trusts';
+}
+
+// {target: {role, confidence}} from a player's beliefs (role_assessment, fallback role_beliefs)
+function assessMapOf(beliefs){
+  const m = {};
+  if(!beliefs||!beliefs.has_data) return m;
+  const a = beliefs.role_assessment;
+  if(Array.isArray(a)&&a.length){
+    a.forEach(e=>{ if(e&&e.player) m[e.player]={role:e.guessed_role||'Unknown', confidence:e.confidence||0}; });
+    return m;
+  }
+  const rb = beliefs.role_beliefs;
+  if(rb&&typeof rb==='object')
+    Object.entries(rb).forEach(([pl,v])=>{ m[pl]={role:(v&&v.role)||'Unknown', confidence:(v&&v.confidence)||0}; });
+  return m;
+}
+
+function getMetrics(){
+  if(METRICS) return METRICS;
+  const names = DATA.players.map(p=>p.name);
+  const mafia = names.filter(n=>DATA.truth[n].role==='Mafia');
+  const M = {accuracy:{}, secondOrder:{}, recall:[], deception:[]};
+  names.forEach(n=>{ M.accuracy[n]=[]; M.secondOrder[n]=[]; });
+
+  DATA.steps.forEach(step=>{
+    const alive = new Set(step.alive);
+    const amaps = {};
+    names.forEach(n=>{ amaps[n]=assessMapOf(step.player_beliefs[n]); });
+
+    // 1st-order accuracy: share of alive others whose role the agent names correctly
+    names.forEach(n=>{
+      if(!alive.has(n)){ M.accuracy[n].push(null); return; }
+      let ok=0, tot=0;
+      names.forEach(t=>{
+        if(t===n||!alive.has(t)) return;
+        const g=amaps[n][t]; if(!g) return;
+        tot++; if(g.role===DATA.truth[t].role) ok++;
+      });
+      M.accuracy[n].push(tot? ok/tot : null);
+    });
+
+    // Crowd recall & per-mafia deception: informed non-mafia observers vote
+    const aliveMafia = mafia.filter(m=>alive.has(m));
+    let detected=0, evaluable=0;
+    const dec = {};
+    aliveMafia.forEach(m=>{
+      let yes=0, tot=0;
+      names.forEach(o=>{
+        if(o===m||!alive.has(o)||DATA.truth[o].role==='Mafia') return;
+        const g=amaps[o][m]; if(!g) return;
+        tot++; if(g.role==='Mafia') yes++;
+      });
+      if(tot>0){ evaluable++; if(yes/tot>0.5) detected++; dec[m]=1-yes/tot; }
+      else dec[m]=null;
+    });
+    M.recall.push(evaluable? detected/evaluable : null);
+    M.deception.push(dec);
+
+    // 2nd-order consistency: my social_map.toward_me vs their actual assessment of me
+    names.forEach(n=>{
+      if(!alive.has(n)){ M.secondOrder[n].push(null); return; }
+      const b = step.player_beliefs[n];
+      const tm = (b&&b.has_data&&b.social_map&&Array.isArray(b.social_map.toward_me)) ? b.social_map.toward_me : null;
+      if(!tm){ M.secondOrder[n].push(null); return; }
+      let ok=0, tot=0;
+      tm.forEach(e=>{
+        if(!e||!e.player||e.player===n||!alive.has(e.player)||!e.attitude) return;
+        // mafia allies know each other's role — their "Mafia" verdict is trust, not suspicion
+        if(DATA.truth[n].role==='Mafia'&&DATA.truth[e.player]&&DATA.truth[e.player].role==='Mafia') return;
+        const g=amaps[e.player][n]; if(!g) return;
+        tot++; if(e.attitude===guessToAttitude(g.role, g.confidence)) ok++;
+      });
+      M.secondOrder[n].push(tot? ok/tot : null);
+    });
+  });
+  METRICS = M;
+  return M;
+}
+
+// ── Metrics panel rendering ─────────────────
+function toggleMetrics(){
+  const open = document.body.classList.toggle('metrics-open');
+  document.getElementById('metrics-btn').classList.toggle('on', open);
+  if(open) renderMetricsPanel();
+}
+
+function drawMetricChart(svgId, series, currentIdx){
+  // series: [{name, color, values:[v|null per step], dashed?}]
+  const svg = d3.select(svgId); svg.selectAll('*').remove();
+  if(!DATA) return;
+  const W=320, H=150, L=22, R=4, T=6, B=14;
+  const n = DATA.total_steps;
+  const x = i => L + (n<=1 ? 0 : (W-L-R) * i/(n-1));
+  const y = v => T + (H-T-B) * (1-v);
+  const g = svg.append('g');
+  // y gridlines 0 / 0.5 / 1
+  [0,0.5,1].forEach(v=>{
+    g.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v))
+      .attr('stroke','#21262d').attr('stroke-width',1);
+    g.append('text').attr('class','metric-axis-label').attr('x',L-3).attr('y',y(v)+2.5)
+      .attr('text-anchor','end').text(v===0.5?'.5':v);
+  });
+  // x-axis: step ticks (1-based) + axis caption
+  const xt = n<=1 ? [0] : [0, n-1];
+  xt.forEach(i=>{
+    g.append('line').attr('x1',x(i)).attr('x2',x(i)).attr('y1',y(0)).attr('y2',y(0)+2.5)
+      .attr('stroke','#484f58');
+    g.append('text').attr('class','metric-axis-label').attr('x',x(i)).attr('y',H-4)
+      .attr('text-anchor',i===0?'start':'end').text(i+1);
+  });
+  g.append('text').attr('class','metric-axis-label').attr('x',(L+W-R)/2).attr('y',H-4)
+    .attr('text-anchor','middle').text('step');
+  const line = d3.line().defined(v=>v[1]!==null&&v[1]!==undefined)
+    .x(v=>x(v[0])).y(v=>y(v[1]));
+  series.forEach(s=>{
+    const pts = s.values.map((v,i)=>[i,v]);
+    g.append('path').attr('d',line(pts)).attr('fill','none')
+      .attr('stroke',s.color).attr('stroke-width',1.4).attr('stroke-opacity',0.9)
+      .attr('stroke-dasharray',s.dashed?'4 3':null);
+  });
+  // current-step cursor
+  g.append('line').attr('class','metric-cursor')
+    .attr('x1',x(currentIdx)).attr('x2',x(currentIdx)).attr('y1',T).attr('y2',y(0))
+    .attr('stroke','#58a6ff').attr('stroke-width',1).attr('stroke-opacity',0.8);
+  // hover marker
+  const hover = g.append('line').attr('y1',T).attr('y2',y(0))
+    .attr('stroke','#8b949e').attr('stroke-width',1).attr('stroke-dasharray','2 2')
+    .attr('visibility','hidden');
+  const evStep = ev => {
+    const [mx] = d3.pointer(ev);
+    const box = svg.node().getBoundingClientRect();
+    const px = mx * (W/box.width); // compensate preserveAspectRatio=none
+    return Math.max(0, Math.min(n-1, Math.round((px-L)/(W-L-R)*(n-1))));
+  };
+  // hover: show all series values at nearest step
+  svg.on('mousemove', ev=>{
+    const i = evStep(ev);
+    hover.attr('x1',x(i)).attr('x2',x(i)).attr('visibility','visible');
+    const tt=document.getElementById('tooltip');
+    const rows = series.map(s=>{
+      const v = s.values[i];
+      const sw = `<span style="display:inline-block;width:9px;height:3px;border-radius:2px;background:${s.color};margin-right:5px;vertical-align:middle;${s.dashed?'opacity:.6;':''}"></span>`;
+      return `<div>${sw}${esc(s.name)}: <b>${v===null||v===undefined?'—':v.toFixed(2)}</b></div>`;
+    }).join('');
+    tt.innerHTML = `<div class="tt-name">step ${i+1} — ${esc(DATA.steps[i].label)}</div>${rows}`;
+    tt.style.display='block'; tt.style.left=(ev.clientX+14)+'px'; tt.style.top=(ev.clientY-12)+'px';
+  });
+  svg.on('mouseleave', ()=>{ hover.attr('visibility','hidden'); hideTooltip(); });
+  // click-to-seek
+  svg.on('click', ev=>setStep(evStep(ev)));
+}
+
+function renderMetricsPanel(){
+  if(!DATA) return;
+  const M = getMetrics();
+  const alive = new Set(DATA.steps[currentStep]?.alive||[]);
+  // legend: one item per agent (line color), plus series-style keys for the middle chart
+  const dashSwatch = c => `<span class="legend-swatch" style="background:repeating-linear-gradient(90deg,${c} 0 3px,transparent 3px 5px)"></span>`;
+  const leg = document.getElementById('metrics-legend');
+  leg.innerHTML = DATA.players.map(p=>
+    `<span class="legend-item" title="${p.name} — ${DATA.truth[p.name].role}"><span class="legend-swatch" style="background:${agentColor(p.name)}"></span>`+
+    `<span style="color:${alive.has(p.name)?'#c9d1d9':'#484f58'}">${p.name}${DATA.truth[p.name].role==='Mafia'?' (M)':''}</span></span>`
+  ).join('')
+  + `<span class="legend-item" style="margin-left:14px" title="Share of alive mafiosi detected by a majority of informed non-mafia observers"><span class="legend-swatch" style="background:#f0883e"></span>crowd recall</span>`
+  + `<span class="legend-item" title="Per-mafioso: share of observers NOT naming them Mafia">${dashSwatch('#c9d1d9')}deception (per mafioso)</span>`
+  + `<span style="margin-left:auto;color:#6e7681">x: timeline step · y: score 0–1 · hover for values, click to seek</span>`;
+
+  drawMetricChart('#m-acc',
+    DATA.players.map(p=>({name:p.name,color:agentColor(p.name),values:M.accuracy[p.name]})),
+    currentStep);
+
+  const mafiaNames = DATA.players.filter(p=>p.role==='Mafia').map(p=>p.name);
+  drawMetricChart('#m-recall',
+    [{name:'crowd recall',color:'#f0883e',values:M.recall}]
+      .concat(mafiaNames.map(m=>({name:m,color:agentColor(m),dashed:true,
+        values:M.deception.map(d=>(d&&d[m]!==undefined)?d[m]:null)}))),
+    currentStep);
+
+  drawMetricChart('#m-second',
+    DATA.players.map(p=>({name:p.name,color:agentColor(p.name),values:M.secondOrder[p.name]})),
+    currentStep);
+}
+
+function updateMetricsCursor(idx){
+  if(!document.body.classList.contains('metrics-open')) return;
+  renderMetricsPanel();
+}
+
+// ── Parse-rate badge ────────────────────────
+function updateParseBadge(){
+  const el = document.getElementById('parse-badge');
+  const ps = DATA && DATA.parse_stats;
+  if(!ps||!ps.total){ el.style.display='none'; return; }
+  const pct = Math.round(100*ps.ok/ps.total);
+  el.style.display='inline-block';
+  el.textContent = `probes ${pct}%`;
+  el.style.background = pct>=90?'#00795a':pct>=70?'#9a6a00':'#b04a00';
+  el.title = 'Share of introspection probes that returned parseable JSON\n' +
+    Object.entries(ps.by_probe).map(([k,v])=>`${k}: ${v.ok}/${v.total} (${Math.round(100*v.ok/v.total)}%)`).join('\n');
+}
+
+// ── Calibration view ────────────────────────
+function computeCalibration(agent){
+  const bins = [{lo:0,hi:19},{lo:20,hi:39},{lo:40,hi:59},{lo:60,hi:79},{lo:80,hi:100}];
+  const stats = bins.map(b=>({...b, n:0, ok:0}));
+  const prevJson = {};
+  DATA.steps.forEach(step=>{
+    const alive = new Set(step.alive);
+    DATA.players.forEach(p=>{
+      const n = p.name;
+      if(agent && n!==agent) return;
+      const b = step.player_beliefs[n];
+      if(!b||!b.has_data||!Array.isArray(b.role_assessment)) return;
+      const j = JSON.stringify(b.role_assessment);
+      if(prevJson[n]===j) return; // skip carried-forward duplicates
+      prevJson[n]=j;
+      b.role_assessment.forEach(e=>{
+        if(!e||!e.player||e.player===n||!alive.has(e.player)) return;
+        const gr=e.guessed_role;
+        if(!gr||gr==='Unknown'||!(e.player in DATA.truth)) return;
+        const c=Math.max(0,Math.min(100,+e.confidence||0));
+        const bi=Math.min(4,Math.floor(c/20));
+        stats[bi].n++;
+        if(gr===DATA.truth[e.player].role) stats[bi].ok++;
+      });
+    });
+  });
+  return stats;
+}
+
+function openCalibration(){
+  const sel = document.getElementById('calib-agent');
+  sel.innerHTML = '<option value="">All agents</option>' +
+    DATA.players.map(p=>`<option value="${p.name}">${p.name} (${p.role})</option>`).join('');
+  document.getElementById('calib-overlay').classList.add('open');
+  renderCalibration();
+}
+function closeCalibration(){ document.getElementById('calib-overlay').classList.remove('open'); }
+
+// 95% Wilson score interval for a binomial proportion (cheap, deterministic
+// stand-in for a bootstrap CI on ok/n)
+function wilsonCI(ok, n, z=1.96){
+  if(!n) return null;
+  const p = ok/n, z2 = z*z, den = 1 + z2/n;
+  const center = (p + z2/(2*n)) / den;
+  const half = z * Math.sqrt(p*(1-p)/n + z2/(4*n*n)) / den;
+  return [Math.max(0, center-half), Math.min(1, center+half)];
+}
+
+function renderCalibration(){
+  const agent = document.getElementById('calib-agent').value || null;
+  const stats = computeCalibration(agent);
+  const svg = d3.select('#calib-chart'); svg.selectAll('*').remove();
+  const W=600, H=300, L=46, R=14, T=14, B=34;
+  const x = i => L + (W-L-R)*(i+0.5)/stats.length;
+  const bw = (W-L-R)/stats.length*0.62;
+  const y = v => T + (H-T-B)*(1-v);
+  // diagonal-hatch pattern: duplicates the "overconfident" encoding for CVD readers
+  const defs = svg.append('defs');
+  defs.append('pattern').attr('id','calib-hatch').attr('patternUnits','userSpaceOnUse')
+    .attr('width',6).attr('height',6).attr('patternTransform','rotate(45)')
+    .append('line').attr('x1',0).attr('y1',0).attr('x2',0).attr('y2',6)
+    .attr('stroke','#0d1117').attr('stroke-width',2.2).attr('stroke-opacity',0.55);
+  const g = svg.append('g');
+  // axes / gridlines
+  [0,0.25,0.5,0.75,1].forEach(v=>{
+    g.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v)).attr('stroke','#21262d');
+    g.append('text').attr('x',L-6).attr('y',y(v)+3).attr('text-anchor','end')
+      .attr('fill','#6e7681').attr('font-size',10).text(Math.round(v*100)+'%');
+  });
+  // perfect-calibration diagonal (bin midpoints)
+  const diag = d3.line()(stats.map((b,i)=>[x(i), y((b.lo+b.hi+1)/2/100)]));
+  g.append('path').attr('d',diag).attr('fill','none')
+    .attr('stroke','#6e7681').attr('stroke-dasharray','5 4').attr('stroke-width',1.2);
+  // bars
+  stats.forEach((b,i)=>{
+    const acc = b.n? b.ok/b.n : null;
+    const lowN = b.n>0 && b.n<10;
+    if(acc!==null){
+      const mid=(b.lo+b.hi+1)/2/100;
+      const over = acc < mid-0.001;
+      const barColor = over?'#D55E00':'#56B4E9'; // Okabe-Ito vermillion / sky blue
+      g.append('rect').attr('x',x(i)-bw/2).attr('y',y(acc))
+        .attr('width',bw).attr('height',y(0)-y(acc))
+        .attr('fill', barColor).attr('fill-opacity', lowN?0.25:0.8).attr('rx',3);
+      if(over) // hatch overlay duplicates the red/blue distinction with a pattern
+        g.append('rect').attr('x',x(i)-bw/2).attr('y',y(acc))
+          .attr('width',bw).attr('height',y(0)-y(acc))
+          .attr('fill','url(#calib-hatch)').attr('fill-opacity', lowN?0.3:1).attr('rx',3);
+      if(lowN)
+        g.append('rect').attr('x',x(i)-bw/2).attr('y',y(acc))
+          .attr('width',bw).attr('height',y(0)-y(acc))
+          .attr('fill','none').attr('stroke','#6e7681').attr('stroke-dasharray','4 3').attr('rx',3);
+      // 95% CI whiskers (Wilson)
+      const ci = wilsonCI(b.ok, b.n);
+      if(ci){
+        const wc = lowN?'#6e7681':'#e6edf3';
+        g.append('line').attr('x1',x(i)).attr('x2',x(i)).attr('y1',y(ci[0])).attr('y2',y(ci[1]))
+          .attr('stroke',wc).attr('stroke-width',1.4).attr('stroke-opacity',0.9);
+        [ci[0],ci[1]].forEach(v=>
+          g.append('line').attr('x1',x(i)-5).attr('x2',x(i)+5).attr('y1',y(v)).attr('y2',y(v))
+            .attr('stroke',wc).attr('stroke-width',1.4).attr('stroke-opacity',0.9));
+        g.append('text').attr('x',x(i)+8).attr('y',y(acc)+4).attr('text-anchor','start')
+          .attr('fill',lowN?'#6e7681':'#e6edf3').attr('font-size',11).attr('font-weight',700)
+          .text(Math.round(acc*100)+'%');
+      }
+    } else {
+      g.append('text').attr('x',x(i)).attr('y',y(0)-8).attr('text-anchor','middle')
+        .attr('fill','#484f58').attr('font-size',10).text('no data');
+    }
+    g.append('text').attr('x',x(i)).attr('y',H-B+14).attr('text-anchor','middle')
+      .attr('fill','#8b949e').attr('font-size',10).text(`${b.lo}–${b.hi}`);
+    g.append('text').attr('x',x(i)).attr('y',H-B+26).attr('text-anchor','middle')
+      .attr('fill',lowN?'#9a6a00':'#484f58').attr('font-size',9)
+      .text(`n=${b.n}${lowN?' ⚠':''}`);
+  });
+  g.append('text').attr('x',(L+W-R)/2).attr('y',H-2).attr('text-anchor','middle')
+    .attr('fill','#6e7681').attr('font-size',10).text('stated confidence bin');
+  g.append('text').attr('transform',`translate(11,${(T+H-B)/2}) rotate(-90)`)
+    .attr('text-anchor','middle').attr('fill','#6e7681').attr('font-size',10)
+    .text('actual accuracy (hatched = overconfident)');
+}
+
+loadData();
+</script>
+</body>
+</html>

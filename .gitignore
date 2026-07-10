@@ -1,0 +1,10 @@
+.claude
+.venv
+.vscode
+docs/previous/
+src/__pycache__
+.env
+# generated viewer data — rebuild with: python src/prepare_viewer.py
+src/viewer_data.json
+src/all_games.json
+site/
