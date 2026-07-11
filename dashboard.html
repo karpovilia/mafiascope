@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MafiaScope — Cross-game Dashboard</title>
+<script src="d3.v7.min.js"></script>
+<style>
+/* ── Onest (local, offline-safe) ─────────────────────────── */
+@font-face {
+  font-family: 'Onest'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('fonts/onest-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Onest'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('fonts/onest-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* ── Design tokens (warm dark minimalism) ────────────────── */
+:root {
+  --background: #0d0c0a;
+  --card: #181714;
+  --popover: #1a1a16;
+  --secondary: #262522;
+  --foreground: #f5f5f2;
+  --muted-foreground: #9f9e9b;
+  --faint: #6c6b67;
+  --border: rgba(255,255,255,.10);
+  --border-soft: rgba(255,255,255,.07);
+  --input: rgba(255,255,255,.14);
+  --brand: #fff052;
+  --brand-muted: rgba(255,240,82,.14);
+  --brand-border: rgba(255,240,82,.30);
+  --radius: 10px;
+  --radius-sm: 8px;
+  --grid: #2a2925;
+  --font-sans: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Light theme: warm paper tokens mirroring the dark set */
+:root[data-theme="light"] {
+  --background: #f7f5f1;
+  --card: #fffdf9;
+  --popover: #fffdf9;
+  --secondary: #edeae2;
+  --foreground: #1c1b18;
+  --muted-foreground: #6b6862;
+  --faint: #98948c;
+  --border: rgba(0,0,0,.13);
+  --border-soft: rgba(0,0,0,.075);
+  --input: rgba(0,0,0,.16);
+  --brand: #a16207;
+  --brand-muted: rgba(161,98,7,.10);
+  --brand-border: rgba(161,98,7,.35);
+  --grid: #e6e2d9;
+}
+:root[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); }
+/* the lamp glows while the lights are on */
+:root[data-theme="light"] #theme-btn {
+  background: var(--brand-muted); border-color: var(--brand-border);
+  box-shadow: 0 0 10px rgba(161,98,7,.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--background); color: var(--foreground);
+  font-family: var(--font-sans); font-size: 13px; padding-bottom: 40px;
+  -webkit-font-smoothing: antialiased;
+}
+#header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 9px 16px; background: var(--background); border-bottom: 1px solid var(--border-soft);
+}
+#header h1 {
+  font-size: 13px; font-weight: 600; letter-spacing: .01em; color: var(--foreground);
+  display: flex; align-items: center; gap: 8px;
+}
+#header h1::before {
+  content: ''; width: 8px; height: 8px; border-radius: 2.5px;
+  background: var(--brand); flex-shrink: 0;
+}
+#header a, .hdr-btn {
+  color: var(--foreground); font-size: 11px; font-weight: 500; text-decoration: none;
+  border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+  padding: 4px 12px; background: var(--secondary); font-family: inherit;
+  cursor: pointer; white-space: nowrap;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
+}
+#header a:hover, .hdr-btn:hover { background: var(--secondary); border-color: var(--border); filter: brightness(1.15); }
+:root[data-theme="light"] #header a:hover, :root[data-theme="light"] .hdr-btn:hover { filter: brightness(.97); }
+
+/* Corpus filters */
+#filters { display: flex; gap: 8px; align-items: center; padding: 10px 16px 0; flex-wrap: wrap; }
+#filters select {
+  background: var(--secondary); color: var(--foreground);
+  border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+  padding: 4px 8px; font-size: 11px; font-family: var(--font-sans);
+}
+#filters .flt-count { font-size: 10px; color: var(--muted-foreground); margin-left: auto; }
+#summary { display: flex; gap: 12px; padding: 16px; flex-wrap: wrap; }
+.tile {
+  border: 1px solid var(--border-soft); border-radius: 12px; background: var(--card);
+  padding: 12px 18px; min-width: 140px;
+}
+.tile .v { font-size: 22px; font-weight: 700; color: var(--foreground); letter-spacing: -.01em; }
+.tile .l { font-size: 10px; color: var(--muted-foreground); margin-top: 3px; letter-spacing: .03em; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 16px; }
+.panel {
+  border: 1px solid var(--border-soft); border-radius: var(--radius); background: var(--card); overflow: hidden;
+}
+.panel-title {
+  padding: 6px 12px; font-size: 11px; font-weight: 600; letter-spacing: .01em;
+  color: var(--foreground);
+  background: rgba(255,255,255,.03); border-bottom: 1px solid var(--border-soft);
+}
+.panel svg { display: block; width: 100%; }
+.legend { display: flex; gap: 14px; padding: 6px 12px; font-size: 10px; color: var(--muted-foreground); flex-wrap: wrap; }
+.legend .sw { display: inline-block; width: 10px; height: 3px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+table { border-collapse: collapse; width: 100%; font-size: 11px; }
+th, td { padding: 5px 12px; border-bottom: 1px solid var(--border-soft); text-align: left; }
+th { color: var(--muted-foreground); font-size: 10px; font-weight: 600; letter-spacing: .03em; background: rgba(255,255,255,.03); }
+tr:last-child td { border-bottom: none; }
+.axis-label { font-size: 9px; fill: var(--faint); }
+.mono-note { padding: 10px 16px; font-size: 10px; color: var(--faint); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div id="header">
+  <h1>MafiaScope — Cross-game Dashboard</h1>
+  <a href="viewer.html">← Viewer</a>
+  <a href="probe_editor.html">Probes</a>
+  <button id="theme-btn" class="hdr-btn" onclick="toggleTheme()" title="Turn the lights on/off">💡</button>
+  <span id="hdr-info" style="margin-left:auto;color:var(--muted-foreground);font-size:11px"></span>
+</div>
+<div id="filters">
+  <select id="flt-lang" onchange="FLT.lang=this.value;applyFilters()">
+    <option value="">Any language</option>
+    <option value="en">English</option>
+    <option value="ru">Russian</option>
+  </select>
+  <select id="flt-model" onchange="FLT.model=this.value;applyFilters()">
+    <option value="">Any model</option>
+  </select>
+  <select id="flt-branch" onchange="FLT.branch=this.value;applyFilters()">
+    <option value="">All games</option>
+    <option value="with">With branches</option>
+    <option value="without">Without branches</option>
+  </select>
+  <span class="flt-count" id="flt-count"></span>
+</div>
+<div id="summary"></div>
+<div class="grid" id="grid"></div>
+<div class="mono-note">Accuracy = share of alive others whose role an agent names correctly (role_assessment, fallback role_beliefs), averaged per model over agents and games. Round x-axis uses each round's last recorded step. Branches (forked games) are excluded from aggregates.</div>
+
+<script>
+// Okabe-Ito categorical palette (colorblind-safe) — DATA colors, do not restyle (P2-4)
+const MODEL_PALETTE = ['#E69F00','#56B4E9','#009E73','#F0E442','#0072B2','#D55E00','#CC79A7','#999999'];
+const ROLE_SET = ['Mafia','Doctor','Sheriff','Villager'];
+
+// Chrome (non-data) colors — mirror of the CSS tokens for SVG attributes
+// (SVG attrs can't read CSS vars, hence the JS mirror, refreshed on theme switch)
+const CHROME = { brand:'#fff052', fg:'#f5f5f2', muted:'#9f9e9b', faint:'#6c6b67', grid:'#2a2925' };
+
+function refreshChrome(){
+  const cs = getComputedStyle(document.documentElement);
+  const v = n => cs.getPropertyValue(n).trim();
+  CHROME.brand = v('--brand'); CHROME.fg = v('--foreground');
+  CHROME.muted = v('--muted-foreground'); CHROME.faint = v('--faint');
+  CHROME.grid = v('--grid');
+}
+(function(){
+  let t = 'dark';
+  try { t = localStorage.getItem('mafiascope_theme') || 'dark'; } catch(e){}
+  document.documentElement.dataset.theme = t;
+  refreshChrome();
+})();
+function toggleTheme(){
+  const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('mafiascope_theme', t); } catch(e){}
+  refreshChrome();
+  applyFilters();   // re-render charts so SVG picks up the new tokens
+}
+
+// UI chrome strings — light i18n (key → string / template). Add locales here later.
+const STRINGS = {
+  noData: 'no data',
+  noDataSub: 'all_games.json missing',
+  hdrInfo: (n, b, models) => `${n} root games · ${b} branches · models: ${models}`,
+  tileRootGames: 'root games',
+  tileMafiaWinRate: 'mafia win rate',
+  tileMeanRounds: 'mean rounds',
+  tileParseRate: 'probe parse rate',
+  tileBranches: 'counterfactual branches',
+  accuracyTitle: '1st-order accuracy by round (mean per model)',
+  recallTitle: 'Crowd mafia recall by round (all games)',
+  recallSeries: 'crowd mafia recall',
+  calibTitle: 'Calibration — confidence bin vs accuracy per model',
+  matchupTitle: 'Matchups — model composition vs outcome',
+  matchupCols: ['mafia models ⚔ town models', 'games', 'mafia', 'villagers', 'med. rounds'],
+  calibTooltip: (m, bin, acc, n, low) => `${m} · conf ${bin} → ${acc}% acc (n=${n})${low ? ' — n<10, unreliable' : ''}`,
+};
+
+function assessMapOf(b){
+  const m={};
+  if(!b||!b.has_data) return m;
+  if(Array.isArray(b.role_assessment)&&b.role_assessment.length){
+    b.role_assessment.forEach(e=>{if(e&&e.player)m[e.player]={role:e.guessed_role||'Unknown',confidence:e.confidence||0};});
+    return m;
+  }
+  const rb=b.role_beliefs;
+  if(rb&&typeof rb==='object')Object.entries(rb).forEach(([pl,v])=>{m[pl]={role:(v&&v.role)||'Unknown',confidence:(v&&v.confidence)||0};});
+  return m;
+}
+
+// ── Corpus filters (mirror the viewer sidebar) ──
+const FLT = { lang: '', model: '', branch: '' };
+let ALL_GAMES = [];        // full array incl. branches
+let ALL_MODELS = [];       // stable palette basis across the whole corpus
+
+function gameLang(d){
+  if (d.language) return d.language;
+  if (!d._lang) d._lang = /[Ѐ-ӿ]/.test(JSON.stringify(d.steps.slice(0,4))) ? 'ru' : 'en';
+  return d._lang;
+}
+function gameModels(d){
+  if (d.models) return d.models;
+  if (!d._models) d._models = [...new Set(d.players.map(p => p.model || '?'))].sort();
+  return d._models;
+}
+function hasBranches(root){
+  return ALL_GAMES.some(g => g.forked_from === root.game_id);
+}
+function rootMatches(root){
+  if (FLT.lang && gameLang(root) !== FLT.lang) return false;
+  if (FLT.model && !gameModels(root).includes(FLT.model)) return false;
+  if (FLT.branch === 'with' && !hasBranches(root)) return false;
+  if (FLT.branch === 'without' && hasBranches(root)) return false;
+  return true;
+}
+
+async function load(){
+  let games=[];
+  try{ const r=await fetch('all_games.json?t='+Date.now()); if(r.ok) games=await r.json(); }catch(e){}
+  if(!games.length){ document.getElementById('summary').innerHTML=`<div class="tile"><div class="v">${STRINGS.noData}</div><div class="l">${STRINGS.noDataSub}</div></div>`; return; }
+  ALL_GAMES = games;
+  const allRoots = games.filter(g=>!g.forked_from);
+  ALL_MODELS = [...new Set((allRoots.length?allRoots:games).flatMap(g=>gameModels(g)))].sort();
+  // populate model filter
+  const sel = document.getElementById('flt-model');
+  ALL_MODELS.forEach(m => sel.add(new Option(m, m)));
+  applyFilters();
+}
+
+function applyFilters(){
+  if(!ALL_GAMES.length) return;
+  const allRoots = ALL_GAMES.filter(g=>!g.forked_from);
+  const roots = allRoots.filter(rootMatches);
+  document.getElementById('flt-count').textContent =
+    (FLT.lang||FLT.model||FLT.branch) ? `${roots.length} of ${allRoots.length} games` : `${allRoots.length} games`;
+  render(roots.length?roots:allRoots, ALL_GAMES);
+}
+
+function render(games, allGames){
+  // stable per-model colors across the whole corpus (don't shift when filtering)
+  const models=ALL_MODELS.length?ALL_MODELS:[...new Set(games.flatMap(g=>gameModels(g)))].sort();
+  const mColor=m=>MODEL_PALETTE[Math.max(0,models.indexOf(m))%MODEL_PALETTE.length];
+
+  // ── summary tiles ──
+  const mafiaWins=games.filter(g=>g.winner==='Mafia').length;
+  const done=games.filter(g=>g.winner!=='Pending');
+  const meanRounds=d3.mean(games,g=>g.steps.length?g.steps[g.steps.length-1].round:0);
+  const psOk=d3.sum(games,g=>g.parse_stats?g.parse_stats.ok:0), psTot=d3.sum(games,g=>g.parse_stats?g.parse_stats.total:0);
+  const branches=allGames.filter(g=>g.forked_from).length;
+  document.getElementById('hdr-info').textContent=STRINGS.hdrInfo(games.length, branches, models.join(', '));
+  document.getElementById('summary').innerHTML=[
+    [games.length,STRINGS.tileRootGames],
+    [`${Math.round(100*mafiaWins/Math.max(1,done.length))}%`,STRINGS.tileMafiaWinRate],
+    [meanRounds?meanRounds.toFixed(1):'—',STRINGS.tileMeanRounds],
+    [psTot?Math.round(100*psOk/psTot)+'%':'—',STRINGS.tileParseRate],
+    [branches,STRINGS.tileBranches],
+  ].map(([v,l])=>`<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+
+  // ── per-game per-round metrics ──
+  // acc[model][round] -> [values]; recall[round] -> [values]
+  const acc={}, recall={};
+  games.forEach(g=>{
+    const names=g.players.map(p=>p.name);
+    const mafia=names.filter(n=>g.truth[n].role==='Mafia');
+    const lastStep={};
+    g.steps.forEach(s=>{ if(s.round>=1) lastStep[s.round]=s; });
+    Object.entries(lastStep).forEach(([rnd,s])=>{
+      const alive=new Set(s.alive);
+      const amaps={}; names.forEach(n=>{amaps[n]=assessMapOf(s.player_beliefs[n]);});
+      names.forEach(n=>{
+        if(!alive.has(n))return;
+        let ok=0,tot=0;
+        names.forEach(t=>{
+          if(t===n||!alive.has(t))return;
+          const gs=amaps[n][t]; if(!gs)return;
+          tot++; if(gs.role===g.truth[t].role)ok++;
+        });
+        if(tot){
+          const m=g.truth[n].model;
+          ((acc[m]=acc[m]||{})[rnd]=acc[m][rnd]||[]).push(ok/tot);
+        }
+      });
+      // crowd recall
+      const aliveMafia=mafia.filter(m=>alive.has(m));
+      let det=0,evaluable=0;
+      aliveMafia.forEach(m=>{
+        let yes=0,tot=0;
+        names.forEach(o=>{
+          if(o===m||!alive.has(o)||g.truth[o].role==='Mafia')return;
+          const gs=amaps[o][m]; if(!gs)return;
+          tot++; if(gs.role==='Mafia')yes++;
+        });
+        if(tot){evaluable++; if(yes/tot>0.5)det++;}
+      });
+      if(evaluable)(recall[rnd]=recall[rnd]||[]).push(det/evaluable);
+    });
+  });
+
+  // ── calibration per model ──
+  const calib={}; // model -> bins[5] {n, ok}
+  games.forEach(g=>{
+    const prevJson={};
+    g.steps.forEach(s=>{
+      const alive=new Set(s.alive);
+      g.players.forEach(p=>{
+        const n=p.name, b=s.player_beliefs[n];
+        if(!b||!b.has_data||!Array.isArray(b.role_assessment))return;
+        const j=JSON.stringify(b.role_assessment);
+        if(prevJson[n]===j)return;
+        prevJson[n]=j;
+        const m=g.truth[n].model;
+        const bins=calib[m]=calib[m]||Array.from({length:5},()=>({n:0,ok:0}));
+        b.role_assessment.forEach(e=>{
+          if(!e||!e.player||e.player===n||!alive.has(e.player))return;
+          const gr=e.guessed_role;
+          if(!gr||gr==='Unknown'||!(e.player in g.truth))return;
+          const c=Math.max(0,Math.min(100,+e.confidence||0));
+          const bi=Math.min(4,Math.floor(c/20));
+          bins[bi].n++;
+          if(gr===g.truth[e.player].role)bins[bi].ok++;
+        });
+      });
+    });
+  });
+
+  // ── matchup table (model composition, incl. mixed setups) ──
+  const matchups={};
+  games.forEach(g=>{
+    const mafiaModels=[...new Set(g.players.filter(p=>p.role==='Mafia').map(p=>p.model))].sort().join(' + ');
+    const townModels=[...new Set(g.players.filter(p=>p.role!=='Mafia').map(p=>p.model))].sort().join(' + ');
+    const key=`${mafiaModels} ⚔ ${townModels}`;
+    const mm=matchups[key]=matchups[key]||{mafia:0,villagers:0,other:0,rounds:[]};
+    if(g.winner==='Mafia')mm.mafia++; else if(g.winner==='Villagers')mm.villagers++; else mm.other++;
+    if(g.steps.length)mm.rounds.push(g.steps[g.steps.length-1].round);
+  });
+
+  // ── render panels ──
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+
+  // accuracy per model by round
+  const maxRound=Math.max(2,...Object.values(acc).flatMap(o=>Object.keys(o).map(Number)));
+  const accSeries=models.map(m=>({
+    name:m,color:mColor(m),
+    values:d3.range(1,maxRound+1).map(r=>acc[m]&&acc[m][r]?d3.mean(acc[m][r]):null)
+  })).filter(s=>s.values.some(v=>v!==null));
+  grid.appendChild(linePanel(STRINGS.accuracyTitle,accSeries,maxRound));
+
+  // crowd recall (#f0883e is the crowd-recall DATA series color, matches the viewer)
+  const recallSeries=[{name:STRINGS.recallSeries,color:'#f0883e',
+    values:d3.range(1,maxRound+1).map(r=>recall[r]?d3.mean(recall[r]):null)}];
+  grid.appendChild(linePanel(STRINGS.recallTitle,recallSeries,maxRound));
+
+  // calibration grouped bars
+  grid.appendChild(calibPanel(calib,models,mColor));
+
+  // matchup table
+  const tbl=document.createElement('div'); tbl.className='panel';
+  tbl.innerHTML=`<div class="panel-title">${STRINGS.matchupTitle}</div>`+
+    '<table><tr>'+STRINGS.matchupCols.map(c=>`<th>${c}</th>`).join('')+'</tr>'+
+    Object.entries(matchups).map(([k,v])=>{
+      const tot=v.mafia+v.villagers+v.other;
+      return `<tr><td>${k}</td><td>${tot}</td><td style="color:#D55E00">${v.mafia}</td>`+
+        `<td style="color:#56B4E9">${v.villagers}</td><td>${v.rounds.length?d3.median(v.rounds):'—'}</td></tr>`;
+    }).join('')+'</table>';
+  grid.appendChild(tbl);
+}
+
+function linePanel(title,series,maxRound){
+  const el=document.createElement('div'); el.className='panel';
+  el.innerHTML=`<div class="panel-title">${title}</div>`+
+    `<div class="legend">${series.map(s=>`<span><span class="sw" style="background:${s.color}"></span>${s.name}</span>`).join('')}</div>`;
+  const W=560,H=220,L=34,R=10,T=10,B=24;
+  const svg=d3.create('svg').attr('viewBox',`0 0 ${W} ${H}`);
+  const x=r=>L+(W-L-R)*(maxRound<=1?0:(r-1)/(maxRound-1));
+  const y=v=>T+(H-T-B)*(1-v);
+  [0,0.5,1].forEach(v=>{
+    svg.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v)).attr('stroke',CHROME.grid);
+    svg.append('text').attr('class','axis-label').attr('x',L-4).attr('y',y(v)+3).attr('text-anchor','end').text(v);
+  });
+  d3.range(1,maxRound+1).forEach(r=>{
+    svg.append('text').attr('class','axis-label').attr('x',x(r)).attr('y',H-8).attr('text-anchor','middle').text('R'+r);
+  });
+  const line=d3.line().defined(p=>p[1]!==null).x(p=>x(p[0])).y(p=>y(p[1]));
+  series.forEach(s=>{
+    const pts=s.values.map((v,i)=>[i+1,v]);
+    svg.append('path').attr('d',line(pts)).attr('fill','none').attr('stroke',s.color).attr('stroke-width',1.8);
+    pts.filter(p=>p[1]!==null).forEach(p=>{
+      svg.append('circle').attr('cx',x(p[0])).attr('cy',y(p[1])).attr('r',2.2).attr('fill',s.color);
+    });
+  });
+  el.appendChild(svg.node());
+  return el;
+}
+
+function calibPanel(calib,models,mColor){
+  const el=document.createElement('div'); el.className='panel';
+  el.innerHTML=`<div class="panel-title">${STRINGS.calibTitle}</div>`+
+    `<div class="legend">${models.filter(m=>calib[m]).map(m=>`<span><span class="sw" style="background:${mColor(m)}"></span>${m}</span>`).join('')}</div>`;
+  const W=560,H=220,L=34,R=10,T=10,B=24;
+  const svg=d3.create('svg').attr('viewBox',`0 0 ${W} ${H}`);
+  const bins=['0–19','20–39','40–59','60–79','80–100'];
+  const x=i=>L+(W-L-R)*(i+0.5)/5;
+  const y=v=>T+(H-T-B)*(1-v);
+  [0,0.5,1].forEach(v=>{
+    svg.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v)).attr('stroke',CHROME.grid);
+    svg.append('text').attr('class','axis-label').attr('x',L-4).attr('y',y(v)+3).attr('text-anchor','end').text(v);
+  });
+  // perfect calibration diagonal (bin midpoints: 10,30,50,70,90)
+  svg.append('path').attr('d',d3.line()(bins.map((b,i)=>[x(i),y((i===4?90:i*20+10)/100)])))
+    .attr('fill','none').attr('stroke',CHROME.faint).attr('stroke-dasharray','5 4');
+  bins.forEach((b,i)=>{
+    svg.append('text').attr('class','axis-label').attr('x',x(i)).attr('y',H-8).attr('text-anchor','middle').text(b);
+  });
+  const present=models.filter(m=>calib[m]);
+  const gw=(W-L-R)/5*0.7, bw=gw/Math.max(1,present.length);
+  present.forEach((m,mi)=>{
+    calib[m].forEach((bin,i)=>{
+      if(!bin.n)return;
+      const a=bin.ok/bin.n;
+      const lowN=bin.n<10; // dim unreliable bins
+      const rect=svg.append('rect').attr('x',x(i)-gw/2+mi*bw).attr('y',y(a))
+        .attr('width',bw-1).attr('height',y(0)-y(a))
+        .attr('fill',mColor(m)).attr('fill-opacity',lowN?0.25:0.8).attr('rx',1.5);
+      if(lowN)rect.attr('stroke',CHROME.faint).attr('stroke-dasharray','3 2');
+      rect.append('title').text(STRINGS.calibTooltip(m, bins[i], Math.round(100*a), bin.n, lowN));
+    });
+  });
+  el.appendChild(svg.node());
+  return el;
+}
+
+load();
+</script>
+</body>
+</html>
