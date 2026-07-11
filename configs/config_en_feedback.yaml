@@ -1,0 +1,138 @@
+# ── EN "second-order feedback" experimental arm ──────────────
+#
+# Copy of config_en_demo.yaml with ONE change:
+#   introspection.feedback_to_context: true
+#
+# Purpose: measure whether an explicit ToM self-model helps the policy.
+# Before EACH of an agent's own moves (night_mafia, night_doctor,
+# day_discuss, day_vote) its OWN latest probe answers (role_assessment
+# + social_map) are prepended to its private action prompt:
+#   "Your latest private self-assessment (not visible to others): ..."
+# Other agents and the probes themselves are untouched.
+#
+# INVASIVE BY DESIGN: unlike the observational en_demo corpus, here the
+# introspection output feeds back into behavior, so this arm must NEVER
+# be pooled with the observational corpora — compare against the EN
+# baseline (en_demo + the 2026-07-10 en batch) via src/compare_feedback.py.
+# Games of this arm carry "feedback_to_context": true in their game.jsonl
+# setup event (corpus-selector marker, analogous to forked_from).
+#
+# Everything below (players, personalities, probe battery with the FIXED
+# social_map wording) is byte-identical to config_en_demo.yaml.
+
+game:
+  max_rounds: 15
+  language: en
+  detailed_reasoning: true
+  intro_round: true
+  snapshots: true            # write logs/<id>/state.jsonl for counterfactual replay
+
+backends:
+  deepseek:
+    type: deepseek
+    model: deepseek-chat
+    api_key: ${DEEPSEEK_API_KEY}
+    max_tokens: 400
+    timeout: 90
+
+players:
+  - role: Mafia
+    backend: deepseek
+    personality: { O: 70, C: 40, E: 85, A: 30, N: 60 }   # bold manipulator
+
+  - role: Mafia
+    backend: deepseek
+    personality: { O: 50, C: 75, E: 40, A: 65, N: 30 }   # quiet strategist
+
+  - role: Doctor
+    backend: deepseek
+    personality: { O: 60, C: 80, E: 50, A: 90, N: 45 }   # careful protector
+
+  - role: Villager
+    backend: deepseek
+    personality: { O: 80, C: 55, E: 70, A: 60, N: 35 }   # curious analyst
+
+  - role: Villager
+    backend: deepseek
+    personality: { O: 45, C: 60, E: 30, A: 50, N: 70 }   # anxious introvert
+
+  - role: Villager
+    backend: deepseek
+    personality: { O: 65, C: 35, E: 90, A: 40, N: 50 }   # loud hothead
+
+  - role: Villager
+    backend: deepseek
+    personality: { O: 55, C: 70, E: 55, A: 75, N: 25 }   # calm peacemaker
+
+introspection:
+  enabled: true
+  after_each_message: true
+  after_each_round: true
+  feedback_to_context: true   # << the experimental-arm switch (default false)
+  probes:
+    - id: role_assessment
+      max_tokens: 960
+      question: >
+        You are {player}. Here is what you thought about players' roles
+        last time:
+        {last_role_assessment}
+
+        Now, given the new information, for every alive player
+        ({players}), INCLUDING yourself, answer: what role do they
+        ACTUALLY have in your opinion, how certain are you (0-100),
+        and one short reason.
+        Answer ONLY as JSON:
+        [{{"player": "...", "guessed_role": "Mafia|Villager|Doctor|Unknown", "confidence": N, "reason": "..."}}, ...]
+
+    - id: suspicion_ranking
+      question: >
+        Rank alive players ({players}) from most to least suspicious.
+        Answer ONLY as JSON: [{{"player": "...", "score": N}}, ...]
+
+    - id: social_map
+      max_tokens: 960
+      question: >
+        You are {player}. Here is your current role assessment:
+        {prev_role_assessment}
+
+        Last time you thought players felt about you like this:
+        {last_social_map}
+
+        Given the new information, how does each alive player
+        ({players}) feel about YOU specifically now?
+        Answer ONLY as JSON:
+        {{
+          "toward_me": [{{"player": "...", "attitude": "trusts|neutral|suspects", "confidence": N, "reason": "..."}}, ...]
+        }}
+
+    - id: personality_profile
+      max_tokens: 960
+      question: >
+        You are {player}. Last time you assessed personalities like this:
+        {last_personality_profile}
+
+        Given the new behavior, for each alive player ({players}),
+        EXCEPT yourself, estimate their Big Five traits (0-100).
+        O = Openness, C = Conscientiousness, E = Extraversion,
+        A = Agreeableness, N = Neuroticism.
+        Answer ONLY as JSON:
+        [{{"player": "...", "O": N, "C": N, "E": N, "A": N, "N": N, "summary": "..."}}, ...]
+
+    - id: planned_action
+      when: own_turn
+      max_tokens: 1024
+      question: >
+        You are {player}. Here is your model of the world:
+
+        Role assessment: {prev_role_assessment}
+
+        How you think players feel about you:
+        {prev_social_map}
+
+        Given all this, what action do you plan to take next and why?
+        Explain your strategy.
+        Answer ONLY as JSON: {{"action": "...", "target": "...", "reasoning": "..."}}
+
+logging:
+  log_dir: ../logs
+  console_level: info

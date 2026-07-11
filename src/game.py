@@ -162,7 +162,7 @@ class MafiaGame:
             p.alive = ps["alive"]
             game.players.append(p)
 
-        game._log_event("setup", {
+        fork_setup: dict[str, Any] = {
             "players": [
                 {"name": p.player_name, "role": p.role, "model": p.model_label,
                  "backend": p.backend_name, "personality": p.personality}
@@ -171,7 +171,10 @@ class MafiaGame:
             "forked_from": rec["game_id"],
             "fork_point": [round_num, msg_seq],
             **(fork_meta or {}),
-        })
+        }
+        if game.introspection.cfg.feedback_to_context:
+            fork_setup["feedback_to_context"] = True
+        game._log_event("setup", fork_setup)
         game._pending = dict(rec.get("pending") or {})
         game._pending.setdefault("night_result", rec.get("night_result"))
         game._print(
@@ -222,13 +225,18 @@ class MafiaGame:
             )
             self.players.append(p)
 
-        self._log_event("setup", {
+        setup_data: dict[str, Any] = {
             "players": [
                 {"name": p.player_name, "role": p.role, "model": p.model_label,
                  "backend": p.backend_name, "personality": p.personality}
                 for p in self.players
             ],
-        })
+        }
+        # Corpus-selector marker for the second-order-feedback arm
+        # (analogous to forked_from: present only when the arm is active).
+        if self.introspection.cfg.feedback_to_context:
+            setup_data["feedback_to_context"] = True
+        self._log_event("setup", setup_data)
         num_players = len(self.players)
         mafia_count = sum(1 for p in self.players if p.role == "Mafia")
         self._print(f"Game {self.game_id}  players={num_players}  mafia={mafia_count}", "info")
@@ -291,6 +299,17 @@ class MafiaGame:
         })
 
     # ── introspection shortcuts ────────────────
+
+    def _feedback_prefix(self, player: Player) -> str:
+        """Second-order-feedback arm (introspection.feedback_to_context).
+
+        When the flag is ON, returns the player's own latest probe answers
+        as a private block to prepend to their next action prompt.
+        When OFF (default), returns "" and the prompt stays byte-identical
+        to baseline.  Only the acting player's own answers, only for them.
+        """
+        block = self.introspection.feedback_block(player.player_name)
+        return f"{block}\n\n" if block else ""
 
     def _probe_one(self, player: Player, phase: str) -> None:
         """Probe a single player (for night actions)."""
@@ -389,7 +408,7 @@ class MafiaGame:
                     round=self.round_num, alive=alive_str,
                 )
                 self._print(f"  [Mafia] {p.player_name} thinking...", "info")
-                resp = p.respond(prompt)
+                resp = p.respond(self._feedback_prefix(p) + prompt)
                 self._round_msg_seq += 1
                 self._print(f"  [Mafia] {p.player_name}: {resp}", "info")
                 self._log_event("night_mafia", {"player": p.player_name, "response": resp, "msg_seq": self._round_msg_seq})
@@ -431,7 +450,7 @@ class MafiaGame:
                     round=self.round_num, alive=alive_str,
                 )
                 self._print(f"  [Doctor] {p.player_name} thinking...", "info")
-                resp = p.respond(prompt)
+                resp = p.respond(self._feedback_prefix(p) + prompt)
                 self._round_msg_seq += 1
                 self._print(f"  [Doctor] {p.player_name}: {resp}", "info")
                 self._log_event("night_doctor", {"player": p.player_name, "response": resp, "msg_seq": self._round_msg_seq})
@@ -547,7 +566,7 @@ class MafiaGame:
                 if stage == "day_discuss" and remaining is not None and p.player_name not in remaining:
                     continue
                 self._print(f"  {p.player_name} thinking...", "info")
-                resp = p.respond(discuss_prompt)
+                resp = p.respond(self._feedback_prefix(p) + discuss_prompt)
                 self._round_msg_seq += 1
                 self._print(f"  {p.player_name}: {resp}", "info")
                 self._log_event("day_discuss", {"player": p.player_name, "response": resp, "msg_seq": self._round_msg_seq})
@@ -571,7 +590,7 @@ class MafiaGame:
         for i, p in enumerate(alive_players):
             if stage == "day_vote" and remaining is not None and p.player_name not in remaining:
                 continue
-            resp = p.respond(vote_prompt)
+            resp = p.respond(self._feedback_prefix(p) + vote_prompt)
             self._round_msg_seq += 1
             self._print(f"  {p.player_name} votes: {resp}", "info")
             self._log_event("day_vote", {"player": p.player_name, "response": resp, "msg_seq": self._round_msg_seq})

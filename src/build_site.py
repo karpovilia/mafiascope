@@ -26,7 +26,8 @@ import shutil
 from prepare_viewer import scan_game_dirs
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STATIC_FILES = ["viewer.html", "dashboard.html", "d3.v7.min.js"]
+STATIC_FILES = ["viewer.html", "dashboard.html", "d3.v7.min.js",
+                "fonts/onest-latin.woff2", "fonts/onest-cyrillic.woff2"]
 
 INDEX_HTML = """<!DOCTYPE html>
 <meta charset="utf-8">
@@ -62,7 +63,9 @@ def main() -> None:
         src = os.path.join(HERE, name)
         if not os.path.isfile(src):
             raise SystemExit(f"Missing {src} — run from src/ after downloading d3 locally")
-        shutil.copy2(src, os.path.join(out, name))
+        dst = os.path.join(out, name)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copy2(src, dst)
 
     with open(os.path.join(out, "all_games.json"), "w", encoding="utf-8") as f:
         json.dump(games, f, ensure_ascii=False)

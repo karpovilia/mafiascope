@@ -2,122 +2,182 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Mafia Introspection Viewer</title>
+<title>MafiaScope — Introspection Viewer</title>
 <script src="d3.v7.min.js"></script>
 <style>
+/* ── Onest (local, offline-safe) ─────────────────────────── */
+@font-face {
+  font-family: 'Onest'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('fonts/onest-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Onest'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('fonts/onest-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* ── Design tokens (warm dark minimalism) ────────────────── */
+:root {
+  --background: #0d0c0a;
+  --card: #181714;
+  --popover: #1a1a16;
+  --secondary: #262522;
+  --foreground: #f5f5f2;
+  --muted-foreground: #9f9e9b;
+  --faint: #6c6b67;
+  --border: rgba(255,255,255,.10);
+  --border-soft: rgba(255,255,255,.07);
+  --input: rgba(255,255,255,.14);
+  --brand: #fff052;
+  --brand-muted: rgba(255,240,82,.14);
+  --brand-border: rgba(255,240,82,.30);
+  --destructive: #ff6568;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-sm: 8px;
+  --font-sans: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  background: #0d1117; color: #c9d1d9; font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 13px; overflow: hidden; height: 100vh;
+  background: var(--background); color: var(--foreground);
+  font-family: var(--font-sans); font-size: 13px;
+  overflow: hidden; height: 100vh;
+  display: flex; flex-direction: column;
+  -webkit-font-smoothing: antialiased;
 }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.20); }
+::-webkit-scrollbar-track { background: transparent; }
 
 /* Header */
 #header {
-  display: flex; align-items: center; gap: 12px;
-  padding: 6px 16px; background: #161b22; border-bottom: 1px solid #30363d;
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 14px; background: var(--background);
+  border-bottom: 1px solid var(--border-soft); flex-shrink: 0;
 }
-#header h1 { font-size: 14px; font-weight: 600; color: #58a6ff; white-space: nowrap; }
-#games-btn {
-  background: #21262d; color: #c9d1d9; border: 1px solid #30363d;
-  border-radius: 4px; padding: 4px 12px; font-family: inherit; font-size: 11px;
+#header h1 {
+  font-size: 13px; font-weight: 600; letter-spacing: .01em;
+  color: var(--foreground); white-space: nowrap;
+  display: flex; align-items: center; gap: 8px;
+}
+#header h1::before {
+  content: ''; width: 8px; height: 8px; border-radius: 2.5px;
+  background: var(--brand); flex-shrink: 0;
+}
+
+/* Buttons */
+#games-btn, .hdr-btn {
+  background: var(--secondary); color: var(--foreground);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm); padding: 4px 12px;
+  font-family: inherit; font-size: 11px; font-weight: 500;
   cursor: pointer; white-space: nowrap;
+  transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
-#games-btn:hover { background: #30363d; }
+#games-btn:hover, .hdr-btn:hover { background: #2e2d29; border-color: var(--border); }
+.hdr-btn.on {
+  background: var(--brand-muted); border-color: var(--brand-border); color: var(--brand);
+}
+.btn-brand {
+  background: var(--brand); color: #14130f; border-color: transparent; font-weight: 600;
+}
+.btn-brand:hover { background: #f6e64a; border-color: transparent; }
 
 /* Sidebar */
 #sidebar {
   position: fixed; top: 0; left: -360px; width: 360px; height: 100vh;
-  background: #161b22; border-right: 2px solid #30363d;
-  z-index: 200; transition: left 0.25s ease;
+  background: var(--card); border-right: 1px solid var(--border);
+  box-shadow: 0 0 48px rgba(0,0,0,.55);
+  z-index: 200; transition: left 0.22s ease;
   display: flex; flex-direction: column;
 }
 #sidebar.open { left: 0; }
 #sidebar-header {
-  padding: 10px 14px; display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid #30363d;
+  padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--border-soft);
 }
-#sidebar-header h2 { font-size: 14px; color: #58a6ff; }
+#sidebar-header h2 { font-size: 13px; font-weight: 600; color: var(--foreground); letter-spacing: .01em; }
 #sidebar-close {
-  background: none; border: none; color: #8b949e; font-size: 18px; cursor: pointer;
+  background: none; border: none; color: var(--muted-foreground); font-size: 18px; cursor: pointer;
+  transition: color .15s ease;
 }
-#sidebar-close:hover { color: #f85149; }
-#sidebar-list {
-  flex: 1; overflow-y: auto; padding: 4px 0;
-}
+#sidebar-close:hover { color: var(--destructive); }
+#sidebar-list { flex: 1; overflow-y: auto; padding: 4px 0; }
 .game-card {
-  padding: 8px 14px; border-bottom: 1px solid #21262d; cursor: pointer;
-  transition: background 0.1s;
+  padding: 9px 16px; border-bottom: 1px solid var(--border-soft); cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: background .15s ease;
 }
-.game-card:hover { background: #21262d; }
-.game-card.active { background: #1c2333; border-left: 3px solid #58a6ff; }
-.game-card-date { font-size: 12px; color: #e6edf3; font-weight: 600; }
-.game-card-meta { font-size: 10px; color: #8b949e; margin-top: 2px; }
+.game-card:hover { background: rgba(255,255,255,.04); }
+.game-card.active { background: rgba(255,240,82,.07); border-left-color: var(--brand); }
+.game-card-date { font-size: 12px; color: var(--foreground); font-weight: 600; }
+.game-card-meta { font-size: 10px; color: var(--muted-foreground); margin-top: 2px; }
 .game-card-winner { font-size: 11px; font-weight: 600; margin-top: 2px; }
 #sidebar-overlay {
   display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: #00000066; z-index: 199;
+  background: rgba(0,0,0,.5); z-index: 199;
 }
 #sidebar-overlay.open { display: block; }
-#step-info { color: #8b949e; font-size: 11px; margin-left: auto; }
+#step-info { color: var(--muted-foreground); font-size: 11px; margin-left: auto; }
 #impersonate-badge {
-  display: none; background: #f0883e; color: #fff; padding: 2px 10px;
-  border-radius: 4px; font-size: 11px; font-weight: 700; cursor: pointer;
+  display: none; background: var(--brand); color: #14130f; padding: 3px 10px;
+  border-radius: 999px; font-size: 11px; font-weight: 700; cursor: pointer;
 }
 
 /* Timeline */
 #timeline {
-  display: flex; align-items: center; gap: 8px;
-  padding: 4px 16px; background: #161b22; border-bottom: 1px solid #30363d;
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 14px; background: var(--background);
+  border-bottom: 1px solid var(--border-soft); flex-shrink: 0;
 }
-#timeline-bar { flex: 1; height: 24px; background: #21262d; border-radius: 4px; display: flex; cursor: pointer; overflow: hidden; }
-.step-tick { flex: 1; height: 100%; border-right: 1px solid #0d1117; transition: background 0.1s; }
-.step-tick.night { background: #1a2744; }
-.step-tick.day_discuss { background: #1a3a1a; }
-.step-tick.day_vote { background: #3a2a0a; }
-.step-tick.night_analysis { background: #2a1a3a; }
-.step-tick.intro { background: #1a3a3a; }
-.step-tick.round_end { background: #2a2a2a; }
-.step-tick.active { background: #58a6ff !important; }
+#timeline-bar {
+  flex: 1; height: 22px; background: var(--secondary); border-radius: 6px;
+  display: flex; cursor: pointer; overflow: hidden;
+}
+.step-tick { flex: 1; height: 100%; border-right: 1px solid var(--background); transition: filter .15s ease; }
+.step-tick.night { background: #1c2540; }
+.step-tick.day_discuss { background: #22331d; }
+.step-tick.day_vote { background: #3a2c10; }
+.step-tick.night_analysis { background: #2b1e3a; }
+.step-tick.intro { background: #1d3532; }
+.step-tick.round_end { background: #2b2a26; }
+.step-tick.active { background: var(--brand) !important; }
 .step-tick:hover { filter: brightness(1.5); }
-#timeline-label { min-width: 80px; text-align: center; font-weight: 600; color: #58a6ff; font-size: 12px; }
+#timeline-label {
+  min-width: 80px; text-align: center; font-weight: 600;
+  color: var(--brand); font-size: 12px; letter-spacing: .02em;
+}
 
 /* Main grid */
-#main-grid {
-  display: grid; height: calc(100vh - 68px); padding: 4px; gap: 4px;
-}
-body.metrics-open #main-grid { height: calc(100vh - 68px - 200px); }
+#main-grid { display: grid; flex: 1; min-height: 0; padding: 6px; gap: 6px; }
 
 /* Metrics panel */
 #metrics-panel {
-  display: none; height: 200px; padding: 0 4px 4px 4px; gap: 4px;
+  display: none; height: 200px; padding: 0 6px 6px 6px; gap: 6px; flex-shrink: 0;
   grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 16px 1fr;
 }
 body.metrics-open #metrics-panel { display: grid; }
 #metrics-legend {
   grid-column: 1 / -1; display: flex; gap: 12px; align-items: center;
-  font-size: 10px; color: #8b949e; padding: 0 6px; overflow: hidden; white-space: nowrap;
+  font-size: 10px; color: var(--muted-foreground); padding: 0 6px; overflow: hidden; white-space: nowrap;
 }
 .legend-item { display: inline-flex; align-items: center; gap: 4px; cursor: default; }
 .legend-swatch { width: 10px; height: 3px; border-radius: 2px; display: inline-block; }
 .metric-box {
-  border: 1px solid #30363d; border-radius: 6px; background: #0d1117;
-  display: flex; flex-direction: column; min-width: 0; min-height: 0;
+  border: 1px solid var(--border-soft); border-radius: var(--radius); background: var(--card);
+  display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden;
 }
 .metric-box .panel-title { font-size: 10px; }
 .metric-box svg { flex: 1; cursor: crosshair; }
-.metric-axis-label { font-size: 8px; fill: #6e7681; }
+.metric-axis-label { font-size: 8px; fill: #8a8985; }
 
-/* Header badges/buttons */
-.hdr-btn {
-  background: #21262d; color: #c9d1d9; border: 1px solid #30363d;
-  border-radius: 4px; padding: 4px 12px; font-family: inherit; font-size: 11px;
-  cursor: pointer; white-space: nowrap;
-}
-.hdr-btn:hover { background: #30363d; }
-.hdr-btn.on { border-color: #58a6ff; color: #58a6ff; }
 #parse-badge {
-  display: none; padding: 2px 8px; border-radius: 4px; font-size: 10px;
-  font-weight: 700; color: #fff; cursor: help; white-space: nowrap;
+  display: none; padding: 2px 9px; border-radius: 999px; font-size: 10px;
+  font-weight: 700; cursor: help; white-space: nowrap; border: 1px solid transparent;
 }
 
 /* Ego agreement score (impersonate mode) */
@@ -125,152 +185,162 @@ body.metrics-open #metrics-panel { display: grid; }
 
 /* Calibration modal */
 #calib-overlay {
-  display: none; position: fixed; inset: 0; background: #000000aa; z-index: 300;
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 300;
   align-items: center; justify-content: center;
 }
 #calib-overlay.open { display: flex; }
 #calib-modal {
-  background: #161b22; border: 1px solid #30363d; border-radius: 8px;
-  width: 640px; max-width: 92vw; padding: 14px 18px;
-  box-shadow: 0 8px 32px #000000cc;
+  background: var(--popover); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  width: 640px; max-width: 92vw; padding: 18px 20px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.6);
 }
-#calib-modal h2 { font-size: 13px; color: #58a6ff; margin-bottom: 4px; }
-#calib-modal .calib-sub { font-size: 10px; color: #8b949e; margin-bottom: 8px; }
+#calib-modal h2 { font-size: 13px; font-weight: 600; color: var(--foreground); margin-bottom: 4px; letter-spacing: .01em; }
+#calib-modal .calib-sub { font-size: 10px; color: var(--muted-foreground); margin-bottom: 10px; line-height: 1.5; }
 #calib-modal select {
-  background: #21262d; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px;
-  font-family: inherit; font-size: 11px; padding: 2px 6px; margin-bottom: 8px;
+  background: var(--secondary); color: var(--foreground); border: 1px solid var(--input);
+  border-radius: var(--radius-sm);
+  font-family: inherit; font-size: 11px; padding: 3px 8px; margin-bottom: 10px;
 }
 
 /* Counterfactual replay: branches / fork dialog / outcome strip */
 #outcome-strip {
-  display: none; align-items: center; gap: 10px; font-size: 11px; height: 22px;
-  padding: 0 16px; background: #1a1208; border-bottom: 1px solid #30363d; color: #c9d1d9;
+  display: none; align-items: center; gap: 10px; font-size: 11px; height: 24px;
+  padding: 0 14px; background: var(--card); border-bottom: 1px solid var(--border-soft);
+  color: var(--muted-foreground); flex-shrink: 0;
 }
-body.strip-open #main-grid { height: calc(100vh - 68px - 22px); }
-body.strip-open.metrics-open #main-grid { height: calc(100vh - 68px - 222px); }
 #outcome-strip .strip-bar {
   flex: 1; display: flex; height: 8px; border-radius: 4px; overflow: hidden;
-  background: #21262d; max-width: 300px;
+  background: var(--secondary); max-width: 300px;
 }
-.step-tick.has-branch { box-shadow: inset 0 -3px 0 #f0883e; }
+.step-tick.has-branch { box-shadow: inset 0 -3px 0 var(--brand); }
 .batch-header {
-  padding: 5px 14px 3px 22px; font-size: 10px; color: #f0883e;
-  border-bottom: 1px solid #21262d; background: #16120b;
+  padding: 6px 16px 4px 24px; font-size: 10px; color: var(--brand);
+  border-bottom: 1px solid var(--border-soft); background: rgba(255,240,82,.05);
 }
-.game-card.branch { padding-left: 34px; background: #0e1117; }
+.game-card.branch { padding-left: 34px; background: rgba(255,255,255,.015); }
 .game-card.branch .game-card-date { font-size: 11px; font-weight: 400; }
 #fork-overlay {
-  display: none; position: fixed; inset: 0; background: #000000aa; z-index: 300;
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 300;
   align-items: center; justify-content: center;
 }
 #fork-overlay.open { display: flex; }
 #fork-modal {
-  background: #161b22; border: 1px solid #f0883e; border-radius: 8px;
-  width: 420px; max-width: 92vw; padding: 14px 18px; box-shadow: 0 8px 32px #000000cc;
+  background: var(--popover); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  width: 420px; max-width: 92vw; padding: 18px 20px; box-shadow: 0 24px 64px rgba(0,0,0,.6);
 }
-#fork-modal h2 { font-size: 13px; color: #f0883e; margin-bottom: 6px; }
-#fork-modal .fork-row { display: flex; gap: 8px; align-items: center; margin: 8px 0; font-size: 11px; }
+#fork-modal h2 { font-size: 13px; font-weight: 600; color: var(--brand); margin-bottom: 6px; letter-spacing: .01em; }
+#fork-modal .fork-row { display: flex; gap: 8px; align-items: center; margin: 10px 0; font-size: 11px; }
 #fork-modal input {
-  background: #21262d; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px;
-  font-family: inherit; font-size: 11px; padding: 3px 6px; width: 80px;
+  background: var(--secondary); color: var(--foreground); border: 1px solid var(--input);
+  border-radius: var(--radius-sm);
+  font-family: inherit; font-size: 11px; padding: 4px 8px; width: 80px;
 }
-#fork-modal .fork-note { font-size: 10px; color: #8b949e; margin: 6px 0; }
-#fork-error { color: #f85149; font-size: 10px; min-height: 14px; margin-top: 4px; }
+#fork-modal input:focus { outline: none; border-color: var(--brand-border); }
+#fork-modal .fork-note { font-size: 10px; color: var(--muted-foreground); margin: 6px 0; line-height: 1.5; }
+#fork-error { color: var(--destructive); font-size: 10px; min-height: 14px; margin-top: 4px; }
 #fork-toast {
   display: none; position: fixed; bottom: 14px; left: 14px; z-index: 250;
-  background: #1a1208; border: 1px solid #f0883e; color: #f0883e;
-  border-radius: 6px; padding: 8px 14px; font-size: 12px; font-weight: 600;
-  box-shadow: 0 4px 16px #00000088;
+  background: var(--popover); border: 1px solid var(--brand-border); color: var(--brand);
+  border-radius: var(--radius); padding: 8px 14px; font-size: 12px; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
 }
 
 /* Panel */
 .panel {
-  border: 1px solid #30363d; border-radius: 6px;
-  background: #0d1117; overflow: hidden; display: flex; flex-direction: column;
+  border: 1px solid var(--border-soft); border-radius: var(--radius);
+  background: var(--card); overflow: hidden; display: flex; flex-direction: column;
   min-width: 0; min-height: 0;
+  transition: border-color .15s ease, box-shadow .15s ease;
 }
 .panel-title {
-  padding: 3px 8px; font-size: 11px; font-weight: 600;
-  background: #161b22; border-bottom: 1px solid #30363d;
+  padding: 4px 10px; font-size: 11px; font-weight: 600; letter-spacing: .01em;
+  color: var(--foreground);
+  background: rgba(255,255,255,.03); border-bottom: 1px solid var(--border-soft);
   display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
 }
-.panel.speaking { border-color: #f0883e; box-shadow: 0 0 10px #f0883e44; }
+.panel.speaking {
+  border-color: rgba(255,240,82,.45);
+  box-shadow: 0 0 0 1px rgba(255,240,82,.20), 0 0 16px rgba(255,240,82,.06);
+}
 .panel.stale { opacity: 0.5; }
 
 /* GT panel */
-#gt-panel { border-color: #f0883e; border-width: 2px; }
-#gt-panel .panel-title { background: #1a1208; }
+#gt-panel { border-color: var(--brand-border); }
+#gt-panel .panel-title { background: rgba(255,240,82,.05); }
 #gt-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 #gt-graph { height: 200px; flex-shrink: 0; }
 #gt-log {
-  flex: 1; border-top: 1px solid #30363d;
+  flex: 1; border-top: 1px solid var(--border-soft);
   overflow-y: auto; padding: 8px 12px; font-size: 12px; line-height: 1.7;
 }
 
 /* Log entries */
-.log-entry { padding: 4px 0; border-bottom: 1px solid #1c2128; word-wrap: break-word; overflow-wrap: break-word; }
-.log-entry.current { background: #161b22; border-left: 3px solid #58a6ff; padding-left: 8px; }
-.log-phase { color: #6e7681; font-size: 9px; }
-.log-event { color: #f0883e; font-weight: 600; padding: 4px 0; border-bottom: 1px solid #30363d; font-size: 12px; }
+.log-entry { padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,.05); word-wrap: break-word; overflow-wrap: break-word; }
+.log-entry.current { background: rgba(255,240,82,.045); border-left: 3px solid var(--brand); padding-left: 8px; }
+.log-phase { color: var(--faint); font-size: 9px; }
+.log-event { color: var(--foreground); font-weight: 600; padding: 4px 0; border-bottom: 1px solid var(--border-soft); font-size: 12px; }
 
-/* Public message = sans-serif, reasoning = mono italic */
+/* Public message = sans, reasoning = mono italic */
 .log-public {
-  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 13px; color: #e6edf3;
+  font-family: var(--font-sans);
+  font-size: 13px; color: var(--foreground);
   white-space: pre-wrap; word-wrap: break-word;
 }
 .log-reasoning {
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: 11px; color: #8b949e; font-style: italic;
-  margin-top: 2px; padding-left: 12px; border-left: 2px solid #30363d;
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--muted-foreground); font-style: italic;
+  margin-top: 2px; padding-left: 12px; border-left: 2px solid rgba(255,255,255,.12);
   white-space: pre-wrap; word-wrap: break-word;
 }
 .log-speaker { font-weight: 700; cursor: pointer; }
 .log-speaker:hover { text-decoration: underline; }
-.log-faded {
-  color: #7d8590; font-size: 11px; font-style: italic;
-}
+.log-faded { color: #8f8e8a; font-size: 11px; font-style: italic; }
 
 /* Agent panel */
 .agent-svg { flex: 1; }
 
 /* Impersonate panel */
 .imp-panel {
-  border: 2px solid #f0883e; border-radius: 6px;
-  background: #0d1117; overflow: hidden; display: flex; flex-direction: column;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--card); overflow: hidden; display: flex; flex-direction: column;
 }
-.imp-panel .panel-title { background: #1a1208; border-bottom: 1px solid #30363d; }
-.imp-log {
-  flex: 1; overflow-y: auto; padding: 8px 12px; font-size: 12px; line-height: 1.7;
-}
+.imp-panel .panel-title { background: rgba(255,255,255,.03); border-bottom: 1px solid var(--border-soft); }
+.imp-log { flex: 1; overflow-y: auto; padding: 8px 12px; font-size: 12px; line-height: 1.7; }
 
-/* Role badges — Okabe-Ito colorblind-safe palette */
-.role-badge { padding: 1px 6px; border-radius: 3px; font-size: 9px; font-weight: 700; }
+/* Role badges — Okabe-Ito colorblind-safe palette (data colors, do not change) */
+.role-badge { padding: 1px 7px; border-radius: 999px; font-size: 9px; font-weight: 700; }
 .role-Mafia { background: #D55E00; color: #fff; }
 .role-Doctor { background: #009E73; color: #fff; }
-.role-Villager { background: #56B4E9; color: #0d1117; }
-.role-Sheriff { background: #CC79A7; color: #0d1117; }
-.role-Unknown { background: #6e7681; color: #c9d1d9; }
+.role-Villager { background: #56B4E9; color: #14130f; }
+.role-Sheriff { background: #CC79A7; color: #14130f; }
+.role-Unknown { background: #3a3934; color: #d6d5d1; }
+.truth-badge { background: var(--brand-muted); color: var(--brand); border: 1px solid var(--brand-border); }
+.believed-badge { background: rgba(230,159,0,.15); color: #E69F00; border: 1px solid rgba(230,159,0,.4); }
+.actual-badge { background: rgba(188,140,255,.14); color: #bc8cff; border: 1px solid rgba(188,140,255,.4); }
 
 /* SVG */
 .node text {
-  font-size: 10px; fill: #e6edf3; text-anchor: middle; pointer-events: none; font-weight: 600;
-  paint-order: stroke; stroke: #0d1117; stroke-width: 2.5px; stroke-linejoin: round;
+  font-size: 10px; fill: var(--foreground); text-anchor: middle; pointer-events: none; font-weight: 600;
+  paint-order: stroke; stroke: var(--card); stroke-width: 2.5px; stroke-linejoin: round;
 }
-.node .conf-text { font-size: 8px; fill: #8b949e; font-weight: 400; }
+.node .conf-text { font-size: 8px; fill: var(--muted-foreground); font-weight: 400; }
 .node.dead circle { stroke-dasharray: 4,3; opacity: 0.2; }
 .node.dead text { opacity: 0.2; }
 .node.clickable { cursor: pointer; }
 
 /* Tooltip */
 #tooltip {
-  position: fixed; display: none; background: #1c2128; border: 1px solid #58a6ff;
-  border-radius: 6px; padding: 10px 14px; font-size: 11px; max-width: 320px;
-  z-index: 100; pointer-events: none; line-height: 1.6; box-shadow: 0 4px 16px #00000088;
+  position: fixed; display: none; background: var(--popover); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px 14px; font-size: 11px; max-width: 320px;
+  z-index: 100; pointer-events: none; line-height: 1.6; box-shadow: 0 12px 32px rgba(0,0,0,.55);
 }
-#tooltip .tt-name { font-weight: 700; color: #58a6ff; }
+#tooltip .tt-name { font-weight: 700; color: var(--foreground); }
 
-#hint { position: fixed; bottom: 6px; right: 12px; color: #484f58; font-size: 10px; }
+#hint {
+  position: fixed; bottom: 8px; right: 12px; color: var(--muted-foreground); font-size: 10px;
+  background: rgba(13,12,10,.85); padding: 3px 10px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.06);
+}
 </style>
 </head>
 <body>
@@ -284,7 +354,7 @@ body.strip-open.metrics-open #main-grid { height: calc(100vh - 68px - 222px); }
   <div id="sidebar-list"></div>
 </div>
 <div id="header">
-  <h1>Mafia Viewer</h1>
+  <h1>MafiaScope</h1>
   <button id="games-btn" onclick="toggleSidebar()">Games</button>
   <button id="metrics-btn" class="hdr-btn" onclick="toggleMetrics()">Metrics</button>
   <button id="calib-btn" class="hdr-btn" onclick="openCalibration()">Calibration</button>
@@ -334,19 +404,95 @@ body.strip-open.metrics-open #main-grid { height: calc(100vh - 68px - 222px); }
     <div id="fork-error"></div>
     <div class="fork-row" style="justify-content:flex-end">
       <button class="hdr-btn" onclick="closeForkDialog()">Cancel</button>
-      <button class="hdr-btn" style="border-color:#f0883e;color:#f0883e" onclick="submitFork()">⑂ Fork</button>
+      <button class="hdr-btn btn-brand" onclick="submitFork()">⑂ Fork</button>
     </div>
   </div>
 </div>
 <div id="fork-toast"></div>
 <div id="tooltip"></div>
-<div id="hint">← → navigate | click name to impersonate | M metrics | Esc to exit</div>
+<div id="hint">← → navigate | click a name to impersonate | M metrics | Esc to exit</div>
 
 <script>
 // Okabe-Ito colorblind-safe palette (distinguishable under deuteranopia/protanopia)
+// DATA colors — declared in the paper (P2-4), do not restyle.
 const ROLE_COLORS = {
   Mafia: '#D55E00', Doctor: '#009E73', Sheriff: '#CC79A7',
   Villager: '#56B4E9', Unknown: '#6e7681',
+};
+
+// Chrome (non-data) colors — warm dark theme tokens, mirror the CSS custom properties.
+// SVG attributes can't read CSS vars, hence the JS mirror.
+const CHROME = {
+  brand: '#fff052',            // accent: active states / highlights
+  fg: '#f5f5f2',
+  muted: '#9f9e9b',
+  faint: '#6c6b67',
+  grid: '#2a2925',             // hairline gridlines on card surface
+  surface: '#0d0c0a',
+  card: '#181714',
+  popover: '#1a1a16',
+  destructive: '#ff6568',
+};
+
+// UI chrome strings — light i18n (key → string / template). Add locales here later.
+// Game DATA (agent messages, player names, probe output) renders as-is from logs.
+const STRINGS = {
+  noData: 'No data. Run: python serve_viewer.py',
+  pending: 'Pending',
+  wins: w => `${w} wins`,
+  cardMeta: (np, ns, nr) => `${np} players · ${ns} steps · ${nr} rounds`,
+  cardParse: pct => ` · parse ${pct}%`,
+  batchHeader: (r, seq, n, wins) => `⑂ @R${r}.${seq} — ${n} runs — ${wins}`,
+  branchOf: (parent, r, seq, idx) => `⑂ branch of ${parent} @R${r}.${seq} · run#${idx}`,
+  intervention: json => `intervention: ${json}`,
+  stepInfo: (i, n, phase, speaker, winner) => `${i}/${n} | ${phase} | ${speaker} | ${winner} wins`,
+  impersonateBadge: name => `${name} — Esc to exit`,
+  tickTitle: (label, phase) => `${label} ${phase}`,
+  tickBranches: n => ` — ⑂ ${n} branch(es)`,
+  eliminated: 'ELIMINATED',
+  noDataYet: 'No data yet',
+  noDataShort: 'No data',
+  noSocialMap: 'No social_map probe recorded',
+  inferredNote: 'inferred from role assessment (no social_map)',
+  inferredLogNote: '(no social_map — inferred from role assessment)',
+  me: 'me',
+  egoScore: (pct, m, t) => `match ${pct}% (${m}/${t})`,
+  hidPct: pct => `hid ${pct}%`,
+  thinksIm: role => `thinks I'm ${role}`,
+  iThink: att => `I think: ${att}`,
+  ttSuspicion: v => `Suspicion: ${v}/10`,
+  ttDeception: pct => `Deception success: ${pct}% of the informed crowd does NOT name them Mafia`,
+  ttTrueB5: 'True Big Five:',
+  ttGuessedB5: 'Guessed Big Five:',
+  legendCrowdRecall: 'crowd recall',
+  legendCrowdRecallTitle: 'Share of alive mafiosi detected by a majority of informed non-mafia observers',
+  legendDeception: 'deception (per mafioso)',
+  legendDeceptionTitle: 'Per-mafioso: share of observers NOT naming them Mafia',
+  legendAxes: 'x: timeline step · y: score 0–1 · hover for values, click to seek',
+  metricStep: (i, label) => `step ${i} — ${label}`,
+  parseBadge: pct => `probes ${pct}%`,
+  parseBadgeTitle: 'Share of introspection probes that returned parseable JSON',
+  allAgents: 'All agents',
+  agentOption: (name, role) => `${name} (${role})`,
+  calibNoData: 'no data',
+  calibBinN: (n, low) => `n=${n}${low ? ' ⚠' : ''}`,
+  calibXAxis: 'stated confidence bin',
+  calibYAxis: 'actual accuracy (hatched = overconfident)',
+  forkPoint: (label, r, seq, phase) => `${label} (round ${r}, seq ${seq}, ${phase})`,
+  forkApiUnavailable: 'Fork API unavailable — run: python serve_viewer.py',
+  forkProgress: (done, total) => `⑂ Fork ${done}/${total}`,
+  forkFailed: n => ` (${n} failed)`,
+  forkDone: ' — done',
+  forkPollFailed: '⑂ status poll failed',
+  theyThink: (name, role, conf, reason) => `${name} thinks: ${role} ${conf}% — ${reason}`,
+  groundTruth: 'Ground Truth',
+  truthBadge: 'TRUTH',
+  believedBadge: 'BELIEVED',
+  actualBadge: 'ACTUAL',
+  myWorld: name => `${name}'s World`,
+  believedTitle: 'How I think they see me',
+  actualTitle: 'How they actually see me',
+  planEntry: (a, t, r) => `Plan: ${a} → ${t} | ${r}`,
 };
 
 let ALL_GAMES = {}, DATA = null, currentStep = 0, fixedPositions = {};
@@ -358,18 +504,22 @@ async function loadData() {
   let loaded = false;
   try { const r = await fetch('all_games.json?t='+Date.now()); if(r.ok){(await r.json()).forEach(d=>ALL_GAMES[d.game_id]=d);loaded=true;}} catch{}
   if(!loaded) try { const r = await fetch('viewer_data.json?t='+Date.now()); if(r.ok){const d=await r.json();ALL_GAMES[d.game_id]=d;loaded=true;}} catch{}
-  if(!loaded){document.getElementById('main-grid').innerHTML='<p style="padding:20px;color:#f85149;">No data. Run: python serve_viewer.py</p>';return;}
+  if(!loaded){document.getElementById('main-grid').innerHTML=`<p style="padding:20px;color:${CHROME.destructive};">${esc(STRINGS.noData)}</p>`;return;}
   populateGameSelect();
   const newest = Object.entries(ALL_GAMES).sort((a,b)=>(b[1].started_at||0)-(a[1].started_at||0));
   switchGame(newest[0][0]);
-  // Deep links: #metrics opens the metrics panel, #calibration the calibration
-  // view, #imp=Name enters impersonate mode, #step=N seeks the timeline
+  // Deep links: #game=<id> selects a game, #metrics opens the metrics panel,
+  // #calibration the calibration view, #imp=Name enters impersonate mode,
+  // #step=N seeks the timeline, #fork opens the branch dialog
+  const gameM = location.hash.match(/game=([0-9a-fA-F-]{8,})/);
+  if(gameM){ const gid = Object.keys(ALL_GAMES).find(id=>id.startsWith(gameM[1])); if(gid) switchGame(gid); }
   if(location.hash.includes('metrics')) toggleMetrics();
   if(location.hash.includes('calib')) openCalibration();
   const stepM = location.hash.match(/step=(\d+)/);
   if(stepM) setStep(+stepM[1]);
   const impM = location.hash.match(/imp=([A-Za-z]+)/);
   if(impM && DATA.players.some(p=>p.name===impM[1])) enterImpersonate(impM[1]);
+  if(location.hash.includes('fork')) openForkDialog();
 }
 
 function toggleSidebar() {
@@ -387,7 +537,7 @@ function mkGameCard(d, isBranch) {
   card.dataset.gid = d.game_id;
 
   const ts = d.started_at ? new Date(d.started_at * 1000) : null;
-  const dateStr = ts ? ts.toLocaleString('ru-RU', {
+  const dateStr = ts ? ts.toLocaleString('en-GB', {
     day: '2-digit', month: '2-digit', year: 'numeric',
     hour: '2-digit', minute: '2-digit'
   }) : '??';
@@ -395,14 +545,14 @@ function mkGameCard(d, isBranch) {
 
   const rounds = d.steps.length > 0 ? d.steps[d.steps.length - 1].round : '?';
   const isPending = d.winner === 'Pending';
-  const winColor = d.winner === 'Mafia' ? '#D55E00' : d.winner === 'Villagers' ? '#56B4E9' : isPending ? '#f0883e' : '#8b949e';
-  const winText = isPending ? 'Pending' : `${d.winner} wins`;
+  const winColor = d.winner === 'Mafia' ? '#D55E00' : d.winner === 'Villagers' ? '#56B4E9' : isPending ? CHROME.brand : CHROME.muted;
+  const winText = isPending ? STRINGS.pending : STRINGS.wins(d.winner);
   const ps = d.parse_stats;
-  const parseStr = (ps && ps.total) ? ` · parse ${Math.round(100*ps.ok/ps.total)}%` : '';
+  const parseStr = (ps && ps.total) ? STRINGS.cardParse(Math.round(100*ps.ok/ps.total)) : '';
 
   card.innerHTML = `
     <div class="game-card-date">${title}</div>
-    <div class="game-card-meta">${d.players.length} players · ${d.total_steps} steps · ${rounds} rounds${parseStr}</div>
+    <div class="game-card-meta">${STRINGS.cardMeta(d.players.length, d.total_steps, rounds)}${parseStr}</div>
     <div class="game-card-winner" style="color:${winColor}">${winText}</div>
   `;
   card.addEventListener('click', () => {
@@ -438,8 +588,8 @@ function populateGameSelect() {
       runs.forEach(r => { wins[r.winner] = (wins[r.winner]||0)+1; });
       const hdr = document.createElement('div');
       hdr.className = 'batch-header';
-      hdr.textContent = `⑂ @R${fp[0]}.${fp[1]} — ${runs.length} runs — ` +
-        Object.entries(wins).map(([w,c])=>`${w} ${c}`).join(' / ');
+      hdr.textContent = STRINGS.batchHeader(fp[0], fp[1], runs.length,
+        Object.entries(wins).map(([w,c])=>`${w} ${c}`).join(' / '));
       list.appendChild(hdr);
       runs.forEach(r => list.appendChild(mkGameCard(r, true)));
     });
@@ -454,7 +604,7 @@ function updateGameCards() {
   // Update button text
   if (DATA) {
     const ts = DATA.started_at ? new Date(DATA.started_at * 1000) : null;
-    const ds = ts ? ts.toLocaleString('ru-RU', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '??';
+    const ds = ts ? ts.toLocaleString('en-GB', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '??';
     document.getElementById('games-btn').textContent = `${ds} — ${DATA.winner}`;
   }
 }
@@ -503,8 +653,8 @@ function buildTimeline(){
   });
   DATA.steps.forEach((s,i)=>{
     const t=document.createElement('div');t.className=`step-tick ${s.phase}`;
-    t.title=`${s.label} ${s.phase}`;
-    if(forkSteps.has(i)){t.classList.add('has-branch');t.title+=` — ⑂ ${forkSteps.get(i)} branch(es)`;}
+    t.title=STRINGS.tickTitle(s.label, s.phase);
+    if(forkSteps.has(i)){t.classList.add('has-branch');t.title+=STRINGS.tickBranches(forkSteps.get(i));}
     t.addEventListener('click',()=>setStep(i));bar.appendChild(t);
   });
   updateOutcomeStrip();
@@ -518,24 +668,24 @@ function updateOutcomeStrip(){
   const runs=Object.values(ALL_GAMES).filter(d=>d.fork_batch_id===DATA.fork_batch_id);
   const wins={};runs.forEach(r=>{wins[r.winner]=(wins[r.winner]||0)+1;});
   const fp=DATA.fork_point||['?','?'];
-  const colors={Mafia:'#D55E00',Villagers:'#56B4E9',Pending:'#f0883e'};
+  const colors={Mafia:'#D55E00',Villagers:'#56B4E9',Pending:CHROME.brand};
   const total=runs.length||1;
   const bars=Object.entries(wins).map(([w,c])=>
-    `<span style="width:${100*c/total}%;background:${colors[w]||'#6e7681'}" title="${w}: ${c}/${total}"></span>`).join('');
+    `<span style="width:${100*c/total}%;background:${colors[w]||CHROME.faint}" title="${w}: ${c}/${total}"></span>`).join('');
   const parentLink=DATA.forked_from&&ALL_GAMES[DATA.forked_from]
-    ? `<a href="#" onclick="switchGame('${DATA.forked_from}');return false" style="color:#58a6ff">${DATA.forked_from.slice(0,8)}</a>`
+    ? `<a href="#" onclick="switchGame('${DATA.forked_from}');return false" style="color:${CHROME.brand}">${DATA.forked_from.slice(0,8)}</a>`
     : (DATA.forked_from||'?').slice(0,8);
-  el.innerHTML=`<span>⑂ branch of ${parentLink} @R${fp[0]}.${fp[1]} · run#${DATA.replica_idx??'?'}</span>`+
+  el.innerHTML=`<span>${STRINGS.branchOf(parentLink, fp[0], fp[1], DATA.replica_idx??'?')}</span>`+
     `<span class="strip-bar">${bars}</span>`+
     `<span>${Object.entries(wins).map(([w,c])=>`${w} ${c}/${total}`).join(' · ')}</span>`+
-    (DATA.intervention?`<span style="color:#f0883e">intervention: ${esc(JSON.stringify(DATA.intervention))}</span>`:'');
+    (DATA.intervention?`<span style="color:${CHROME.brand}">${STRINGS.intervention(esc(JSON.stringify(DATA.intervention)))}</span>`:'');
   el.style.display='flex';
 }
 
 function openForkDialog(){
   if(!DATA||!DATA.steps.length)return;
   const s=DATA.steps[currentStep];
-  document.getElementById('fork-point-label').textContent=`${s.label} (round ${s.round}, seq ${s.msg_seq}, ${s.phase.replace(/_/g,' ')})`;
+  document.getElementById('fork-point-label').textContent=STRINGS.forkPoint(s.label, s.round, s.msg_seq, s.phase.replace(/_/g,' '));
   document.getElementById('fork-error').textContent='';
   document.getElementById('fork-overlay').classList.add('open');
 }
@@ -555,25 +705,25 @@ async function submitFork(){
     pollForkBatch(j.fork_batch_id,j.total);
   }catch(e){
     document.getElementById('fork-error').textContent =
-      /fetch|network/i.test(e.message)?'Fork API unavailable — run: python serve_viewer.py':e.message;
+      /fetch|network/i.test(e.message)?STRINGS.forkApiUnavailable:e.message;
   }
 }
 
 function pollForkBatch(batchId,total){
   const toast=document.getElementById('fork-toast');
   toast.style.display='block';
-  toast.textContent=`⑂ Fork 0/${total}…`;
+  toast.textContent=STRINGS.forkProgress(0,total)+'…';
   const iv=setInterval(async()=>{
     try{
       const j=await(await fetch(`/api/fork/${batchId}/status`)).json();
-      toast.textContent=`⑂ Fork ${(j.done||0)+(j.failed||0)}/${j.total}`+
-        (j.failed?` (${j.failed} failed)`:'')+(j.running?'…':' — done');
+      toast.textContent=STRINGS.forkProgress((j.done||0)+(j.failed||0), j.total)+
+        (j.failed?STRINGS.forkFailed(j.failed):'')+(j.running?'…':STRINGS.forkDone);
       if(!j.running){
         clearInterval(iv);
         await reloadGames();
         setTimeout(()=>{toast.style.display='none';},8000);
       }
-    }catch(e){clearInterval(iv);toast.textContent='⑂ status poll failed';}
+    }catch(e){clearInterval(iv);toast.textContent=STRINGS.forkPollFailed;}
   },3000);
 }
 
@@ -590,7 +740,7 @@ function updateTimeline(idx){
   document.querySelectorAll('.step-tick').forEach((el,i)=>el.classList.toggle('active',i===idx));
   const s=DATA.steps[idx];document.getElementById('timeline-label').textContent=s.label;
   const imp=impersonating?` [${impersonating}]`:'';
-  document.getElementById('step-info').textContent=`${idx+1}/${DATA.total_steps} | ${s.phase.replace(/_/g,' ')} | ${s.speaker||'—'} | ${DATA.winner} wins${imp}`;
+  document.getElementById('step-info').textContent=STRINGS.stepInfo(idx+1, DATA.total_steps, s.phase.replace(/_/g,' '), s.speaker||'—', DATA.winner)+imp;
 }
 
 // ── Layout ─────────────────────────────────
@@ -610,12 +760,12 @@ function buildNormalLayout(grid){
   grid.appendChild(leftCol); grid.appendChild(gt); grid.appendChild(rightCol);
 }
 
-function mkCol(){const d=document.createElement('div');d.style.cssText='display:flex;flex-direction:column;gap:4px;min-height:0';return d;}
+function mkCol(){const d=document.createElement('div');d.style.cssText='display:flex;flex-direction:column;gap:6px;min-height:0';return d;}
 
 function mkGTPanel(){
   const gt=document.createElement('div');gt.className='panel';gt.id='gt-panel';
   const t=document.createElement('div');t.className='panel-title';
-  t.innerHTML='<span>Ground Truth</span><span class="role-badge" style="background:#f0883e;color:#fff">TRUTH</span>';
+  t.innerHTML=`<span>${STRINGS.groundTruth}</span><span class="role-badge truth-badge">${STRINGS.truthBadge}</span>`;
   const c=document.createElement('div');c.id='gt-content';
   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   svg.id='gt-graph';svg.setAttribute('width','100%');svg.setAttribute('height','100%');svg.setAttribute('viewBox','0 0 300 200');
@@ -638,7 +788,7 @@ function enterImpersonate(name){impersonating=name;buildLayout();renderStep(curr
 function exitImpersonate(){impersonating=null;buildLayout();renderStep(currentStep);}
 function updateImpersonateBadge(){
   const b=document.getElementById('impersonate-badge');
-  if(impersonating){b.style.display='inline-block';b.textContent=`${impersonating} — ESC to exit`;}
+  if(impersonating){b.style.display='inline-block';b.textContent=STRINGS.impersonateBadge(impersonating);}
   else b.style.display='none';
 }
 
@@ -647,9 +797,9 @@ function buildImpersonateLayout(grid){
   grid.style.gridTemplateColumns='1fr 2fr 1fr'; grid.style.gridTemplateRows='1fr';
 
   // Left: GT graph + log
-  const gtPanel=document.createElement('div');gtPanel.className='imp-panel';
+  const gtPanel=document.createElement('div');gtPanel.className='imp-panel';gtPanel.style.borderColor='var(--brand-border)';
   const gtTitle=document.createElement('div');gtTitle.className='panel-title';
-  gtTitle.innerHTML='<span>Ground Truth</span><span class="role-badge" style="background:#f0883e;color:#fff">TRUTH</span>';
+  gtTitle.innerHTML=`<span>${STRINGS.groundTruth}</span><span class="role-badge truth-badge">${STRINGS.truthBadge}</span>`;
   const gtSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   gtSvg.id='imp-gt-graph';gtSvg.setAttribute('width','100%');gtSvg.setAttribute('height','200');gtSvg.setAttribute('viewBox','0 0 300 200');
   const gtLog=document.createElement('div');gtLog.id='imp-gt-log';gtLog.className='imp-log';
@@ -657,9 +807,9 @@ function buildImpersonateLayout(grid){
 
   // Center: My world (beliefs + reasoning log)
   const pInfo = DATA.players.find(p=>p.name===impersonating);
-  const myPanel=document.createElement('div');myPanel.className='imp-panel';myPanel.style.borderColor='#58a6ff';
+  const myPanel=document.createElement('div');myPanel.className='imp-panel';myPanel.style.borderColor='rgba(255,240,82,.40)';
   const myTitle=document.createElement('div');myTitle.className='panel-title';
-  myTitle.innerHTML=`<span>${impersonating}'s World</span><span class="role-badge role-${pInfo.role}">${pInfo.role}</span>`;
+  myTitle.innerHTML=`<span>${STRINGS.myWorld(impersonating)}</span><span class="role-badge role-${pInfo.role}">${pInfo.role}</span>`;
   const mySvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   mySvg.id='imp-my-graph';mySvg.setAttribute('width','100%');mySvg.setAttribute('height','220');mySvg.setAttribute('viewBox','0 0 300 200');
   const myLog=document.createElement('div');myLog.id='imp-my-log';myLog.className='imp-log';
@@ -667,13 +817,13 @@ function buildImpersonateLayout(grid){
 
   // Right: split into two halves
   const rightCol=document.createElement('div');
-  rightCol.style.cssText='display:flex;flex-direction:column;gap:4px;min-height:0';
+  rightCol.style.cssText='display:flex;flex-direction:column;gap:6px;min-height:0';
 
   // Top: "How I think others see me" (from my social_map.toward_me)
   const believedPanel=document.createElement('div');believedPanel.className='imp-panel';believedPanel.style.flex='1';believedPanel.style.minHeight='0';
-  believedPanel.style.borderColor='#f0883e';
+  believedPanel.style.borderColor='rgba(230,159,0,.40)';
   const believedTitle=document.createElement('div');believedTitle.className='panel-title';
-  believedTitle.innerHTML=`<span>How I think they see me</span><span id="imp-believed-score" class="ego-score"></span><span class="role-badge" style="background:#f0883e;color:#fff">BELIEVED</span>`;
+  believedTitle.innerHTML=`<span>${STRINGS.believedTitle}</span><span id="imp-believed-score" class="ego-score"></span><span class="role-badge believed-badge">${STRINGS.believedBadge}</span>`;
   const believedSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   believedSvg.id='imp-believed-graph';believedSvg.setAttribute('width','100%');believedSvg.setAttribute('height','100%');believedSvg.setAttribute('viewBox','0 0 300 200');
   const believedLog=document.createElement('div');believedLog.id='imp-believed-log';believedLog.className='imp-log';believedLog.style.maxHeight='80px';
@@ -681,9 +831,9 @@ function buildImpersonateLayout(grid){
 
   // Bottom: "How they actually see me" (from their role_assessment)
   const actualPanel=document.createElement('div');actualPanel.className='imp-panel';actualPanel.style.flex='1';actualPanel.style.minHeight='0';
-  actualPanel.style.borderColor='#bc8cff';
+  actualPanel.style.borderColor='rgba(188,140,255,.40)';
   const actualTitle=document.createElement('div');actualTitle.className='panel-title';
-  actualTitle.innerHTML=`<span>How they actually see me</span><span id="imp-actual-score" class="ego-score"></span><span class="role-badge" style="background:#bc8cff;color:#fff">ACTUAL</span>`;
+  actualTitle.innerHTML=`<span>${STRINGS.actualTitle}</span><span id="imp-actual-score" class="ego-score"></span><span class="role-badge actual-badge">${STRINGS.actualBadge}</span>`;
   const actualSvg=document.createElementNS('http://www.w3.org/2000/svg','svg');
   actualSvg.id='imp-ego-graph';actualSvg.setAttribute('width','100%');actualSvg.setAttribute('height','100%');actualSvg.setAttribute('viewBox','0 0 300 200');
   const actualLog=document.createElement('div');actualLog.id='imp-ego-log';actualLog.className='imp-log';actualLog.style.maxHeight='80px';
@@ -725,14 +875,14 @@ function buildConversationLog(upToIdx){
       if(b && b.has_data){
         const action = b.planned_action;
         if(action && typeof action==='object')
-          thinkParts.push(`Plan: ${action.action||'?'} → ${action.target||'?'} | ${action.reasoning||''}`);
+          thinkParts.push(STRINGS.planEntry(action.action||'?', action.target||'?', action.reasoning||''));
         const assess = b.role_assessment;
         if(Array.isArray(assess))
           thinkParts.push(assess.map(a=>`${a.player}: ${a.guessed_role} ${a.confidence}%`).join(', '));
       }
       const thinkEntry = thinkParts.length ? {idx:i,label:s.label,phase:s.phase,type:'thinking',
         speaker:s.speaker, text:thinkParts.join('\n'),
-        color:DATA.truth[s.speaker]?ROLE_COLORS[DATA.truth[s.speaker].role]:'#484f58'} : null;
+        color:DATA.truth[s.speaker]?ROLE_COLORS[DATA.truth[s.speaker].role]:CHROME.faint} : null;
 
       // Speaker: thinking BEFORE message (think → speak)
       if(thinkEntry) conversationLog.push(thinkEntry);
@@ -746,11 +896,11 @@ function buildConversationLog(upToIdx){
         const rParts=[];
         const oAction=ob.planned_action;
         if(oAction&&typeof oAction==='object')
-          rParts.push(`Plan: ${oAction.action||'?'} → ${oAction.target||'?'} | ${oAction.reasoning||''}`);
+          rParts.push(STRINGS.planEntry(oAction.action||'?', oAction.target||'?', oAction.reasoning||''));
         if(rParts.length){
           conversationLog.push({idx:i,label:s.label,phase:s.phase,type:'thinking',
             speaker:pname,text:rParts.join('\n'),
-            color:DATA.truth[pname]?ROLE_COLORS[DATA.truth[pname].role]:'#484f58'});
+            color:DATA.truth[pname]?ROLE_COLORS[DATA.truth[pname].role]:CHROME.faint});
         }
       }
     }
@@ -834,9 +984,10 @@ function renderLogEntries(container, entries, currentIdx, opts={}){
     } else if(entry.type==='thinking'){
       // Introspection reasoning — only show on current step, faded
       if (isCurrent) {
-        html=`<div class="log-reasoning log-faded" style="border-left-color:${entry.color||'#30363d'}">${esc(entry.text)}</div>`;
+        html=`<div class="log-reasoning log-faded" style="border-left-color:${entry.color||'rgba(255,255,255,.12)'}">${esc(entry.text)}</div>`;
       }
     }
+    if(!html) return; // skip invisible entries (no stray hairline rows)
     div.innerHTML=html; div.title=entry.text||'';
     container.appendChild(div);
   });
@@ -897,7 +1048,7 @@ function renderGTGraph(step, svgId='#gt-graph'){
       .on('mouseout',hideTooltip).on('click',()=>enterImpersonate(p.name));
     const r=isSpeaker?18:14;
     ng.append('circle').attr('r',r).attr('fill',ROLE_COLORS[p.role]).attr('fill-opacity',0.85)
-      .attr('stroke',isSpeaker?'#f0883e':ROLE_COLORS[p.role]).attr('stroke-width',isSpeaker?3:2);
+      .attr('stroke',isSpeaker?CHROME.brand:ROLE_COLORS[p.role]).attr('stroke-width',isSpeaker?3:2);
     if(dec!==null){
       // Okabe-Ito diverging: vermillion (exposed) -> sky blue (hidden);
       // dashed ring additionally marks "mostly exposed" (< 50%) for CVD readers
@@ -907,7 +1058,7 @@ function renderGTGraph(step, svgId='#gt-graph'){
         .attr('stroke-dasharray',dec<0.5?'3 2':null);
       ng.append('text').attr('class','conf-text').attr('x',r+7).attr('y',3)
         .attr('text-anchor','start').style('fill',decColor).attr('font-weight',700)
-        .text(`hid ${Math.round(dec*100)}%`);
+        .text(STRINGS.hidPct(Math.round(dec*100)));
     }
     ng.append('text').attr('dy',-20).text(p.name);
     if(isAlive) renderB5Bars(g,trueB5,pos.x,pos.y,r);
@@ -921,8 +1072,8 @@ function renderAgentGraph(player, step){
   const alive=new Set(step.alive),isAlive=alive.has(player.name),beliefs=step.player_beliefs[player.name];
   panel.classList.toggle('stale',!!(beliefs&&beliefs.carried_forward));
   panel.classList.toggle('speaking',step.speaker===player.name);
-  if(!isAlive){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').attr('font-size',14).attr('font-weight',700).text('ELIMINATED');return;}
-  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').attr('font-size',12).text('No data yet');return;}
+  if(!isAlive){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).attr('font-size',14).attr('font-weight',700).text(STRINGS.eliminated);return;}
+  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).attr('font-size',12).text(STRINGS.noDataYet);return;}
   const roleBeliefs=beliefs.role_beliefs||{},assessment=beliefs.role_assessment||[],suspicion=beliefs.suspicion_ranking||[];
   const suspMap={},assessMap={};
   if(Array.isArray(suspicion))suspicion.forEach(s=>{suspMap[s.player]=s.score||0;});
@@ -942,7 +1093,7 @@ function renderAgentGraph(player, step){
       .on('mouseout',hideTooltip).on('click',()=>enterImpersonate(p.name));
     const r=isSelf?16:12;
     ng.append('circle').attr('r',r).attr('fill',color).attr('fill-opacity',0.35+confidence/150)
-      .attr('stroke',isSelf?'#f0883e':color).attr('stroke-width',isSelf?3:2);
+      .attr('stroke',isSelf?CHROME.brand:color).attr('stroke-width',isSelf?3:2);
     ng.append('text').attr('dy',-18).text(p.name);
     if(isNodeAlive&&!isSelf) renderB5Bars(g,guessedB5,pos.x,pos.y,r);
   });
@@ -967,8 +1118,8 @@ function renderImpersonateStep(step, idx){
 
   // BELIEVED vs ACTUAL agreement — 2nd-order score for this step
   const agree = computeEgoAgreement(step, name);
-  const scoreTxt = agree.total ? `match ${Math.round(100*agree.matched/agree.total)}% (${agree.matched}/${agree.total})` : '';
-  const scoreColor = !agree.total ? '#6e7681' : (agree.matched/agree.total>=0.75 ? '#009E73' : agree.matched/agree.total>=0.5 ? '#E69F00' : '#D55E00');
+  const scoreTxt = agree.total ? STRINGS.egoScore(Math.round(100*agree.matched/agree.total), agree.matched, agree.total) : '';
+  const scoreColor = !agree.total ? CHROME.faint : (agree.matched/agree.total>=0.75 ? '#009E73' : agree.matched/agree.total>=0.5 ? '#E69F00' : '#D55E00');
   for(const id of ['imp-believed-score','imp-actual-score']){
     const el=document.getElementById(id);
     if(el){ el.textContent=scoreTxt; el.style.color=scoreColor; }
@@ -1022,8 +1173,8 @@ function computeEgoAgreement(step, name){
 function renderMyWorldGraph(step, beliefs, name){
   const svg=d3.select('#imp-my-graph');svg.selectAll('*').remove();
   const alive=new Set(step.alive);
-  if(!alive.has(name)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').attr('font-size',16).text('ELIMINATED');return;}
-  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').text('No data');return;}
+  if(!alive.has(name)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).attr('font-size',16).text(STRINGS.eliminated);return;}
+  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).text(STRINGS.noDataShort);return;}
   const roleBeliefs=beliefs.role_beliefs||{},assessment=beliefs.role_assessment||[],suspicion=beliefs.suspicion_ranking||[];
   const suspMap={},assessMap={};
   if(Array.isArray(suspicion))suspicion.forEach(s=>{suspMap[s.player]=s.score||0;});
@@ -1041,7 +1192,7 @@ function renderMyWorldGraph(step, beliefs, name){
     const ng=g.append('g').attr('class',`node ${isNodeAlive?'':'dead'}`).attr('transform',`translate(${pos.x},${pos.y})`)
       .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:guessedRole,confidence,reason,suspicion:suspMap[p.name]})).on('mouseout',hideTooltip);
     ng.append('circle').attr('r',isSelf?18:13).attr('fill',color).attr('fill-opacity',0.4+confidence/140)
-      .attr('stroke',isSelf?'#f0883e':color).attr('stroke-width',isSelf?3:2);
+      .attr('stroke',isSelf?CHROME.brand:color).attr('stroke-width',isSelf?3:2);
     ng.append('text').attr('dy',-20).text(p.name);
     ng.append('text').attr('class','conf-text').attr('dy',22).text(`${guessedRole} ${confidence}%`);
   });
@@ -1057,8 +1208,8 @@ function renderMyWorldLog(step, idx, name){
     const action=b.planned_action;
     if(action&&typeof action==='object'){
       entries.push({idx:i,label:s.label,phase:s.phase,type:'thinking',
-        text:`[${s.label}] Plan: ${action.action||'?'} -> ${action.target||'?'} | ${action.reasoning||''}`,
-        color:'#58a6ff'});
+        text:`[${s.label}] ${STRINGS.planEntry(action.action||'?', action.target||'?', action.reasoning||'')}`,
+        color:CHROME.brand});
     }
     const assess=b.role_assessment;
     if(Array.isArray(assess)&&i===idx){
@@ -1089,8 +1240,8 @@ function renderBelievedEgoGraph(step, beliefs, name, mismatch){
   const myPos=fixedPositions[name];
   const pInfo=DATA.players.find(p=>p.name===name);
 
-  if(!alive.has(name)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').text('ELIMINATED');return;}
-  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').text('No data');return;}
+  if(!alive.has(name)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).text(STRINGS.eliminated);return;}
+  if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).text(STRINGS.noDataShort);return;}
 
   // Extract toward_me from social_map, with fallback to role_assessment
   const socialMap=beliefs?.social_map;
@@ -1106,8 +1257,8 @@ function renderBelievedEgoGraph(step, beliefs, name, mismatch){
   if(Array.isArray(assessment))assessment.forEach(a=>{assessMap[a.player]=a;});
 
   const hasSocial=Array.isArray(towardMe)&&towardMe.length>0;
-  if(!hasSocial&&!(Array.isArray(assessment)&&assessment.length)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill','#6e7681').text('No social_map probe recorded');return;}
-  if(!hasSocial)svg.append('text').attr('x',150).attr('y',14).attr('text-anchor','middle').attr('fill','#E69F00').attr('font-size',9).text('inferred from role assessment (no social_map)');
+  if(!hasSocial&&!(Array.isArray(assessment)&&assessment.length)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).text(STRINGS.noSocialMap);return;}
+  if(!hasSocial)svg.append('text').attr('x',150).attr('y',14).attr('text-anchor','middle').attr('fill','#E69F00').attr('font-size',9).text(STRINGS.inferredNote);
 
   const attColors={trusts:'#009E73',neutral:'#999999',suspects:'#D55E00'};
 
@@ -1129,7 +1280,7 @@ function renderBelievedEgoGraph(step, beliefs, name, mismatch){
       reason=`I think ${p.name} is ${gr} (${confidence}%) → ${attitude==='neutral'?'no strong signal':`likely ${attitude} me`}`;
     }
 
-    const color=attColors[attitude]||attColors.neutral;
+    const color=attColors[attitude]||attColors.neutral; // Okabe-Ito attitude colors (data)
     // Link
     g.append('line').attr('x1',pos.x).attr('y1',pos.y).attr('x2',myPos.x).attr('y2',myPos.y)
       .attr('stroke',color).attr('stroke-opacity',Math.max(0.35,Math.min(0.9,confidence/100)))
@@ -1137,7 +1288,7 @@ function renderBelievedEgoGraph(step, beliefs, name, mismatch){
       .attr('stroke-dasharray',confidence<30?'4 3':null);
     // Node
     const ng=g.append('g').attr('class','node').attr('transform',`translate(${pos.x},${pos.y})`)
-      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:`I think: ${attitude}`,confidence,reason}))
+      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:STRINGS.iThink(attitude),confidence,reason}))
       .on('mouseout',hideTooltip);
     ng.append('circle').attr('r',12).attr('fill',color).attr('fill-opacity',0.6).attr('stroke',color).attr('stroke-width',2);
     if(mismatch&&mismatch.has(p.name))
@@ -1147,8 +1298,8 @@ function renderBelievedEgoGraph(step, beliefs, name, mismatch){
   });
   // Me
   const ng=g.append('g').attr('class','node').attr('transform',`translate(${myPos.x},${myPos.y})`);
-  ng.append('circle').attr('r',18).attr('fill',ROLE_COLORS[pInfo.role]).attr('fill-opacity',0.9).attr('stroke','#f0883e').attr('stroke-width',3);
-  egoLabels(ng, myPos, 18, name, 'me', 12);
+  ng.append('circle').attr('r',18).attr('fill',ROLE_COLORS[pInfo.role]).attr('fill-opacity',0.9).attr('stroke',CHROME.brand).attr('stroke-width',3);
+  egoLabels(ng, myPos, 18, name, STRINGS.me, 12);
 }
 
 function renderBelievedEgoLog(step, beliefs, name){
@@ -1163,13 +1314,13 @@ function renderBelievedEgoLog(step, beliefs, name){
     towardMe.forEach(t=>{
       entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',
         text:`${t.player}: ${t.attitude} ${t.confidence||0}% — ${t.reason||''}`,
-        color:attColors[t.attitude]||'#6e7681'});
+        color:attColors[t.attitude]||CHROME.faint});
     });
   } else {
     // Fallback: infer from role_assessment
     const assessment=beliefs?.role_assessment||[];
     if(Array.isArray(assessment)&&assessment.length)
-      entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',text:'(no social_map — inferred from role assessment)',color:'#E69F00'});
+      entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',text:STRINGS.inferredLogNote,color:'#E69F00'});
     if(Array.isArray(assessment)){
       assessment.forEach(a=>{
         if(a.player===name) return;
@@ -1177,11 +1328,11 @@ function renderBelievedEgoLog(step, beliefs, name){
         const attitude=guessToAttitude(gr, a.confidence||0);
         entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',
           text:`${a.player}: ${attitude} ${a.confidence||0}% — I think they're ${gr}: ${a.reason||''}`,
-          color:attColors[attitude]||'#6e7681'});
+          color:attColors[attitude]||CHROME.faint});
       });
     }
   }
-  if(!entries.length) entries.push({idx:0,label:'',phase:'',type:'thinking',text:'No data yet',color:'#6e7681'});
+  if(!entries.length) entries.push({idx:0,label:'',phase:'',type:'thinking',text:STRINGS.noDataYet,color:CHROME.faint});
   renderLogEntries(log,entries,step.idx);
 }
 
@@ -1210,7 +1361,7 @@ function renderEgoGraph(step, name, mismatch){
       .attr('stroke',color).attr('stroke-opacity',opacity).attr('stroke-width',Math.max(1,confidence/30));
     // Other player node
     const ng=g.append('g').attr('class','node').attr('transform',`translate(${pos.x},${pos.y})`)
-      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:`thinks I'm ${guessedRole}`,confidence,reason:myAssess.reason||''})).on('mouseout',hideTooltip);
+      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:STRINGS.thinksIm(guessedRole),confidence,reason:myAssess.reason||''})).on('mouseout',hideTooltip);
     ng.append('circle').attr('r',12).attr('fill',ROLE_COLORS[p.role]).attr('fill-opacity',0.7).attr('stroke',ROLE_COLORS[p.role]).attr('stroke-width',2);
     if(mismatch&&mismatch.has(p.name))
       ng.append('circle').attr('r',16).attr('fill','none').attr('stroke','#E69F00')
@@ -1220,7 +1371,7 @@ function renderEgoGraph(step, name, mismatch){
   // Me in center
   const pInfo=DATA.players.find(p=>p.name===name);
   const ng=g.append('g').attr('class','node').attr('transform',`translate(${myPos.x},${myPos.y})`);
-  ng.append('circle').attr('r',18).attr('fill',ROLE_COLORS[pInfo.role]).attr('fill-opacity',0.9).attr('stroke','#f0883e').attr('stroke-width',3);
+  ng.append('circle').attr('r',18).attr('fill',ROLE_COLORS[pInfo.role]).attr('fill-opacity',0.9).attr('stroke',CHROME.brand).attr('stroke-width',3);
   egoLabels(ng, myPos, 18, name, pInfo.role, 12);
 }
 
@@ -1237,7 +1388,7 @@ function renderEgoLog(step, idx, name){
     if(my){
       const color=ROLE_COLORS[DATA.truth[p.name]?.role]||'#888';
       entries.push({idx,label:step.label,phase:step.phase,type:'thinking',
-        text:`${p.name} thinks: ${my.guessed_role} ${my.confidence}% — ${my.reason||''}`,color});
+        text:STRINGS.theyThink(p.name, my.guessed_role, my.confidence, my.reason||''),color});
     }
   });
   renderLogEntries(log,entries,idx);
@@ -1287,14 +1438,14 @@ function renderB5Bars(g, b5, x, y, r) {
 
 function b5ToHtml(b5, label) {
   if (!b5) return '';
-  let h = `<div style="margin-top:6px;font-size:10px;color:#6e7681">${label}</div>`;
+  let h = `<div style="margin-top:6px;font-size:10px;color:${CHROME.faint}">${label}</div>`;
   h += '<div style="display:flex;gap:6px;margin-top:2px">';
   B5_LABELS.forEach(t => {
     const v = b5[t] || 0;
     h += `<span style="color:${B5_COLORS[t]};font-weight:600;font-size:11px">${t}:${v}</span>`;
   });
   h += '</div>';
-  if (b5.summary) h += `<div style="color:#8b949e;font-size:10px;margin-top:2px">${b5.summary}</div>`;
+  if (b5.summary) h += `<div style="color:${CHROME.muted};font-size:10px;margin-top:2px">${b5.summary}</div>`;
   return h;
 }
 
@@ -1303,13 +1454,13 @@ function showTooltip(ev,d){
   const tt=document.getElementById('tooltip');
   let h=`<div class="tt-name">${d.id}</div><div style="color:${ROLE_COLORS[d.role]||'#888'};font-weight:600">${d.role}`;
   if(d.confidence!==undefined)h+=` (${d.confidence}%)`;h+='</div>';
-  if(d.reason)h+=`<div style="color:#8b949e;font-style:italic;margin-top:4px">${d.reason}</div>`;
-  if(d.suspicion)h+=`<div style="margin-top:4px">Suspicion: ${d.suspicion}/10</div>`;
-  if(d.deception!==undefined&&d.deception!==null)h+=`<div style="margin-top:4px">Deception success: ${Math.round(d.deception*100)}% of informed crowd does NOT see Mafia</div>`;
-  if(d.model)h+=`<div style="color:#6e7681;margin-top:2px">${d.model}</div>`;
+  if(d.reason)h+=`<div style="color:${CHROME.muted};font-style:italic;margin-top:4px">${d.reason}</div>`;
+  if(d.suspicion)h+=`<div style="margin-top:4px">${STRINGS.ttSuspicion(d.suspicion)}</div>`;
+  if(d.deception!==undefined&&d.deception!==null)h+=`<div style="margin-top:4px">${STRINGS.ttDeception(Math.round(d.deception*100))}</div>`;
+  if(d.model)h+=`<div style="color:${CHROME.faint};margin-top:2px">${d.model}</div>`;
   // Big Five
-  if(d.b5_true) h += b5ToHtml(d.b5_true, 'True Big Five:');
-  if(d.b5_guessed) h += b5ToHtml(d.b5_guessed, 'Guessed Big Five:');
+  if(d.b5_true) h += b5ToHtml(d.b5_true, STRINGS.ttTrueB5);
+  if(d.b5_guessed) h += b5ToHtml(d.b5_guessed, STRINGS.ttGuessedB5);
   tt.innerHTML=h;tt.style.display='block';tt.style.left=(ev.clientX+14)+'px';tt.style.top=(ev.clientY-12)+'px';
 }
 function hideTooltip(){document.getElementById('tooltip').style.display='none';}
@@ -1424,10 +1575,10 @@ function drawMetricChart(svgId, series, currentIdx){
   const x = i => L + (n<=1 ? 0 : (W-L-R) * i/(n-1));
   const y = v => T + (H-T-B) * (1-v);
   const g = svg.append('g');
-  // y gridlines 0 / 0.5 / 1
+  // y gridlines 0 / 0.5 / 1 — hairline, recessive
   [0,0.5,1].forEach(v=>{
     g.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v))
-      .attr('stroke','#21262d').attr('stroke-width',1);
+      .attr('stroke',CHROME.grid).attr('stroke-width',1);
     g.append('text').attr('class','metric-axis-label').attr('x',L-3).attr('y',y(v)+2.5)
       .attr('text-anchor','end').text(v===0.5?'.5':v);
   });
@@ -1435,7 +1586,7 @@ function drawMetricChart(svgId, series, currentIdx){
   const xt = n<=1 ? [0] : [0, n-1];
   xt.forEach(i=>{
     g.append('line').attr('x1',x(i)).attr('x2',x(i)).attr('y1',y(0)).attr('y2',y(0)+2.5)
-      .attr('stroke','#484f58');
+      .attr('stroke',CHROME.faint);
     g.append('text').attr('class','metric-axis-label').attr('x',x(i)).attr('y',H-4)
       .attr('text-anchor',i===0?'start':'end').text(i+1);
   });
@@ -1452,10 +1603,10 @@ function drawMetricChart(svgId, series, currentIdx){
   // current-step cursor
   g.append('line').attr('class','metric-cursor')
     .attr('x1',x(currentIdx)).attr('x2',x(currentIdx)).attr('y1',T).attr('y2',y(0))
-    .attr('stroke','#58a6ff').attr('stroke-width',1).attr('stroke-opacity',0.8);
+    .attr('stroke',CHROME.brand).attr('stroke-width',1).attr('stroke-opacity',0.8);
   // hover marker
   const hover = g.append('line').attr('y1',T).attr('y2',y(0))
-    .attr('stroke','#8b949e').attr('stroke-width',1).attr('stroke-dasharray','2 2')
+    .attr('stroke',CHROME.muted).attr('stroke-width',1).attr('stroke-dasharray','2 2')
     .attr('visibility','hidden');
   const evStep = ev => {
     const [mx] = d3.pointer(ev);
@@ -1473,7 +1624,7 @@ function drawMetricChart(svgId, series, currentIdx){
       const sw = `<span style="display:inline-block;width:9px;height:3px;border-radius:2px;background:${s.color};margin-right:5px;vertical-align:middle;${s.dashed?'opacity:.6;':''}"></span>`;
       return `<div>${sw}${esc(s.name)}: <b>${v===null||v===undefined?'—':v.toFixed(2)}</b></div>`;
     }).join('');
-    tt.innerHTML = `<div class="tt-name">step ${i+1} — ${esc(DATA.steps[i].label)}</div>${rows}`;
+    tt.innerHTML = `<div class="tt-name">${STRINGS.metricStep(i+1, esc(DATA.steps[i].label))}</div>${rows}`;
     tt.style.display='block'; tt.style.left=(ev.clientX+14)+'px'; tt.style.top=(ev.clientY-12)+'px';
   });
   svg.on('mouseleave', ()=>{ hover.attr('visibility','hidden'); hideTooltip(); });
@@ -1490,11 +1641,11 @@ function renderMetricsPanel(){
   const leg = document.getElementById('metrics-legend');
   leg.innerHTML = DATA.players.map(p=>
     `<span class="legend-item" title="${p.name} — ${DATA.truth[p.name].role}"><span class="legend-swatch" style="background:${agentColor(p.name)}"></span>`+
-    `<span style="color:${alive.has(p.name)?'#c9d1d9':'#484f58'}">${p.name}${DATA.truth[p.name].role==='Mafia'?' (M)':''}</span></span>`
+    `<span style="color:${alive.has(p.name)?'#d6d5d1':CHROME.faint}">${p.name}${DATA.truth[p.name].role==='Mafia'?' (M)':''}</span></span>`
   ).join('')
-  + `<span class="legend-item" style="margin-left:14px" title="Share of alive mafiosi detected by a majority of informed non-mafia observers"><span class="legend-swatch" style="background:#f0883e"></span>crowd recall</span>`
-  + `<span class="legend-item" title="Per-mafioso: share of observers NOT naming them Mafia">${dashSwatch('#c9d1d9')}deception (per mafioso)</span>`
-  + `<span style="margin-left:auto;color:#6e7681">x: timeline step · y: score 0–1 · hover for values, click to seek</span>`;
+  + `<span class="legend-item" style="margin-left:14px" title="${STRINGS.legendCrowdRecallTitle}"><span class="legend-swatch" style="background:#f0883e"></span>${STRINGS.legendCrowdRecall}</span>`
+  + `<span class="legend-item" title="${STRINGS.legendDeceptionTitle}">${dashSwatch('#d6d5d1')}${STRINGS.legendDeception}</span>`
+  + `<span style="margin-left:auto;color:${CHROME.faint}">${STRINGS.legendAxes}</span>`;
 
   drawMetricChart('#m-acc',
     DATA.players.map(p=>({name:p.name,color:agentColor(p.name),values:M.accuracy[p.name]})),
@@ -1502,7 +1653,7 @@ function renderMetricsPanel(){
 
   const mafiaNames = DATA.players.filter(p=>p.role==='Mafia').map(p=>p.name);
   drawMetricChart('#m-recall',
-    [{name:'crowd recall',color:'#f0883e',values:M.recall}]
+    [{name:STRINGS.legendCrowdRecall,color:'#f0883e',values:M.recall}]
       .concat(mafiaNames.map(m=>({name:m,color:agentColor(m),dashed:true,
         values:M.deception.map(d=>(d&&d[m]!==undefined)?d[m]:null)}))),
     currentStep);
@@ -1524,9 +1675,15 @@ function updateParseBadge(){
   if(!ps||!ps.total){ el.style.display='none'; return; }
   const pct = Math.round(100*ps.ok/ps.total);
   el.style.display='inline-block';
-  el.textContent = `probes ${pct}%`;
-  el.style.background = pct>=90?'#00795a':pct>=70?'#9a6a00':'#b04a00';
-  el.title = 'Share of introspection probes that returned parseable JSON\n' +
+  el.textContent = STRINGS.parseBadge(pct);
+  // status tint: good / warning / serious (never reused as series colors)
+  const tier = pct>=90
+    ? {bg:'rgba(0,158,115,.15)',  fg:'#2fbf91', bd:'rgba(0,158,115,.40)'}
+    : pct>=70
+    ? {bg:'rgba(230,159,0,.14)',  fg:'#E69F00', bd:'rgba(230,159,0,.40)'}
+    : {bg:'rgba(255,101,104,.14)',fg:'#ff8385', bd:'rgba(255,101,104,.40)'};
+  el.style.background = tier.bg; el.style.color = tier.fg; el.style.borderColor = tier.bd;
+  el.title = STRINGS.parseBadgeTitle + '\n' +
     Object.entries(ps.by_probe).map(([k,v])=>`${k}: ${v.ok}/${v.total} (${Math.round(100*v.ok/v.total)}%)`).join('\n');
 }
 
@@ -1561,8 +1718,8 @@ function computeCalibration(agent){
 
 function openCalibration(){
   const sel = document.getElementById('calib-agent');
-  sel.innerHTML = '<option value="">All agents</option>' +
-    DATA.players.map(p=>`<option value="${p.name}">${p.name} (${p.role})</option>`).join('');
+  sel.innerHTML = `<option value="">${STRINGS.allAgents}</option>` +
+    DATA.players.map(p=>`<option value="${p.name}">${STRINGS.agentOption(p.name, p.role)}</option>`).join('');
   document.getElementById('calib-overlay').classList.add('open');
   renderCalibration();
 }
@@ -1582,7 +1739,7 @@ function renderCalibration(){
   const agent = document.getElementById('calib-agent').value || null;
   const stats = computeCalibration(agent);
   const svg = d3.select('#calib-chart'); svg.selectAll('*').remove();
-  const W=600, H=300, L=46, R=14, T=14, B=34;
+  const W=600, H=300, L=46, R=14, T=14, B=40;
   const x = i => L + (W-L-R)*(i+0.5)/stats.length;
   const bw = (W-L-R)/stats.length*0.62;
   const y = v => T + (H-T-B)*(1-v);
@@ -1591,18 +1748,18 @@ function renderCalibration(){
   defs.append('pattern').attr('id','calib-hatch').attr('patternUnits','userSpaceOnUse')
     .attr('width',6).attr('height',6).attr('patternTransform','rotate(45)')
     .append('line').attr('x1',0).attr('y1',0).attr('x2',0).attr('y2',6)
-    .attr('stroke','#0d1117').attr('stroke-width',2.2).attr('stroke-opacity',0.55);
+    .attr('stroke',CHROME.popover||'#1a1a16').attr('stroke-width',2.2).attr('stroke-opacity',0.55);
   const g = svg.append('g');
-  // axes / gridlines
+  // axes / gridlines — hairline, recessive
   [0,0.25,0.5,0.75,1].forEach(v=>{
-    g.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v)).attr('stroke','#21262d');
+    g.append('line').attr('x1',L).attr('x2',W-R).attr('y1',y(v)).attr('y2',y(v)).attr('stroke',CHROME.grid);
     g.append('text').attr('x',L-6).attr('y',y(v)+3).attr('text-anchor','end')
-      .attr('fill','#6e7681').attr('font-size',10).text(Math.round(v*100)+'%');
+      .attr('fill',CHROME.muted).attr('font-size',10).text(Math.round(v*100)+'%');
   });
   // perfect-calibration diagonal (bin midpoints)
   const diag = d3.line()(stats.map((b,i)=>[x(i), y((b.lo+b.hi+1)/2/100)]));
   g.append('path').attr('d',diag).attr('fill','none')
-    .attr('stroke','#6e7681').attr('stroke-dasharray','5 4').attr('stroke-width',1.2);
+    .attr('stroke',CHROME.faint).attr('stroke-dasharray','5 4').attr('stroke-width',1.2);
   // bars
   stats.forEach((b,i)=>{
     const acc = b.n? b.ok/b.n : null;
@@ -1621,35 +1778,35 @@ function renderCalibration(){
       if(lowN)
         g.append('rect').attr('x',x(i)-bw/2).attr('y',y(acc))
           .attr('width',bw).attr('height',y(0)-y(acc))
-          .attr('fill','none').attr('stroke','#6e7681').attr('stroke-dasharray','4 3').attr('rx',3);
+          .attr('fill','none').attr('stroke',CHROME.faint).attr('stroke-dasharray','4 3').attr('rx',3);
       // 95% CI whiskers (Wilson)
       const ci = wilsonCI(b.ok, b.n);
       if(ci){
-        const wc = lowN?'#6e7681':'#e6edf3';
+        const wc = lowN?CHROME.faint:CHROME.fg;
         g.append('line').attr('x1',x(i)).attr('x2',x(i)).attr('y1',y(ci[0])).attr('y2',y(ci[1]))
           .attr('stroke',wc).attr('stroke-width',1.4).attr('stroke-opacity',0.9);
         [ci[0],ci[1]].forEach(v=>
           g.append('line').attr('x1',x(i)-5).attr('x2',x(i)+5).attr('y1',y(v)).attr('y2',y(v))
             .attr('stroke',wc).attr('stroke-width',1.4).attr('stroke-opacity',0.9));
         g.append('text').attr('x',x(i)+8).attr('y',y(acc)+4).attr('text-anchor','start')
-          .attr('fill',lowN?'#6e7681':'#e6edf3').attr('font-size',11).attr('font-weight',700)
+          .attr('fill',lowN?CHROME.faint:CHROME.fg).attr('font-size',11).attr('font-weight',700)
           .text(Math.round(acc*100)+'%');
       }
     } else {
       g.append('text').attr('x',x(i)).attr('y',y(0)-8).attr('text-anchor','middle')
-        .attr('fill','#484f58').attr('font-size',10).text('no data');
+        .attr('fill',CHROME.faint).attr('font-size',10).text(STRINGS.calibNoData);
     }
     g.append('text').attr('x',x(i)).attr('y',H-B+14).attr('text-anchor','middle')
-      .attr('fill','#8b949e').attr('font-size',10).text(`${b.lo}–${b.hi}`);
+      .attr('fill',CHROME.muted).attr('font-size',10).text(`${b.lo}–${b.hi}`);
     g.append('text').attr('x',x(i)).attr('y',H-B+26).attr('text-anchor','middle')
-      .attr('fill',lowN?'#9a6a00':'#484f58').attr('font-size',9)
-      .text(`n=${b.n}${lowN?' ⚠':''}`);
+      .attr('fill',lowN?'#d3a94b':CHROME.faint).attr('font-size',9)
+      .text(STRINGS.calibBinN(b.n, lowN));
   });
   g.append('text').attr('x',(L+W-R)/2).attr('y',H-2).attr('text-anchor','middle')
-    .attr('fill','#6e7681').attr('font-size',10).text('stated confidence bin');
+    .attr('fill',CHROME.muted).attr('font-size',10).text(STRINGS.calibXAxis);
   g.append('text').attr('transform',`translate(11,${(T+H-B)/2}) rotate(-90)`)
-    .attr('text-anchor','middle').attr('fill','#6e7681').attr('font-size',10)
-    .text('actual accuracy (hatched = overconfident)');
+    .attr('text-anchor','middle').attr('fill',CHROME.muted).attr('font-size',10)
+    .text(STRINGS.calibYAxis);
 }
 
 loadData();

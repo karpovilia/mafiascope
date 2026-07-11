@@ -110,6 +110,10 @@ class Game:
     battery: tuple[str, ...] = ()
     forked_from: str | None = None          # parent game_id for replay forks
     final_round: int | None = None          # round of the game_over event
+    # second-order-feedback experimental arm (setup marker, see
+    # configs/config_en_feedback.yaml) — such games must never be pooled
+    # with the observational corpora
+    feedback_to_context: bool = False
 
     @property
     def is_main_batch(self) -> bool:
@@ -121,8 +125,12 @@ class Game:
         return set(self.gt) - dead
 
 
-def load_games(logs_dir: str) -> list[Game]:
-    """Load every log directory that has a game.jsonl (probes may be empty)."""
+def load_games(logs_dir: str, tolerant: bool = False) -> list[Game]:
+    """Load every log directory that has a game.jsonl (probes may be empty).
+
+    ``tolerant=True`` skips undecodable JSONL lines (torn trailing writes
+    of games that are still running) instead of raising.
+    """
     games: list[Game] = []
     for d in sorted(os.listdir(logs_dir)):
         gdir = os.path.join(logs_dir, d)
@@ -132,12 +140,18 @@ def load_games(logs_dir: str) -> list[Game]:
         g = Game(game_id=d, dir=gdir, gt={}, probes=[])
         with open(gp) as f:
             for line in f:
-                r = json.loads(line)
+                try:
+                    r = json.loads(line)
+                except json.JSONDecodeError:
+                    if tolerant:
+                        continue
+                    raise
                 g.n_game_records += 1
                 kind = r.get("kind")
                 if kind == "setup":
                     g.setup_ts = r.get("ts")
                     g.forked_from = r.get("forked_from")
+                    g.feedback_to_context = bool(r.get("feedback_to_context", False))
                     for p in r.get("players", []):
                         g.gt[p["name"]] = p["role"]
                 elif kind == "game_over":
@@ -152,7 +166,13 @@ def load_games(logs_dir: str) -> list[Game]:
         ip = os.path.join(gdir, "introspection.jsonl")
         if os.path.exists(ip):
             with open(ip) as f:
-                g.probes = [json.loads(line) for line in f]
+                for line in f:
+                    try:
+                        g.probes.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        if tolerant:
+                            continue
+                        raise
         g.battery = tuple(sorted({r["probe_id"] for r in g.probes}))
         games.append(g)
     return games

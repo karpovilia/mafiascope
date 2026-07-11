@@ -42,6 +42,11 @@ class IntrospectionConfig:
     after_each_round: bool = True
     probes: list[ProbeConfig] = field(default_factory=list)
     log_file: str = "logs/introspection.jsonl"
+    # Experimental arm ("second-order feedback"): if True, each agent's own
+    # latest probe answers (role_assessment + social_map) are injected into
+    # its private prompt before each of its own moves.  Invasive by design;
+    # strictly opt-in — False reproduces the baseline engine bit-for-bit.
+    feedback_to_context: bool = False
 
 
 @dataclass
@@ -180,6 +185,35 @@ class IntrospectionEngine:
     def close(self) -> None:
         if self.logger:
             self.logger.close()
+
+    def feedback_block(self, player_name: str) -> str | None:
+        """Second-order-feedback arm (introspection.feedback_to_context).
+
+        Returns a short private block with THIS player's own latest probe
+        answers (role_assessment + social_map), to be prepended to the
+        player's next action prompt by the game loop.  Returns None when
+        the flag is off (default) or no answers exist yet — in that case
+        the game loop leaves the prompt byte-identical to baseline.
+        Never touches other players and never alters the probes themselves.
+        """
+        if not self.cfg.enabled or not self.cfg.feedback_to_context:
+            return None
+        last = self._last_answers.get(player_name)
+        if not last:
+            return None
+        parts: list[str] = []
+        ra = last.get("role_assessment")
+        if ra and ra != "N/A":
+            parts.append(f"role beliefs: {ra}")
+        sm = last.get("social_map")
+        if sm and sm != "N/A":
+            parts.append(f"how others see you: {sm}")
+        if not parts:
+            return None
+        return (
+            "Your latest private self-assessment (not visible to others): "
+            + "; ".join(parts)
+        )
 
     # ── JSON extraction ─────────────────────
 
@@ -393,4 +427,5 @@ def load_introspection_config(raw: dict[str, Any]) -> IntrospectionConfig:
         after_each_round=raw.get("after_each_round", True),
         probes=probes,
         log_file=raw.get("log_file", "logs/introspection.jsonl"),
+        feedback_to_context=raw.get("feedback_to_context", False),
     )
