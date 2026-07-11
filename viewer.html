@@ -404,11 +404,6 @@ body.metrics-open #metrics-panel { display: grid; }
 }
 #tooltip .tt-name { font-weight: 700; color: var(--foreground); }
 
-#hint {
-  position: fixed; bottom: 8px; right: 12px; color: var(--muted-foreground); font-size: 10px;
-  background: rgba(13,12,10,.85); padding: 3px 10px; border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.06);
-}
 </style>
 </head>
 <body>
@@ -506,7 +501,6 @@ body.metrics-open #metrics-panel { display: grid; }
 </div>
 <div id="fork-toast"></div>
 <div id="tooltip"></div>
-<div id="hint">← → navigate | click a name to impersonate | M metrics | Esc to exit</div>
 
 <script>
 // Okabe-Ito colorblind-safe palette (distinguishable under deuteranopia/protanopia)
@@ -2038,8 +2032,8 @@ const TOUR = [
     x: 'What is actually happening: node fill = true role, arrows = night actions and votes. The ring around a living Mafioso shows its current <b>deception success</b>: the share of informed observers who still fail to name it Mafia. Mini-histograms are the Big Five personality each agent was generated with.' },
   { sel: '#main-grid', t: 'Private beliefs', pad: 4,
     x: 'Each side panel is one agent\'s subjective world, reconstructed from probe answers: node colour = the role it privately assigns, edges = suspicion. Hover an edge to read the agent\'s verbatim rationale at that step.' },
-  { sel: '#hint', t: 'Impersonate mode',
-    x: 'Click any player name to re-render the whole interface from inside that agent: only what it can see, what it believes, and the gap between who it <b>thinks</b> suspects it and who <b>actually</b> does, scored live. Esc exits.' },
+  { t: 'Impersonate mode & keyboard',
+    x: 'Click any player name to re-render the whole interface from inside that agent: only what it can see, what it believes, and the gap between who it <b>thinks</b> suspects it and who <b>actually</b> does, scored live. Shortcuts: <b>←</b>/<b>→</b> navigate, <b>M</b> metrics, <b>Esc</b> exits.' },
   { sel: '#metrics-btn', t: 'Metrics & calibration', pad: 4, grow: '#calib-btn',
     x: '<b>Metrics</b> plots first-order accuracy, crowd Mafia-detection recall and second-order consistency along the timeline. <b>Calibration</b> bins stated confidence against actual accuracy (ECE).' },
   { sel: '#branch-btn', t: 'Counterfactual replay', pad: 4,
