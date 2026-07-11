@@ -69,6 +69,15 @@
 :root[data-theme="light"] #tour-dots i.on { background: var(--brand); }
 :root[data-theme="light"] #tour-spot { box-shadow: 0 0 0 9999px rgba(30,28,22,.45), 0 0 24px rgba(161,98,7,.25); }
 :root[data-theme="light"] .tour-btn.primary { color: #fff; }
+/* Timeline phase ticks: the dark palette reads gloomy on paper — bright, clean tints for light */
+:root[data-theme="light"] .step-tick.night { background: #9dc0f2; }
+:root[data-theme="light"] .step-tick.day_discuss { background: #a9dc86; }
+:root[data-theme="light"] .step-tick.day_vote { background: #f4cf78; }
+:root[data-theme="light"] .step-tick.night_analysis { background: #c9a6ef; }
+:root[data-theme="light"] .step-tick.intro { background: #86dcc7; }
+:root[data-theme="light"] .step-tick.round_end { background: #d7ccb0; }
+:root[data-theme="light"] .step-tick { border-right-color: var(--card); }
+:root[data-theme="light"] .step-tick:hover { filter: brightness(1.06); }
 /* the lamp glows while the lights are on */
 :root[data-theme="light"] #theme-btn {
   background: var(--brand-muted); border-color: var(--brand-border);
@@ -98,14 +107,23 @@ body {
   font-size: 13px; font-weight: 600; letter-spacing: .01em;
   color: var(--foreground); white-space: nowrap;
   display: flex; align-items: center; gap: 8px;
+  cursor: pointer; user-select: none;
+  transition: color .15s ease;
 }
+#header h1:hover { color: var(--brand); }
 #header h1::before {
   content: ''; width: 8px; height: 8px; border-radius: 2.5px;
   background: var(--brand); flex-shrink: 0;
 }
+.brand-caret { font-size: 10px; color: var(--muted-foreground); }
+#header h1:hover .brand-caret { color: var(--brand); }
+#current-game {
+  font-size: 11px; color: var(--muted-foreground); white-space: nowrap;
+  padding-right: 2px;
+}
 
 /* Buttons */
-#games-btn, .hdr-btn {
+.hdr-btn {
   background: var(--secondary); color: var(--foreground);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-sm); padding: 4px 12px;
@@ -113,7 +131,8 @@ body {
   cursor: pointer; white-space: nowrap;
   transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
-#games-btn:hover, .hdr-btn:hover { background: #2e2d29; border-color: var(--border); }
+.hdr-btn:hover { background: #2e2d29; border-color: var(--border); }
+:root[data-theme="light"] .hdr-btn:hover { background: var(--secondary); filter: brightness(.97); }
 .hdr-btn.on {
   background: var(--brand-muted); border-color: var(--brand-border); color: var(--brand);
 }
@@ -415,6 +434,12 @@ body.metrics-open #metrics-panel { display: grid; }
         <option value="without">Without branches</option>
       </select>
     </div>
+    <select id="flt-winner" onchange="FLT.winner=this.value;populateGameSelect()">
+      <option value="">Any winner</option>
+      <option value="Mafia">Mafia won</option>
+      <option value="Villagers">Villagers won</option>
+      <option value="Pending">Pending</option>
+    </select>
     <select id="flt-model" onchange="FLT.model=this.value;populateGameSelect()">
       <option value="">Any model</option>
     </select>
@@ -423,8 +448,8 @@ body.metrics-open #metrics-panel { display: grid; }
   <div id="sidebar-list"></div>
 </div>
 <div id="header">
-  <h1>MafiaScope</h1>
-  <button id="games-btn" onclick="toggleSidebar()">Games</button>
+  <h1 id="brand" onclick="toggleSidebar()" title="Browse games">MafiaScope <span class="brand-caret">▾</span></h1>
+  <span id="current-game" title="Current game — click MafiaScope to switch"></span>
   <button id="metrics-btn" class="hdr-btn" onclick="toggleMetrics()">Metrics</button>
   <button id="calib-btn" class="hdr-btn" onclick="openCalibration()">Calibration</button>
   <button id="theme-btn" class="hdr-btn" onclick="toggleTheme()" title="Turn the lights on/off">💡</button>
@@ -629,7 +654,7 @@ function closeSidebar() {
 }
 
 // ── Game search / filters ──────────────────
-const FLT = { text: '', lang: '', branch: '', model: '' };
+const FLT = { text: '', lang: '', branch: '', model: '', winner: '' };
 
 function gameLang(d){
   if (d.language) return d.language;
@@ -644,6 +669,7 @@ function gameModels(d){
 function gameMatches(d){
   if (FLT.lang && gameLang(d) !== FLT.lang) return false;
   if (FLT.model && !gameModels(d).includes(FLT.model)) return false;
+  if (FLT.winner && d.winner !== FLT.winner) return false;
   if (FLT.text){
     const hay = (d.game_id + ' ' + d.winner + ' '
       + d.players.map(p => p.name).join(' ') + ' '
@@ -713,7 +739,7 @@ function populateGameSelect() {
     return gameMatches(root);
   });
   document.getElementById('flt-count').textContent =
-    (FLT.text || FLT.lang || FLT.branch || FLT.model)
+    (FLT.text || FLT.lang || FLT.branch || FLT.model || FLT.winner)
       ? `${roots.length} of ${allRoots.length} games` : `${allRoots.length} games`;
   roots.forEach(root => {
     list.appendChild(mkGameCard(root, false));
@@ -742,11 +768,12 @@ function updateGameCards() {
   document.querySelectorAll('.game-card').forEach(c => {
     c.classList.toggle('active', DATA && c.dataset.gid === DATA.game_id);
   });
-  // Update button text
-  if (DATA) {
+  // Reflect the current game in the header label (the games menu now lives on the logo)
+  const cg = document.getElementById('current-game');
+  if (DATA && cg) {
     const ts = DATA.started_at ? new Date(DATA.started_at * 1000) : null;
     const ds = ts ? ts.toLocaleString('en-GB', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '??';
-    document.getElementById('games-btn').textContent = `${ds} — ${DATA.winner}`;
+    cg.textContent = `${ds} — ${DATA.winner}`;
   }
 }
 
@@ -2017,7 +2044,7 @@ const TOUR = [
     x: '<b>Metrics</b> plots first-order accuracy, crowd Mafia-detection recall and second-order consistency along the timeline. <b>Calibration</b> bins stated confidence against actual accuracy (ECE).' },
   { sel: '#branch-btn', t: 'Counterfactual replay', pad: 4,
     x: 'Fork the recorded game at the selected step and replay N continuations: the outcome distribution tells you whether this utterance actually mattered. Branches appear on the timeline and in the games list.' },
-  { sel: '#games-btn', t: 'More games', pad: 4,
+  { sel: '#brand', t: 'Games menu', pad: 4,
     x: 'The corpus lives here: main games and their replay branches, searchable by player, model or game id and filterable by language and branches. Every view is addressable by URL fragment (#metrics, #step=N&imp=Name), so you can cite an exact analytical state. Press <b>?</b> anytime to see this tour again.' },
 ];
 let ti = -1;
@@ -2097,11 +2124,15 @@ document.addEventListener('keydown', function(e){
 $id('tour-dim').addEventListener('click', tourEnd);
 addEventListener('resize', ()=>{ if (ti>=0) place(TOUR[ti]); });
 
-// "?" button in the header + first-visit auto-start
+// "?" button in the header + first-visit auto-start.
+// Park the lamp right next to it so the theme toggle and tour help sit together.
 const hb = document.createElement('button');
 hb.id = 'tour-help-btn'; hb.className = 'hdr-btn'; hb.textContent = '?';
 hb.title = 'Guided tour'; hb.onclick = tourStart;
-document.getElementById('header').appendChild(hb);
+const hdr = document.getElementById('header');
+const lamp = document.getElementById('theme-btn');
+if (lamp) hdr.appendChild(lamp);   // move the lamp into the right-hand cluster
+hdr.appendChild(hb);
 let seen = '1';
 try { seen = localStorage.getItem('mafiascope_tour_done'); } catch(e){}
 if (!seen) setTimeout(tourStart, 900);
