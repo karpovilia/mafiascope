@@ -15,7 +15,7 @@ the counterfactual.
 ![MafiaScope viewer — ground-truth graph with per-agent belief panels](docs/img/overview.png)
 
 - **Video demo:** <https://vimeo.com/1208920221>
-- **Paper:** TODO (arXiv link forthcoming)
+- **Paper:** [arXiv:2607.10645](https://arxiv.org/abs/2607.10645)
 - **License:** MIT — see [LICENSE](LICENSE)
 
 ## Key features
