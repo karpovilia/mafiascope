@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MafiaScope — Probe Editor</title>
+<style>
+/* ── Onest (local, offline-safe) ─────────────────────────── */
+@font-face {
+  font-family: 'Onest'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('fonts/onest-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Onest'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('fonts/onest-cyrillic.woff2') format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+/* ── Design tokens (warm dark minimalism) ────────────────── */
+:root {
+  --background: #0d0c0a;
+  --card: #181714;
+  --popover: #1a1a16;
+  --secondary: #262522;
+  --foreground: #f5f5f2;
+  --muted-foreground: #9f9e9b;
+  --faint: #6c6b67;
+  --border: rgba(255,255,255,.10);
+  --border-soft: rgba(255,255,255,.07);
+  --input: rgba(255,255,255,.14);
+  --brand: #fff052;
+  --brand-muted: rgba(255,240,82,.14);
+  --brand-border: rgba(255,240,82,.30);
+  --destructive: #ff6568;
+  --warn: #E69F00;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-sm: 8px;
+  --font-sans: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+/* Light theme: warm paper tokens mirroring the dark set */
+:root[data-theme="light"] {
+  --background: #f7f5f1;
+  --card: #fffdf9;
+  --popover: #fffdf9;
+  --secondary: #edeae2;
+  --foreground: #1c1b18;
+  --muted-foreground: #6b6862;
+  --faint: #98948c;
+  --border: rgba(0,0,0,.13);
+  --border-soft: rgba(0,0,0,.075);
+  --input: rgba(0,0,0,.16);
+  --brand: #a16207;
+  --brand-muted: rgba(161,98,7,.10);
+  --brand-border: rgba(161,98,7,.35);
+  --destructive: #d92d20;
+  --warn: #b45309;
+}
+:root[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); }
+/* the lamp glows while the lights are on */
+:root[data-theme="light"] #theme-btn {
+  background: var(--brand-muted); border-color: var(--brand-border);
+  box-shadow: 0 0 10px rgba(161,98,7,.35);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--background); color: var(--foreground);
+  font-family: var(--font-sans); font-size: 13px; padding-bottom: 60px;
+  -webkit-font-smoothing: antialiased;
+}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Header */
+#header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; background: var(--background);
+  border-bottom: 1px solid var(--border-soft); position: sticky; top: 0; z-index: 10;
+}
+#header h1 {
+  font-size: 13px; font-weight: 600; letter-spacing: .01em; color: var(--foreground);
+  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+#header h1::before {
+  content: ''; width: 8px; height: 8px; border-radius: 2.5px;
+  background: var(--brand); flex-shrink: 0;
+}
+#header a, .hdr-btn {
+  color: var(--foreground); font-size: 11px; font-weight: 500; text-decoration: none;
+  border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+  padding: 4px 12px; background: var(--secondary); font-family: inherit;
+  cursor: pointer; white-space: nowrap;
+  transition: background .15s ease, border-color .15s ease, filter .15s ease;
+}
+#header a:hover, .hdr-btn:hover { border-color: var(--border); filter: brightness(1.15); }
+:root[data-theme="light"] #header a:hover, :root[data-theme="light"] .hdr-btn:hover { filter: brightness(.97); }
+.btn-brand { background: var(--brand); color: #14130f; border-color: transparent; font-weight: 600; }
+:root[data-theme="light"] .btn-brand { color: #fff; }
+
+.wrap { max-width: 900px; margin: 0 auto; padding: 18px 16px; }
+
+/* Section / panels */
+.section-title {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--muted-foreground); margin: 22px 0 10px; font-weight: 600;
+}
+.panel {
+  border: 1px solid var(--border-soft); border-radius: var(--radius);
+  background: var(--card); padding: 14px 16px; margin-bottom: 12px;
+}
+
+/* Legend */
+#legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 11px; color: var(--muted-foreground); }
+#legend code {
+  font-family: var(--font-mono); font-size: 11px; color: var(--brand);
+  background: var(--brand-muted); border: 1px solid var(--brand-border);
+  border-radius: 5px; padding: 1px 6px;
+}
+#legend .desc { color: var(--faint); }
+
+/* Section-level options */
+.opts { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; font-size: 12px; }
+.opts label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; color: var(--foreground); }
+.opts input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--brand); cursor: pointer; }
+
+/* Probe cards */
+.probe {
+  border: 1px solid var(--border-soft); border-radius: var(--radius);
+  background: var(--card); margin-bottom: 10px; overflow: hidden;
+}
+.probe.warn { border-color: rgba(230,159,0,.5); }
+.probe-head {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+  background: rgba(255,255,255,.03); border-bottom: 1px solid var(--border-soft);
+}
+:root[data-theme="light"] .probe-head { background: rgba(0,0,0,.025); }
+.probe-num { font-size: 10px; color: var(--faint); font-weight: 600; min-width: 16px; }
+.probe-body { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.field-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.field { display: flex; flex-direction: column; gap: 3px; }
+.field label { font-size: 9px; text-transform: uppercase; letter-spacing: .05em; color: var(--faint); }
+input, select, textarea {
+  background: var(--secondary); color: var(--foreground);
+  border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+  padding: 5px 8px; font-size: 12px; font-family: var(--font-sans);
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--brand-border); }
+input.id-input { width: 200px; font-family: var(--font-mono); }
+input.mt-input { width: 90px; }
+select.when-input { width: 130px; }
+textarea.q-input {
+  width: 100%; min-height: 92px; resize: vertical;
+  font-family: var(--font-mono); font-size: 12px; line-height: 1.5;
+}
+.probe-warn { font-size: 11px; color: var(--warn); display: none; }
+.probe-warn.on { display: block; }
+.icon-btn {
+  background: var(--secondary); color: var(--muted-foreground);
+  border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+  width: 26px; height: 24px; cursor: pointer; font-size: 12px; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.icon-btn:hover { color: var(--foreground); border-color: var(--border); }
+.icon-btn.del:hover { color: var(--destructive); border-color: var(--destructive); }
+.icon-btn:disabled { opacity: .35; cursor: default; }
+.probe-head .spacer { flex: 1; }
+
+/* Import / export */
+.io-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 720px) { .io-grid { grid-template-columns: 1fr; } }
+textarea.io {
+  width: 100%; min-height: 200px; resize: vertical;
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.5;
+}
+.io-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.io-head .t { font-size: 12px; font-weight: 600; }
+.io-head .spacer { flex: 1; }
+.status { font-size: 11px; color: var(--muted-foreground); min-height: 15px; margin-top: 6px; }
+.status.err { color: var(--destructive); }
+.status.ok { color: var(--brand); }
+.hint { font-size: 10px; color: var(--faint); margin-top: 4px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div id="header">
+  <h1>MafiaScope — Probe Editor</h1>
+  <a href="viewer.html">← Viewer</a>
+  <a href="dashboard.html">Dashboard</a>
+  <button id="theme-btn" class="hdr-btn" onclick="toggleTheme()" title="Turn the lights on/off">💡</button>
+  <span style="flex:1"></span>
+  <button class="hdr-btn" onclick="loadPreset()" title="Restore the six default probes">Reset preset</button>
+</div>
+
+<div class="wrap">
+  <p style="font-size:12px;color:var(--muted-foreground);line-height:1.6">
+    Visual editor for the introspection probe battery
+    (<code style="font-family:var(--font-mono)">configs/*.yaml</code>, section
+    <code style="font-family:var(--font-mono)">introspection.probes</code>).
+    Edit below, then copy the generated YAML into your config. Fully static — nothing is sent anywhere.
+  </p>
+
+  <div class="section-title">Placeholders</div>
+  <div class="panel" id="legend">
+    <span><code>{player}</code> <span class="desc">the acting agent's name</span></span>
+    <span><code>{players}</code> <span class="desc">comma-list of alive players</span></span>
+    <span><code>{prev_&lt;id&gt;}</code> <span class="desc">this round's answer to probe &lt;id&gt; (chaining)</span></span>
+    <span><code>{last_&lt;id&gt;}</code> <span class="desc">the most recent answer to probe &lt;id&gt;</span></span>
+    <span class="desc">JSON braces in the answer format must be doubled: <code>{{</code> <code>}}</code></span>
+  </div>
+
+  <div class="section-title">Section options</div>
+  <div class="panel opts">
+    <label><input type="checkbox" id="opt-enabled" onchange="SECTION.enabled=this.checked;updateExport()"> enabled</label>
+    <label><input type="checkbox" id="opt-aem" onchange="SECTION.after_each_message=this.checked;updateExport()"> after_each_message</label>
+    <label><input type="checkbox" id="opt-aer" onchange="SECTION.after_each_round=this.checked;updateExport()"> after_each_round</label>
+  </div>
+
+  <div class="section-title">Probes</div>
+  <div id="probe-list"></div>
+  <button class="hdr-btn" onclick="addProbe()">+ Add probe</button>
+
+  <div class="section-title">Import / Export</div>
+  <div class="io-grid">
+    <div class="panel">
+      <div class="io-head"><span class="t">Import</span><span class="spacer"></span>
+        <button class="hdr-btn" onclick="importText()">Import</button></div>
+      <textarea class="io" id="import-box" placeholder="Paste a YAML `introspection:` block (or its `probes:` list), or JSON…"></textarea>
+      <div class="status" id="import-status"></div>
+      <div class="hint">Accepts our config YAML (the <code>introspection:</code> / <code>probes:</code> block) or JSON
+        (an array of probes, or an object with <code>probes</code>).</div>
+    </div>
+    <div class="panel">
+      <div class="io-head"><span class="t">Export — YAML fragment</span><span class="spacer"></span>
+        <button class="hdr-btn btn-brand" onclick="copyExport()">Copy</button></div>
+      <textarea class="io" id="export-box" readonly></textarea>
+      <div class="status" id="export-status"></div>
+      <div class="hint">Paste this under your config, replacing the existing <code>introspection:</code> section.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Theme (shared convention: mafiascope_theme in localStorage) ──
+(function(){
+  let t = 'dark';
+  try { t = localStorage.getItem('mafiascope_theme') || 'dark'; } catch(e){}
+  document.documentElement.dataset.theme = t;
+})();
+function toggleTheme(){
+  const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('mafiascope_theme', t); } catch(e){}
+}
+
+// ── Default preset: the six probes from configs/config.yaml ──
+// Question text is verbatim; JSON braces stay doubled ({{ }}) as .format() escaping.
+const PRESET = () => ([
+  { id: 'role_beliefs', max_tokens: '', when: '', question:
+`For each alive player ({players}), state your current belief
+about their role (Mafia / Villager / Doctor / Unknown)
+and a confidence 0-100.
+Answer ONLY as JSON: {{"<name>": {{"role": "...", "confidence": N}}, ...}}` },
+  { id: 'role_assessment', max_tokens: '960', when: '', question:
+`You are {player}. For every alive player ({players}) INCLUDING
+yourself, answer: what role do they ACTUALLY have in your opinion
+and how certain are you (0-100)?  Also state one short reason.
+Answer ONLY as JSON:
+[{{"player": "...", "guessed_role": "Mafia|Villager|Doctor|Unknown", "confidence": N, "reason": "..."}}, ...]` },
+  { id: 'planned_action', max_tokens: '', when: 'own_turn', question:
+`What action do you plan to take next and why?
+Answer ONLY as JSON: {{"action": "...", "target": "...", "reasoning": "..."}}` },
+  { id: 'suspicion_ranking', max_tokens: '', when: '', question:
+`Rank alive players ({players}) from most to least suspicious.
+Answer ONLY as JSON: [{{"player": "...", "score": N}}, ...]` },
+  { id: 'social_map', max_tokens: '960', when: '', question:
+`You are {player}. Here is your current role assessment:
+{prev_role_assessment}
+
+Given this, estimate how each alive player ({players}) feels
+about YOU specifically.
+Answer ONLY as JSON:
+{{
+  "toward_me": [{{"player": "...", "attitude": "trusts|neutral|suspects", "confidence": N, "reason": "..."}}, ...]
+}}` },
+  { id: 'personality_profile', max_tokens: '960', when: '', question:
+`You are {player}. For each alive player ({players}), EXCEPT
+yourself, estimate their Big Five traits (0-100) based on their
+behavior in the game: how they speak, argue, react to accusations.
+O = Openness, C = Conscientiousness, E = Extraversion,
+A = Agreeableness, N = Neuroticism.
+Answer ONLY as JSON:
+[{{"player": "...", "O": N, "C": N, "E": N, "A": N, "N": N, "summary": "..."}}, ...]` },
+]);
+
+let PROBES = PRESET();
+let SECTION = { enabled: true, after_each_message: true, after_each_round: true };
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+// ── Placeholder reference detection ──
+// {prev_<id>} / {last_<id>} — single-brace only (skip doubled {{...}} JSON escapes).
+const REF_RE = /(?<!\{)\{(prev|last)_([A-Za-z0-9_]+)\}(?!\})/g;
+function refsIn(text){
+  const out = [];
+  let m;
+  REF_RE.lastIndex = 0;
+  while ((m = REF_RE.exec(text)) !== null) out.push({ kind: m[1], id: m[2], token: m[0] });
+  return out;
+}
+
+// ── Render the probe list ──
+function renderList(){
+  const host = $('probe-list');
+  host.innerHTML = '';
+  PROBES.forEach((p, i) => host.appendChild(mkProbeCard(p, i)));
+  syncSectionOpts();
+  updateWarnings();
+  updateExport();
+}
+
+function mkProbeCard(p, i){
+  const card = document.createElement('div');
+  card.className = 'probe';
+  card.dataset.idx = i;
+  card.innerHTML = `
+    <div class="probe-head">
+      <span class="probe-num">#${i + 1}</span>
+      <button class="icon-btn" title="Move up" ${i === 0 ? 'disabled' : ''} onclick="moveProbe(${i},-1)">▲</button>
+      <button class="icon-btn" title="Move down" ${i === PROBES.length - 1 ? 'disabled' : ''} onclick="moveProbe(${i},1)">▼</button>
+      <span class="spacer"></span>
+      <button class="icon-btn del" title="Delete probe" onclick="deleteProbe(${i})">✕</button>
+    </div>
+    <div class="probe-body">
+      <div class="field-row">
+        <div class="field">
+          <label>id</label>
+          <input class="id-input" type="text" value="${esc(p.id)}"
+                 oninput="setField(${i},'id',this.value)">
+        </div>
+        <div class="field">
+          <label>max_tokens</label>
+          <input class="mt-input" type="number" min="1" placeholder="default" value="${esc(p.max_tokens)}"
+                 oninput="setField(${i},'max_tokens',this.value)">
+        </div>
+        <div class="field">
+          <label>when</label>
+          <select class="when-input" onchange="setField(${i},'when',this.value)">
+            <option value=""${p.when ? '' : ' selected'}>(every step)</option>
+            <option value="own_turn"${p.when === 'own_turn' ? ' selected' : ''}>own_turn</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="width:100%">
+        <label>question</label>
+        <textarea class="q-input" oninput="setField(${i},'question',this.value)">${esc(p.question)}</textarea>
+      </div>
+      <div class="probe-warn"></div>
+    </div>`;
+  return card;
+}
+
+// ── Model updates (no full re-render → textarea keeps focus) ──
+function setField(i, field, val){
+  if (!PROBES[i]) return;
+  PROBES[i][field] = val;
+  if (field === 'id' || field === 'question') updateWarnings();
+  updateExport();
+}
+function addProbe(){
+  PROBES.push({ id: 'new_probe', max_tokens: '', when: '', question: '' });
+  renderList();
+}
+function deleteProbe(i){
+  PROBES.splice(i, 1);
+  renderList();
+}
+function moveProbe(i, dir){
+  const j = i + dir;
+  if (j < 0 || j >= PROBES.length) return;
+  [PROBES[i], PROBES[j]] = [PROBES[j], PROBES[i]];
+  renderList();
+}
+function loadPreset(){
+  PROBES = PRESET();
+  SECTION = { enabled: true, after_each_message: true, after_each_round: true };
+  renderList();
+  status('import-status', 'Loaded default preset (6 probes)', 'ok');
+}
+
+function syncSectionOpts(){
+  $('opt-enabled').checked = !!SECTION.enabled;
+  $('opt-aem').checked = !!SECTION.after_each_message;
+  $('opt-aer').checked = !!SECTION.after_each_round;
+}
+
+// ── Warnings: {prev_x}/{last_x} referencing a non-existent probe id ──
+function updateWarnings(){
+  const ids = new Set(PROBES.map(p => (p.id || '').trim()).filter(Boolean));
+  document.querySelectorAll('.probe').forEach(card => {
+    const i = +card.dataset.idx;
+    const p = PROBES[i];
+    if (!p) return;
+    const missing = refsIn(p.question || '')
+      .filter(r => !ids.has(r.id))
+      .map(r => r.token);
+    const box = card.querySelector('.probe-warn');
+    if (missing.length){
+      const uniq = [...new Set(missing)];
+      box.textContent = '⚠ references an unknown probe id: ' + uniq.join(', ');
+      box.classList.add('on');
+      card.classList.add('warn');
+    } else {
+      box.classList.remove('on');
+      card.classList.remove('warn');
+    }
+  });
+}
+
+// ── Export: YAML introspection fragment ──
+function toYaml(){
+  const b = v => v ? 'true' : 'false';
+  let out = 'introspection:\n';
+  out += `  enabled: ${b(SECTION.enabled)}\n`;
+  out += `  after_each_message: ${b(SECTION.after_each_message)}\n`;
+  out += `  after_each_round: ${b(SECTION.after_each_round)}\n\n`;
+  out += '  probes:\n';
+  PROBES.forEach(p => {
+    out += `    - id: ${(p.id || 'unnamed').trim()}\n`;
+    if (String(p.max_tokens).trim() !== '') out += `      max_tokens: ${String(p.max_tokens).trim()}\n`;
+    if ((p.when || '').trim() !== '') out += `      when: ${p.when.trim()}\n`;
+    out += '      question: >\n';
+    const q = (p.question || '').replace(/[ \t]+$/gm, '').replace(/\s+$/, '');
+    const lines = q.length ? q.split('\n') : [''];
+    lines.forEach(line => { out += line === '' ? '\n' : `        ${line}\n`; });
+  });
+  return out;
+}
+function updateExport(){
+  $('export-box').value = toYaml();
+}
+function copyExport(){
+  const text = $('export-box').value;
+  const done = () => status('export-status', 'Copied to clipboard', 'ok');
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else fallbackCopy(text, done);
+}
+function fallbackCopy(text, done){
+  const ta = $('export-box');
+  ta.removeAttribute('readonly'); ta.select();
+  try { document.execCommand('copy'); done(); }
+  catch(e){ status('export-status', 'Copy failed — select the text manually', 'err'); }
+  ta.setAttribute('readonly', '');
+}
+
+function status(id, msg, kind){
+  const el = $(id);
+  el.textContent = msg;
+  el.className = 'status' + (kind ? ' ' + kind : '');
+}
+
+// ── Import: minimal YAML parser for our config format (+ JSON) ──
+const truthy = s => /^(true|yes|on|1)$/i.test(String(s).trim());
+const indentOf = l => (l.match(/^ */) || [''])[0].length;
+
+function parseYamlProbes(text){
+  const lines = text.replace(/\r/g, '').replace(/\t/g, '  ').split('\n')
+    .filter(l => !/^\s*#/.test(l));
+  const section = { enabled: true, after_each_message: false, after_each_round: false };
+  let pIdx = -1;
+  for (let i = 0; i < lines.length; i++){
+    const t = lines[i].trim();
+    if (/^probes\s*:/.test(t)) { pIdx = i; break; }
+    let m;
+    if ((m = t.match(/^after_each_message\s*:\s*(\S+)/i))) section.after_each_message = truthy(m[1]);
+    else if ((m = t.match(/^after_each_round\s*:\s*(\S+)/i))) section.after_each_round = truthy(m[1]);
+    else if ((m = t.match(/^enabled\s*:\s*(\S+)/i))) section.enabled = truthy(m[1]);
+  }
+  if (pIdx < 0) throw new Error('expected a "probes:" key');
+  const pInd = indentOf(lines[pIdx]);
+  const body = [];
+  for (let i = pIdx + 1; i < lines.length; i++){
+    const l = lines[i];
+    if (l.trim() === '') { body.push(l); continue; }
+    if (indentOf(l) <= pInd) break;
+    body.push(l);
+  }
+  while (body.length && body[body.length - 1].trim() === '') body.pop();
+  const firstItem = body.find(l => l.trim().startsWith('-'));
+  if (!firstItem) throw new Error('no list items under "probes:"');
+  const itemInd = indentOf(firstItem);
+
+  const items = [];
+  let cur = null;
+  for (const l of body){
+    if (l.trim() === '') { if (cur) cur.push(l); continue; }
+    const ind = indentOf(l);
+    if (ind === itemInd && l.trim().startsWith('-')){
+      cur = [];
+      items.push(cur);
+      // strip the leading dash, keep alignment (dash + following space become spaces)
+      cur.push(' '.repeat(itemInd + 1) + l.slice(itemInd + 1));
+    } else if (cur){
+      cur.push(l);
+    }
+  }
+  const probes = items.map(parseItem).filter(p => p.id || p.question);
+  if (!probes.length) throw new Error('no probes parsed');
+  return { section, probes };
+}
+
+function parseItem(lines){
+  const probe = { id: '', question: '', max_tokens: '', when: '' };
+  const firstNonBlank = lines.find(l => l.trim() !== '');
+  if (!firstNonBlank) return probe;
+  const keyInd = indentOf(firstNonBlank);
+  for (let i = 0; i < lines.length; i++){
+    const l = lines[i];
+    if (l.trim() === '') continue;
+    if (indentOf(l) !== keyInd) continue;   // deeper lines are consumed as block scalars
+    const m = l.trim().match(/^([A-Za-z_][\w]*)\s*:\s*(.*)$/);
+    if (!m) continue;
+    const key = m[1];
+    let val = m[2];
+    if (/^[>|][+-]?$/.test(val)){
+      // block scalar — gather deeper lines
+      const block = [];
+      let j = i + 1;
+      for (; j < lines.length; j++){
+        const bl = lines[j];
+        if (bl.trim() === '') { block.push(''); continue; }
+        if (indentOf(bl) <= keyInd) break;
+        block.push(bl);
+      }
+      i = j - 1;
+      const indents = block.filter(x => x !== '').map(indentOf);
+      const base = indents.length ? Math.min(...indents) : 0;
+      const textLines = block.map(x => x === '' ? '' : x.slice(base));
+      while (textLines.length && textLines[textLines.length - 1] === '') textLines.pop();
+      probe[key] = textLines.join('\n');
+    } else {
+      val = val.trim();
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))
+        val = val.slice(1, -1);
+      if (key in probe) probe[key] = val;
+    }
+  }
+  probe.max_tokens = String(probe.max_tokens || '');
+  return probe;
+}
+
+function fromJson(j){
+  let obj = j;
+  if (j && j.introspection) obj = j.introspection;
+  const section = { enabled: true, after_each_message: false, after_each_round: false };
+  let arr;
+  if (Array.isArray(obj)) arr = obj;
+  else {
+    arr = obj.probes || [];
+    if ('enabled' in obj) section.enabled = !!obj.enabled;
+    if ('after_each_message' in obj) section.after_each_message = !!obj.after_each_message;
+    if ('after_each_round' in obj) section.after_each_round = !!obj.after_each_round;
+  }
+  if (!Array.isArray(arr) || !arr.length) throw new Error('no probes in JSON');
+  return { section, probes: arr.map(p => ({
+    id: p.id || '', question: p.question || '',
+    max_tokens: p.max_tokens != null ? String(p.max_tokens) : '',
+    when: p.when || '' })) };
+}
+
+function importText(){
+  const raw = $('import-box').value.trim();
+  if (!raw){ status('import-status', 'Nothing to import', 'err'); return; }
+  let parsed;
+  try {
+    parsed = (raw[0] === '{' || raw[0] === '[') ? fromJson(JSON.parse(raw)) : parseYamlProbes(raw);
+  } catch(e){
+    status('import-status', 'Parse error: ' + e.message, 'err');
+    return;
+  }
+  SECTION = parsed.section;
+  PROBES = parsed.probes;
+  renderList();
+  status('import-status', `Imported ${PROBES.length} probe(s)`, 'ok');
+}
+
+// ── Boot ──
+renderList();
+</script>
+</body>
+</html>

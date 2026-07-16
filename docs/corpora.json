@@ -1,63 +1,102 @@
 {
-  "_comment": "Machine-readable corpus registry. Executable source of truth: metrics_lib.select_corpus (src/metrics_lib.py). Schemas: docs/architecture.md; prose: docs/dataset.md.",
-  "main30": {
-    "config": "configs/config_deepseek.yaml",
-    "instrument_version": "pre-revision",
-    "language": "ru",
-    "selector": "setup_ts == 1774562457 (metrics_lib.MAIN_BATCH_TS); use metrics_lib.select_corpus(games, 'main30')",
-    "notes": "Legacy 30-game main batch behind the originally published numbers. Old demand-characteristic social_map wording, no probe chaining, no state.jsonl snapshots. The historical 'paper32' selector adds two pilot runs (one aborted)."
-  },
-  "en_demo": {
-    "config": "configs/config_en_demo.yaml",
-    "instrument_version": "revised",
-    "language": "en",
-    "game_ids": [
-      "36594b66-05d1-434c-be65-13360eafca9e",
-      "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
-      "e6fbee66-7f0a-42c3-9af7-ad582f8153e5",
-      "0da78714-88e0-4445-b161-f2eaf029184c",
-      "e8dfa6ea-6cff-4a4f-8998-baeb52f81e77"
-    ],
-    "notes": "EN demo corpus (2026-07-10, wave B1). Clean social_map wording, probe chaining, snapshots on. Mafia won 5/5. Game 36594b66 is the featured demo/screencast game."
-  },
-  "ablation_demand": {
-    "config": "configs/config_ablation_demand.yaml",
-    "instrument_version": "revised chaining + pre-revision (demand) social_map wording",
-    "language": "ru",
-    "game_ids": [
-      "0e2ba387-fe5b-445a-a87d-418cdb346d1c",
-      "c7fe57de-1aed-48df-ac6a-da9a82f2f737",
-      "797fd017-0bf4-4e73-af05-90a5eed57fbb",
-      "c9e66a2a-277d-4183-80b9-2529d2235db3",
-      "f2510502-8441-439e-9511-884551eda9fd"
-    ],
-    "notes": "Demand-phrase ablation arm: exact copy of config_deepseek.yaml except the OLD social_map wording. Matched arm: ru_clean. state.jsonl of f2510502 (151 MB, 15 rounds) is omitted from the public repo (GitHub 100 MB limit)."
-  },
-  "ru_clean": {
-    "config": "configs/config_deepseek.yaml",
-    "instrument_version": "revised",
-    "language": "ru",
-    "game_ids": [
-      "186742a9-6eca-4eed-bb2e-890ba6897020",
-      "444a8c24-5471-4d33-a065-b8eb46ede8f9",
-      "4a48b59c-8559-4247-9573-0580d24fe36c",
-      "532d5f19-00c2-4723-8462-4c9bdcbc1ef9",
-      "7b600523-7ea0-4f89-8b5a-948240a4d8fe"
-    ],
-    "notes": "RU clean-wording batch (config_deepseek.yaml post-fix) — the matched arm for ablation_demand."
-  },
-  "corpus_v2": {
-    "config": "configs/config_deepseek.yaml",
-    "instrument_version": "revised",
-    "language": "ru",
-    "selector": "forthcoming — ~250 RU games, generation in progress at snapshot time; game ids will be registered here in a follow-up release",
-    "notes": "Not yet included in the public dataset."
-  },
-  "replay_forks": {
-    "config": "parent game's config (configs/config_en_demo.yaml for the 36594b66 experiment)",
-    "instrument_version": "revised",
-    "language": "en",
-    "selector": "game.jsonl setup record has forked_from != null (32 games: 2 pilot + 30 full-run forks of 36594b66)",
-    "notes": "Counterfactual replay branches (src/replay.py, src/replay_experiment.py; docs/replay_experiment.md). Excluded from every corpus by metrics_lib.select_corpus."
-  }
+ "_comment": "Machine-readable corpus registry. Executable source of truth: metrics_lib.select_corpus (src/metrics_lib.py). Schemas: docs/architecture.md; prose: docs/dataset.md.",
+ "main30": {
+  "config": "configs/config_deepseek.yaml",
+  "instrument_version": "pre-revision",
+  "language": "ru",
+  "selector": "setup_ts == 1774562457 (metrics_lib.MAIN_BATCH_TS); use metrics_lib.select_corpus(games, 'main30')",
+  "notes": "Legacy 30-game main batch behind the originally published numbers. Old demand-characteristic social_map wording, no probe chaining, no state.jsonl snapshots. The historical 'paper32' selector adds two pilot runs (one aborted)."
+ },
+ "en_demo": {
+  "config": "configs/config_en_demo.yaml",
+  "instrument_version": "revised",
+  "language": "en",
+  "game_ids": [
+   "36594b66-05d1-434c-be65-13360eafca9e",
+   "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+   "e6fbee66-7f0a-42c3-9af7-ad582f8153e5",
+   "0da78714-88e0-4445-b161-f2eaf029184c",
+   "e8dfa6ea-6cff-4a4f-8998-baeb52f81e77"
+  ],
+  "notes": "EN demo corpus (2026-07-10, wave B1). Clean social_map wording, probe chaining, snapshots on. Mafia won 5/5. Game 36594b66 is the featured demo/screencast game."
+ },
+ "ablation_demand": {
+  "config": "configs/config_ablation_demand.yaml",
+  "instrument_version": "revised chaining + pre-revision (demand) social_map wording",
+  "language": "ru",
+  "game_ids": [
+   "0e2ba387-fe5b-445a-a87d-418cdb346d1c",
+   "c7fe57de-1aed-48df-ac6a-da9a82f2f737",
+   "797fd017-0bf4-4e73-af05-90a5eed57fbb",
+   "c9e66a2a-277d-4183-80b9-2529d2235db3",
+   "f2510502-8441-439e-9511-884551eda9fd"
+  ],
+  "notes": "Demand-phrase ablation arm: exact copy of config_deepseek.yaml except the OLD social_map wording. Matched arm: ru_clean. state.jsonl of f2510502 (151 MB, 15 rounds) is omitted from the public repo (GitHub 100 MB limit)."
+ },
+ "ru_clean": {
+  "config": "configs/config_deepseek.yaml",
+  "instrument_version": "revised",
+  "language": "ru",
+  "game_ids": [
+   "186742a9-6eca-4eed-bb2e-890ba6897020",
+   "444a8c24-5471-4d33-a065-b8eb46ede8f9",
+   "4a48b59c-8559-4247-9573-0580d24fe36c",
+   "532d5f19-00c2-4723-8462-4c9bdcbc1ef9",
+   "7b600523-7ea0-4f89-8b5a-948240a4d8fe"
+  ],
+  "notes": "RU clean-wording batch (config_deepseek.yaml post-fix) — the matched arm for ablation_demand."
+ },
+ "corpus_v2": {
+  "config": "configs/config_deepseek.yaml",
+  "instrument_version": "revised",
+  "language": "ru",
+  "selector": "forthcoming — ~250 RU games, generation in progress at snapshot time; game ids will be registered here in a follow-up release",
+  "notes": "Not yet included in the public dataset."
+ },
+ "replay_forks": {
+  "config": "parent game's config (configs/config_en_demo.yaml for the 36594b66 experiment)",
+  "instrument_version": "revised",
+  "language": "en",
+  "selector": "game.jsonl setup record has forked_from != null (32 games: 2 pilot + 30 full-run forks of 36594b66)",
+  "notes": "Counterfactual replay branches (src/replay.py, src/replay_experiment.py; docs/replay_experiment.md). Excluded from every corpus by metrics_lib.select_corpus."
+ },
+ "corpus32": {
+  "instrument_version": "revised",
+  "language": "mixed (21 en, 11 ru)",
+  "game_ids": [
+   "0da78714-88e0-4445-b161-f2eaf029184c",
+   "0efaa131-114b-4911-974c-0e363f7553de",
+   "186742a9-6eca-4eed-bb2e-890ba6897020",
+   "1d48515a-8d39-481e-9a61-f1cf9bbf0442",
+   "1fbc396a-d8dd-4398-affa-1e8b6cc81c22",
+   "1fd04804-e77b-4650-b764-50f348cef0bd",
+   "2f3a02ae-034f-4e62-a510-e2430f256639",
+   "31a70305-f734-49d0-945f-cb9ec37626f6",
+   "36594b66-05d1-434c-be65-13360eafca9e",
+   "3845221c-d963-4e1b-b34c-6c857979a1f0",
+   "444a8c24-5471-4d33-a065-b8eb46ede8f9",
+   "4762f2e4-037a-48d6-a643-bcb758bf38fc",
+   "4a48b59c-8559-4247-9573-0580d24fe36c",
+   "532d5f19-00c2-4723-8462-4c9bdcbc1ef9",
+   "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+   "7b600523-7ea0-4f89-8b5a-948240a4d8fe",
+   "7c74c5a3-7372-42bf-8835-9c62f6dabd45",
+   "7e623a8d-9c4b-44a3-98ac-5911fac5cf69",
+   "8619db8c-f526-4307-a2c4-f1da69db376a",
+   "90762bcb-f40f-4905-8818-338f3b1b1835",
+   "96c880d7-aa7f-41e3-a386-e505d759cab4",
+   "9a3ef0d6-9079-4a0a-b38c-dfb1c5ad3460",
+   "a8f5be46-8120-441f-8fc7-e4921e71a125",
+   "ad269437-2d9a-4f63-9501-3e943bdc7c4b",
+   "af0d9149-a53a-4b59-b220-8688e0551acf",
+   "b2a02ac2-a268-406d-b6d6-1cf8bb4d9a07",
+   "b5aad820-3189-443a-a5ec-d0b7944540f2",
+   "b9ee2530-2389-4dd9-8484-940aeeefd8e9",
+   "da43670a-63e9-42d7-95df-fda6e5a570f0",
+   "e6fbee66-7f0a-42c3-9af7-ad582f8153e5",
+   "e8dfa6ea-6cff-4a4f-8998-baeb52f81e77",
+   "e91a7f71-4e1f-473a-a918-2c2db37e1eea"
+  ],
+  "notes": "Case-study corpus of the EMNLP 2026 demo paper (recomputed 2026-07-11): en_demo 5 + ru_clean 5 + first 22 completed games of the release generation; forks, feedback arm and demand-wording ablation excluded. Pinned manifest: this list is the exact N=32 set behind F1-F5."
+ }
 }

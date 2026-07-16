@@ -8,3 +8,13 @@ src/__pycache__
 src/viewer_data.json
 src/all_games.json
 site/
+# runtime artifacts
+src/results.json
+configs/generated/
+pwenv/
+# game logs (dataset; released separately — git add -f for curated corpora)
+logs/
+# screencast pipeline — internal, not part of the public repo
+src/record_screencast.py
+src/build_srt.py
+*.srt

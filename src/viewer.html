@@ -36,8 +36,52 @@
   --radius: 10px;
   --radius-lg: 14px;
   --radius-sm: 8px;
+  --grid: #2a2925;
   --font-sans: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+/* Light theme: warm paper tokens mirroring the dark set */
+:root[data-theme="light"] {
+  --background: #f7f5f1;
+  --card: #fffdf9;
+  --popover: #fffdf9;
+  --secondary: #edeae2;
+  --foreground: #1c1b18;
+  --muted-foreground: #6b6862;
+  --faint: #98948c;
+  --border: rgba(0,0,0,.13);
+  --border-soft: rgba(0,0,0,.075);
+  --input: rgba(0,0,0,.16);
+  --brand: #a16207;
+  --brand-muted: rgba(161,98,7,.10);
+  --brand-border: rgba(161,98,7,.35);
+  --destructive: #d92d20;
+  --grid: #e6e2d9;
+}
+:root[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); }
+:root[data-theme="light"] ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,.28); }
+:root[data-theme="light"] .game-card:hover { background: rgba(0,0,0,.04); }
+:root[data-theme="light"] .game-card.active { background: rgba(161,98,7,.09); }
+:root[data-theme="light"] #gt-panel .panel-title { background: rgba(161,98,7,.06); }
+:root[data-theme="light"] .imp-panel .panel-title { background: rgba(0,0,0,.03); }
+:root[data-theme="light"] #tour-dots i { background: rgba(0,0,0,.18); }
+:root[data-theme="light"] #tour-dots i.on { background: var(--brand); }
+:root[data-theme="light"] #tour-spot { box-shadow: 0 0 0 9999px rgba(30,28,22,.45), 0 0 24px rgba(161,98,7,.25); }
+:root[data-theme="light"] .tour-btn.primary { color: #fff; }
+/* Timeline phase ticks: the dark palette reads gloomy on paper — bright, clean tints for light */
+:root[data-theme="light"] .step-tick.night { background: #9dc0f2; }
+:root[data-theme="light"] .step-tick.day_discuss { background: #a9dc86; }
+:root[data-theme="light"] .step-tick.day_vote { background: #f4cf78; }
+:root[data-theme="light"] .step-tick.night_analysis { background: #c9a6ef; }
+:root[data-theme="light"] .step-tick.intro { background: #86dcc7; }
+:root[data-theme="light"] .step-tick.round_end { background: #d7ccb0; }
+:root[data-theme="light"] .step-tick { border-right-color: var(--card); }
+:root[data-theme="light"] .step-tick:hover { filter: brightness(1.06); }
+/* the lamp glows while the lights are on */
+:root[data-theme="light"] #theme-btn {
+  background: var(--brand-muted); border-color: var(--brand-border);
+  box-shadow: 0 0 10px rgba(161,98,7,.35);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -63,14 +107,23 @@ body {
   font-size: 13px; font-weight: 600; letter-spacing: .01em;
   color: var(--foreground); white-space: nowrap;
   display: flex; align-items: center; gap: 8px;
+  cursor: pointer; user-select: none;
+  transition: color .15s ease;
 }
+#header h1:hover { color: var(--brand); }
 #header h1::before {
   content: ''; width: 8px; height: 8px; border-radius: 2.5px;
   background: var(--brand); flex-shrink: 0;
 }
+.brand-caret { font-size: 10px; color: var(--muted-foreground); }
+#header h1:hover .brand-caret { color: var(--brand); }
+#current-game {
+  font-size: 11px; color: var(--muted-foreground); white-space: nowrap;
+  padding-right: 2px;
+}
 
 /* Buttons */
-#games-btn, .hdr-btn {
+.hdr-btn {
   background: var(--secondary); color: var(--foreground);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-sm); padding: 4px 12px;
@@ -78,7 +131,8 @@ body {
   cursor: pointer; white-space: nowrap;
   transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
-#games-btn:hover, .hdr-btn:hover { background: #2e2d29; border-color: var(--border); }
+.hdr-btn:hover { background: #2e2d29; border-color: var(--border); }
+:root[data-theme="light"] .hdr-btn:hover { background: var(--secondary); filter: brightness(.97); }
 .hdr-btn.on {
   background: var(--brand-muted); border-color: var(--brand-border); color: var(--brand);
 }
@@ -91,11 +145,10 @@ body {
 #sidebar {
   position: fixed; top: 0; left: -360px; width: 360px; height: 100vh;
   background: var(--card); border-right: 1px solid var(--border);
-  box-shadow: 0 0 48px rgba(0,0,0,.55);
   z-index: 200; transition: left 0.22s ease;
   display: flex; flex-direction: column;
 }
-#sidebar.open { left: 0; }
+#sidebar.open { left: 0; box-shadow: 0 0 48px rgba(0,0,0,.55); }
 #sidebar-header {
   padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid var(--border-soft);
@@ -107,6 +160,20 @@ body {
 }
 #sidebar-close:hover { color: var(--destructive); }
 #sidebar-list { flex: 1; overflow-y: auto; padding: 4px 0; }
+#sidebar-filters {
+  padding: 10px 14px; border-bottom: 1px solid var(--border-soft);
+  display: flex; flex-direction: column; gap: 6px;
+}
+#sidebar-filters input, #sidebar-filters select {
+  background: var(--secondary); color: var(--foreground);
+  border: 1px solid var(--border-soft); border-radius: var(--radius-sm);
+  padding: 5px 8px; font-size: 12px; font-family: var(--font-sans); width: 100%;
+}
+#sidebar-filters .flt-row { display: flex; gap: 6px; }
+#flt-count { font-size: 10px; color: var(--muted-foreground); }
+.game-card-models { font-size: 10px; color: var(--faint); margin-top: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.game-card-models b { color: var(--muted-foreground); font-weight: 600; }
 .game-card {
   padding: 9px 16px; border-bottom: 1px solid var(--border-soft); cursor: pointer;
   border-left: 3px solid transparent;
@@ -336,11 +403,6 @@ body.metrics-open #metrics-panel { display: grid; }
 }
 #tooltip .tt-name { font-weight: 700; color: var(--foreground); }
 
-#hint {
-  position: fixed; bottom: 8px; right: 12px; color: var(--muted-foreground); font-size: 10px;
-  background: rgba(13,12,10,.85); padding: 3px 10px; border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.06);
-}
 </style>
 </head>
 <body>
@@ -351,14 +413,42 @@ body.metrics-open #metrics-panel { display: grid; }
     <h2>Games</h2>
     <button id="sidebar-close" onclick="closeSidebar()">&times;</button>
   </div>
+  <div id="sidebar-filters">
+    <input id="flt-text" placeholder="Search: id, player, model, winner..."
+           oninput="FLT.text=this.value.trim();populateGameSelect()">
+    <div class="flt-row">
+      <select id="flt-lang" onchange="FLT.lang=this.value;populateGameSelect()">
+        <option value="">Any language</option>
+        <option value="en">English</option>
+        <option value="ru">Russian</option>
+      </select>
+      <select id="flt-branch" onchange="FLT.branch=this.value;populateGameSelect()">
+        <option value="">All games</option>
+        <option value="with">With branches</option>
+        <option value="without">Without branches</option>
+      </select>
+    </div>
+    <select id="flt-winner" onchange="FLT.winner=this.value;populateGameSelect()">
+      <option value="">Any winner</option>
+      <option value="Mafia">Mafia won</option>
+      <option value="Villagers">Villagers won</option>
+      <option value="Pending">Pending</option>
+    </select>
+    <select id="flt-model" onchange="FLT.model=this.value;populateGameSelect()">
+      <option value="">Any model</option>
+    </select>
+    <div id="flt-count"></div>
+  </div>
   <div id="sidebar-list"></div>
 </div>
 <div id="header">
-  <h1>MafiaScope</h1>
-  <button id="games-btn" onclick="toggleSidebar()">Games</button>
+  <h1 id="brand" onclick="toggleSidebar()" title="Browse games">MafiaScope <span class="brand-caret">▾</span></h1>
+  <span id="current-game" title="Current game — click MafiaScope to switch"></span>
   <button id="metrics-btn" class="hdr-btn" onclick="toggleMetrics()">Metrics</button>
   <button id="calib-btn" class="hdr-btn" onclick="openCalibration()">Calibration</button>
+  <button id="theme-btn" class="hdr-btn" onclick="toggleTheme()" title="Turn the lights on/off">💡</button>
   <a href="dashboard.html" class="hdr-btn" style="text-decoration:none">Dashboard</a>
+  <a href="probe_editor.html" class="hdr-btn" style="text-decoration:none">Probes</a>
   <span id="parse-badge"></span>
   <div id="impersonate-badge" onclick="exitImpersonate()"></div>
   <div id="step-info"></div>
@@ -410,7 +500,6 @@ body.metrics-open #metrics-panel { display: grid; }
 </div>
 <div id="fork-toast"></div>
 <div id="tooltip"></div>
-<div id="hint">← → navigate | click a name to impersonate | M metrics | Esc to exit</div>
 
 <script>
 // Okabe-Ito colorblind-safe palette (distinguishable under deuteranopia/protanopia)
@@ -420,8 +509,8 @@ const ROLE_COLORS = {
   Villager: '#56B4E9', Unknown: '#6e7681',
 };
 
-// Chrome (non-data) colors — warm dark theme tokens, mirror the CSS custom properties.
-// SVG attributes can't read CSS vars, hence the JS mirror.
+// Chrome (non-data) colors — theme tokens, mirror the CSS custom properties.
+// SVG attributes can't read CSS vars, hence the JS mirror (refreshed on theme switch).
 const CHROME = {
   brand: '#fff052',            // accent: active states / highlights
   fg: '#f5f5f2',
@@ -433,6 +522,32 @@ const CHROME = {
   popover: '#1a1a16',
   destructive: '#ff6568',
 };
+
+function refreshChrome(){
+  const cs = getComputedStyle(document.documentElement);
+  const v = n => cs.getPropertyValue(n).trim();
+  CHROME.brand = v('--brand'); CHROME.fg = v('--foreground');
+  CHROME.muted = v('--muted-foreground'); CHROME.faint = v('--faint');
+  CHROME.grid = v('--grid'); CHROME.surface = v('--background');
+  CHROME.card = v('--card'); CHROME.popover = v('--popover');
+  CHROME.destructive = v('--destructive');
+}
+(function(){
+  let t = 'dark';
+  try { t = localStorage.getItem('mafiascope_theme') || 'dark'; } catch(e){}
+  document.documentElement.dataset.theme = t;
+  refreshChrome();
+})();
+function toggleTheme(){
+  const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('mafiascope_theme', t); } catch(e){}
+  refreshChrome();
+  if (typeof DATA !== 'undefined' && DATA) {   // redraw SVG chrome in new tokens
+    if (typeof impersonating !== 'undefined' && impersonating) exitImpersonate();
+    buildTimeline(); buildLayout(); renderStep(currentStep);
+  }
+}
 
 // UI chrome strings — light i18n (key → string / template). Add locales here later.
 // Game DATA (agent messages, player names, probe output) renders as-is from logs.
@@ -531,6 +646,39 @@ function closeSidebar() {
   document.getElementById('sidebar-overlay').classList.remove('open');
 }
 
+// ── Game search / filters ──────────────────
+const FLT = { text: '', lang: '', branch: '', model: '', winner: '' };
+
+function gameLang(d){
+  if (d.language) return d.language;
+  if (!d._lang) d._lang = /[Ѐ-ӿ]/.test(JSON.stringify(d.steps.slice(0,4))) ? 'ru' : 'en';
+  return d._lang;
+}
+function gameModels(d){
+  if (d.models) return d.models;
+  if (!d._models) d._models = [...new Set(d.players.map(p => p.model || '?'))].sort();
+  return d._models;
+}
+function gameMatches(d){
+  if (FLT.lang && gameLang(d) !== FLT.lang) return false;
+  if (FLT.model && !gameModels(d).includes(FLT.model)) return false;
+  if (FLT.winner && d.winner !== FLT.winner) return false;
+  if (FLT.text){
+    const hay = (d.game_id + ' ' + d.winner + ' '
+      + d.players.map(p => p.name).join(' ') + ' '
+      + gameModels(d).join(' ')).toLowerCase();
+    if (!hay.includes(FLT.text.toLowerCase())) return false;
+  }
+  return true;
+}
+function populateModelFilter(){
+  const sel = document.getElementById('flt-model');
+  if (sel.options.length > 1) return;   // already populated
+  const models = new Set();
+  Object.values(ALL_GAMES).forEach(d => gameModels(d).forEach(m => models.add(m)));
+  [...models].sort().forEach(m => sel.add(new Option(m, m)));
+}
+
 function mkGameCard(d, isBranch) {
   const card = document.createElement('div');
   card.className = 'game-card' + (isBranch ? ' branch' : '');
@@ -550,9 +698,11 @@ function mkGameCard(d, isBranch) {
   const ps = d.parse_stats;
   const parseStr = (ps && ps.total) ? STRINGS.cardParse(Math.round(100*ps.ok/ps.total)) : '';
 
+  const facet = `<b>${gameLang(d).toUpperCase()}</b> · ${esc(gameModels(d).join(', '))}`;
   card.innerHTML = `
     <div class="game-card-date">${title}</div>
     <div class="game-card-meta">${STRINGS.cardMeta(d.players.length, d.total_steps, rounds)}${parseStr}</div>
+    <div class="game-card-models">${facet}</div>
     <div class="game-card-winner" style="color:${winColor}">${winText}</div>
   `;
   card.addEventListener('click', () => {
@@ -565,15 +715,25 @@ function mkGameCard(d, isBranch) {
 function populateGameSelect() {
   const list = document.getElementById('sidebar-list');
   list.innerHTML = '';
+  populateModelFilter();
   const all = Object.values(ALL_GAMES);
   // Branch tree: roots first, each followed by its fork batches
-  const roots = all.filter(d => !d.forked_from || !ALL_GAMES[d.forked_from])
+  const allRoots = all.filter(d => !d.forked_from || !ALL_GAMES[d.forked_from])
     .sort((a,b)=>(b.started_at||0)-(a.started_at||0));
   const byParent = {};
   all.forEach(d => {
     if (d.forked_from && ALL_GAMES[d.forked_from])
       (byParent[d.forked_from] = byParent[d.forked_from] || []).push(d);
   });
+  const roots = allRoots.filter(root => {
+    const hasBranches = (byParent[root.game_id] || []).length > 0;
+    if (FLT.branch === 'with' && !hasBranches) return false;
+    if (FLT.branch === 'without' && hasBranches) return false;
+    return gameMatches(root);
+  });
+  document.getElementById('flt-count').textContent =
+    (FLT.text || FLT.lang || FLT.branch || FLT.model || FLT.winner)
+      ? `${roots.length} of ${allRoots.length} games` : `${allRoots.length} games`;
   roots.forEach(root => {
     list.appendChild(mkGameCard(root, false));
     const batches = {};
@@ -601,11 +761,12 @@ function updateGameCards() {
   document.querySelectorAll('.game-card').forEach(c => {
     c.classList.toggle('active', DATA && c.dataset.gid === DATA.game_id);
   });
-  // Update button text
-  if (DATA) {
+  // Reflect the current game in the header label (the games menu now lives on the logo)
+  const cg = document.getElementById('current-game');
+  if (DATA && cg) {
     const ts = DATA.started_at ? new Date(DATA.started_at * 1000) : null;
     const ds = ts ? ts.toLocaleString('en-GB', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '??';
-    document.getElementById('games-btn').textContent = `${ds} — ${DATA.winner}`;
+    cg.textContent = `${ds} — ${DATA.winner}`;
   }
 }
 
@@ -627,8 +788,11 @@ function computePositions(w, h) {
 
 // ── Keyboard ───────────────────────────────
 document.addEventListener('keydown', e=>{
-  if(e.target.tagName==='SELECT')return;
-  if(e.target.tagName==='INPUT')return;
+  if(e.target.tagName==='SELECT'||e.target.tagName==='INPUT'){
+    if(e.key!=='Escape')return;   // Esc from a field: blur, then normal Esc chain
+    e.target.blur();
+  }
+  if(e.key==='Escape'&&document.getElementById('sidebar').classList.contains('open')){closeSidebar();return;}
   if(e.key==='Escape'&&document.getElementById('fork-overlay').classList.contains('open')){closeForkDialog();return;}
   if(e.key==='Escape'&&document.getElementById('calib-overlay').classList.contains('open')){closeCalibration();return;}
   if(e.key==='Escape'&&impersonating){exitImpersonate();return;}
@@ -1810,6 +1974,162 @@ function renderCalibration(){
 }
 
 loadData();
+</script>
+
+<!-- ── Onboarding tour ─────────────────────────────────────── -->
+<style>
+#tour-dim { position: fixed; inset: 0; z-index: 10000; display: none; }
+#tour-spot {
+  position: fixed; z-index: 10001; pointer-events: none;
+  border-radius: var(--radius); border: 1.5px solid var(--brand);
+  box-shadow: 0 0 0 9999px rgba(0,0,0,.68), 0 0 24px rgba(255,240,82,.25);
+  transition: all .28s ease;
+}
+#tour-card {
+  position: fixed; z-index: 10002; width: 340px; max-width: calc(100vw - 24px);
+  background: var(--popover); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px 18px 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.55);
+  transition: all .28s ease; font-size: 13px; line-height: 1.5;
+}
+#tour-card h3 { font-size: 14px; margin-bottom: 6px; color: var(--brand); font-weight: 600; }
+#tour-card p { color: var(--foreground); }
+#tour-card p b { color: var(--brand); font-weight: 600; }
+#tour-foot { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+#tour-dots { display: flex; gap: 5px; flex: 1; }
+#tour-dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.18); }
+#tour-dots i.on { background: var(--brand); }
+.tour-btn {
+  background: var(--secondary); color: var(--foreground); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 5px 12px; font-size: 12px; cursor: pointer;
+  font-family: var(--font-sans);
+}
+.tour-btn.primary { background: var(--brand); color: #14130f; border: none; font-weight: 600; }
+.tour-btn.ghost { background: none; border: none; color: var(--muted-foreground); }
+#tour-help-btn { margin-left: 2px; }
+</style>
+<div id="tour-dim"></div>
+<div id="tour-spot" style="display:none"></div>
+<div id="tour-card" style="display:none">
+  <h3 id="tour-title"></h3>
+  <p id="tour-text"></p>
+  <div id="tour-foot">
+    <div id="tour-dots"></div>
+    <button class="tour-btn ghost" onclick="tourEnd()">Skip</button>
+    <button class="tour-btn" id="tour-back" onclick="tourStep(-1)">Back</button>
+    <button class="tour-btn primary" id="tour-next" onclick="tourStep(1)">Next</button>
+  </div>
+</div>
+<script>
+(function(){
+const TOUR = [
+  { t: 'Welcome to MafiaScope',
+    x: 'LLM agents play the social deduction game Mafia while the engine privately asks every agent, after every public message, what it believes about everyone else. This viewer replays a recorded game and shows those private beliefs next to the ground truth.' },
+  { sel: '#timeline', t: 'Timeline',
+    x: 'Every tick is one public step: R2.5 means round 2, message 5. Scrub with the mouse or <b>←</b>/<b>→</b> keys. Marked ticks carry counterfactual branches.' },
+  { sel: '#gt-panel', t: 'Ground truth', pad: 6,
+    x: 'What is actually happening: node fill = true role, arrows = night actions and votes. The ring around a living Mafioso shows its current <b>deception success</b>: the share of informed observers who still fail to name it Mafia. Mini-histograms are the Big Five personality each agent was generated with.' },
+  { sel: '#main-grid', t: 'Private beliefs', pad: 4,
+    x: 'Each side panel is one agent\'s subjective world, reconstructed from probe answers: node colour = the role it privately assigns, edges = suspicion. Hover an edge to read the agent\'s verbatim rationale at that step.' },
+  { t: 'Impersonate mode & keyboard',
+    x: 'Click any player name to re-render the whole interface from inside that agent: only what it can see, what it believes, and the gap between who it <b>thinks</b> suspects it and who <b>actually</b> does, scored live. Shortcuts: <b>←</b>/<b>→</b> navigate, <b>M</b> metrics, <b>Esc</b> exits.' },
+  { sel: '#metrics-btn', t: 'Metrics & calibration', pad: 4, grow: '#calib-btn',
+    x: '<b>Metrics</b> plots first-order accuracy, crowd Mafia-detection recall and second-order consistency along the timeline. <b>Calibration</b> bins stated confidence against actual accuracy (ECE).' },
+  { sel: '#branch-btn', t: 'Counterfactual replay', pad: 4,
+    x: 'Fork the recorded game at the selected step and replay N continuations: the outcome distribution tells you whether this utterance actually mattered. Branches appear on the timeline and in the games list.' },
+  { sel: '#brand', t: 'Games menu', pad: 4,
+    x: 'The corpus lives here: main games and their replay branches, searchable by player, model or game id and filterable by language and branches. Every view is addressable by URL fragment (#metrics, #step=N&imp=Name), so you can cite an exact analytical state. Press <b>?</b> anytime to see this tour again.' },
+];
+let ti = -1;
+const $id = s => document.getElementById(s);
+
+function place(step){
+  const spot = $id('tour-spot'), card = $id('tour-card');
+  let r = null;
+  if (step.sel){
+    const el = document.querySelector(step.sel);
+    if (el && el.offsetParent !== null){
+      r = el.getBoundingClientRect();
+      if (step.grow){
+        const g = document.querySelector(step.grow);
+        if (g){ const gr = g.getBoundingClientRect();
+          r = { left: Math.min(r.left,gr.left), top: Math.min(r.top,gr.top),
+                right: Math.max(r.right,gr.right), bottom: Math.max(r.bottom,gr.bottom) };
+          r.width = r.right - r.left; r.height = r.bottom - r.top; }
+      }
+    }
+  }
+  if (r){
+    const p = step.pad ?? 8;
+    spot.style.display = 'block';
+    spot.style.left = (r.left-p)+'px'; spot.style.top = (r.top-p)+'px';
+    spot.style.width = (r.width+2*p)+'px'; spot.style.height = (r.height+2*p)+'px';
+    card.style.display = 'block';
+    const cw = 340, ch = card.offsetHeight || 170, m = 12;
+    let cx = Math.min(Math.max(r.left, m), innerWidth-cw-m);
+    let cy = r.bottom + 2*p + m;
+    if (cy + ch > innerHeight - m) cy = Math.max(m, r.top - p - ch - m);
+    card.style.left = cx+'px'; card.style.top = cy+'px';
+  } else {
+    spot.style.display = 'none';
+    card.style.display = 'block';
+    card.style.left = (innerWidth/2-170)+'px';
+    card.style.top = (innerHeight/2 - (card.offsetHeight||170)/2)+'px';
+  }
+}
+
+window.tourStart = function(){
+  ti = 0; $id('tour-dim').style.display = 'block'; show();
+};
+window.tourEnd = function(){
+  ti = -1;
+  try { localStorage.setItem('mafiascope_tour_done','1'); } catch(e){}
+  $id('tour-dim').style.display = 'none';
+  $id('tour-spot').style.display = 'none';
+  $id('tour-card').style.display = 'none';
+};
+window.tourStep = function(d){
+  ti += d;
+  if (ti < 0) ti = 0;
+  if (ti >= TOUR.length){ tourEnd(); return; }
+  show();
+};
+function show(){
+  const s = TOUR[ti];
+  $id('tour-title').textContent = s.t;
+  $id('tour-text').innerHTML = s.x;
+  $id('tour-dots').innerHTML = TOUR.map((_,i)=>`<i class="${i===ti?'on':''}"></i>`).join('');
+  $id('tour-back').style.visibility = ti===0 ? 'hidden' : 'visible';
+  $id('tour-next').textContent = ti===TOUR.length-1 ? 'Done' : 'Next';
+  requestAnimationFrame(()=>place(s));
+}
+document.addEventListener('keydown', function(e){
+  if (ti >= 0){
+    if (e.key==='Escape') tourEnd();
+    else if (e.key==='ArrowRight' || e.key==='Enter') tourStep(1);
+    else if (e.key==='ArrowLeft') tourStep(-1);
+    else return;
+    e.stopImmediatePropagation(); e.preventDefault();
+  } else if (e.key==='?' && !e.target.matches('input,textarea,select')){
+    tourStart();
+  }
+}, true);
+$id('tour-dim').addEventListener('click', tourEnd);
+addEventListener('resize', ()=>{ if (ti>=0) place(TOUR[ti]); });
+
+// "?" button in the header + first-visit auto-start.
+// Park the lamp right next to it so the theme toggle and tour help sit together.
+const hb = document.createElement('button');
+hb.id = 'tour-help-btn'; hb.className = 'hdr-btn'; hb.textContent = '?';
+hb.title = 'Guided tour'; hb.onclick = tourStart;
+const hdr = document.getElementById('header');
+const lamp = document.getElementById('theme-btn');
+if (lamp) hdr.appendChild(lamp);   // move the lamp into the right-hand cluster
+hdr.appendChild(hb);
+let seen = '1';
+try { seen = localStorage.getItem('mafiascope_tour_done'); } catch(e){}
+if (!seen) setTimeout(tourStart, 900);
+})();
 </script>
 </body>
 </html>

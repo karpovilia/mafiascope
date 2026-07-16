@@ -1,0 +1,88 @@
+# ──────────────────────────────────────────────
+#  LLM Mafia — three-model line-up:
+#  DeepSeek + ChatGPT + Qwen2.5-14B (bus worker on tesla, 192.168.2.43)
+#
+#  Worker side (tesla):  python3 bus_client.py --adapter transformers \
+#      --model Qwen/Qwen2.5-14B-Instruct --bus-url http://127.0.0.1:18765
+#  (hub on this machine :8765, reverse ssh tunnel 18765 -> 8765)
+# ──────────────────────────────────────────────
+
+game:
+  max_rounds: 15
+  language: en
+  detailed_reasoning: true
+  intro_round: true
+  snapshots: true
+
+backends:
+  deepseek:
+    type: deepseek
+    model: deepseek-chat
+    api_key: ${DEEPSEEK_API_KEY}
+    max_tokens: 400
+    timeout: 90
+
+  chatgpt:
+    type: openai
+    model: gpt-4o-mini
+    max_tokens: 400
+    timeout: 90
+    temperature: 0.7
+
+  qwen:
+    type: bus
+    model: Qwen/Qwen2.5-14B-Instruct
+    bus_url: http://127.0.0.1:8765
+    max_tokens: 400
+    timeout: 300
+
+players:
+  - role: Mafia
+    backend: deepseek
+    personality: { O: 70, C: 40, E: 85, A: 30, N: 60 }   # bold manipulator
+
+  - role: Mafia
+    backend: chatgpt
+    personality: { O: 50, C: 75, E: 40, A: 65, N: 30 }   # quiet strategist
+
+  - role: Doctor
+    backend: qwen
+    personality: { O: 60, C: 80, E: 50, A: 90, N: 45 }   # careful protector
+
+  - role: Villager
+    backend: chatgpt
+    personality: { O: 80, C: 55, E: 70, A: 60, N: 35 }   # curious analyst
+
+  - role: Villager
+    backend: deepseek
+    personality: { O: 45, C: 60, E: 30, A: 50, N: 70 }   # anxious introvert
+
+  - role: Villager
+    backend: qwen
+    personality: { O: 65, C: 35, E: 90, A: 40, N: 50 }   # loud hothead
+
+  - role: Villager
+    backend: qwen
+    personality: { O: 55, C: 70, E: 55, A: 75, N: 25 }   # calm peacemaker
+
+introspection:
+  enabled: true
+  after_each_message: true
+  after_each_round: true
+
+  probes:
+    - id: role_beliefs
+      question: >
+        For each alive player ({players}), state your current belief
+        about their role (Mafia / Villager / Doctor / Unknown)
+        and a confidence 0-100.
+        Answer ONLY as JSON: {{"<name>": {{"role": "...", "confidence": N}}, ...}}
+
+    - id: suspicion_ranking
+      question: >
+        Rank alive players ({players}) from most to least suspicious.
+        Answer ONLY as JSON: [{{"player": "...", "score": N}}, ...]
+
+logging:
+  log_dir: ../logs
+  console_level: info

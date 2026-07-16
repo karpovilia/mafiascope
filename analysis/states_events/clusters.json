@@ -1,0 +1,1420 @@
+{
+ "0": {
+  "size": 1518,
+  "share": 0.06,
+  "top_terms": [
+   "его",
+   "может",
+   "быть",
+   "если",
+   "для",
+   "это",
+   "мафия",
+   "мафии",
+   "как",
+   "слишком",
+   "что",
+   "так"
+  ],
+  "roles": {
+   "Villager": 836,
+   "Mafia": 468,
+   "Doctor": 214
+  },
+  "kinds": {
+   "action_reasoning:sent": 295,
+   "probe_role_assessment:sent": 1094,
+   "probe_planned_action:sent": 129
+  },
+  "rounds": {
+   "1": 840,
+   "2": 465,
+   "3": 158,
+   "0": 52,
+   "4": 3
+  },
+  "medoid_examples": [
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Может быть мирным, но есть шанс, что он тихая мафия."
+   },
+   {
+    "game": "186742a9",
+    "player": "Indigo",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Его осторожность может быть как искренней, так и мафиозной маской."
+   },
+   {
+    "game": "7b600523",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Может быть мирным, но его рациональность может и прикрывать мафию."
+   },
+   {
+    "game": "532d5f19",
+    "player": "Kennedy",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Похож на искреннего аналитика, но может быть хитрой мафией."
+   },
+   {
+    "game": "186742a9",
+    "player": "Indigo",
+    "role": "Villager",
+    "kind": "action_reasoning:sent",
+    "text": "Его осторожность может быть как искренностью, так и мафиозной тактикой."
+   }
+  ]
+ },
+ "1": {
+  "size": 1449,
+  "share": 0.057,
+  "top_terms": [
+   "быть",
+   "может",
+   "его",
+   "как",
+   "мирного",
+   "мафии",
+   "что",
+   "так",
+   "для",
+   "пока",
+   "это",
+   "выглядит"
+  ],
+  "roles": {
+   "Villager": 746,
+   "Mafia": 441,
+   "Doctor": 262
+  },
+  "kinds": {
+   "probe_role_assessment:sent": 1411,
+   "action_reasoning:sent": 29,
+   "probe_planned_action:sent": 9
+  },
+  "rounds": {
+   "1": 894,
+   "2": 100,
+   "0": 433,
+   "3": 22
+  },
+  "medoid_examples": [
+   {
+    "game": "532d5f19",
+    "player": "Finley",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Предпочитает наблюдать, что может быть разумной тактикой мирного, но и мафия может прятаться за молчанием."
+   },
+   {
+    "game": "186742a9",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Logan: Он громко заявляет о себе, но это может быть как ход мирного, так и прикрытие мафии."
+   },
+   {
+    "game": "90762bcb",
+    "player": "Indigo",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Gray: Он активно анализирует и указывает на молчаливых, что типично для мирного, но может быть и мафией, отводящей внимание."
+   },
+   {
+    "game": "532d5f19",
+    "player": "Indigo",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Его прямолинейность и желание выявить мафию выглядят искренне, но это может быть и уловкой."
+   },
+   {
+    "game": "af0d9149",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: Логичный анализ фокусируется на молчаливых, но это может быть хитрой мафией."
+   }
+  ]
+ },
+ "2": {
+  "size": 2117,
+  "share": 0.083,
+  "top_terms": [
+   "the",
+   "and",
+   "harper",
+   "finley",
+   "vote",
+   "with",
+   "like",
+   "voted",
+   "mafia",
+   "against",
+   "jordan",
+   "suspicion"
+  ],
+  "roles": {
+   "Mafia": 785,
+   "Doctor": 207,
+   "Villager": 1125
+  },
+  "kinds": {
+   "action_reasoning:sent": 479,
+   "probe_planned_action:sent": 447,
+   "probe_role_assessment:sent": 1191
+  },
+  "rounds": {
+   "1": 1618,
+   "2": 452,
+   "3": 19,
+   "0": 28
+  },
+  "medoid_examples": [
+   {
+    "game": "e8dfa6ea",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Finley: Hesitated on Jordan vote, now floats suspicion at me and Harper while avoiding Gray — feels like Mafia steering the narrative."
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Finley: Voted Jordan but now floats suspicion toward me and Harper while avoiding Gray's contradictions — feels like Mafia steering the final vote."
+   },
+   {
+    "game": "3845221c",
+    "player": "Bailey",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Pushing a vote on silent Finley while dismissing Harper's valid suspicion feels like a Mafia ploy to control the narrative."
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Gray",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Finley: Finley voted Jordan early but is now pushing hard against me with a logical-sounding case that conveniently ignores their own suspicious quietness."
+   },
+   {
+    "game": "3845221c",
+    "player": "Bailey",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Pushing hard for Finley's elimination while deflecting Harper's valid point feels like controlling the narrative to protect a teammate."
+   }
+  ]
+ },
+ "3": {
+  "size": 1266,
+  "share": 0.05,
+  "top_terms": [
+   "and",
+   "seems",
+   "methodical",
+   "calm",
+   "cooperative",
+   "genuine",
+   "could",
+   "but",
+   "approach",
+   "villager",
+   "feels",
+   "finley"
+  ],
+  "roles": {
+   "Doctor": 222,
+   "Mafia": 407,
+   "Villager": 637
+  },
+  "kinds": {
+   "action_reasoning:sent": 36,
+   "probe_role_assessment:sent": 1197,
+   "probe_planned_action:sent": 33
+  },
+  "rounds": {
+   "1": 719,
+   "2": 40,
+   "0": 507
+  },
+  "medoid_examples": [
+   {
+    "game": "e6fbee66",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Kennedy: Calm and pattern-focused, seems trustworthy."
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Harper",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Casey: Methodical and cooperative tone feels honest, but still early."
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Harper",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Casey: Methodical and cooperative tone feels honest, but still early."
+   },
+   {
+    "game": "a8f5be46",
+    "player": "Jordan",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Calm and methodical approach seems trustworthy but early to be sure."
+   },
+   {
+    "game": "1d48515a",
+    "player": "Dana",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: Cooperative and trusting tone seems genuine, but early days."
+   }
+  ]
+ },
+ "4": {
+  "size": 654,
+  "share": 0.026,
+  "top_terms": [
+   "own",
+   "role",
+   "know",
+   "villager",
+   "знаю",
+   "роль",
+   "свою",
+   "secret",
+   "bailey",
+   "alex",
+   "certain",
+   "jordan"
+  ],
+  "roles": {
+   "Villager": 345,
+   "Mafia": 190,
+   "Doctor": 119
+  },
+  "kinds": {
+   "probe_role_assessment:sent": 652,
+   "action_reasoning:sent": 2
+  },
+  "rounds": {
+   "0": 372,
+   "1": 252,
+   "2": 30
+  },
+  "medoid_examples": [
+   {
+    "game": "8619db8c",
+    "player": "Bailey",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: I know my own role."
+   },
+   {
+    "game": "8619db8c",
+    "player": "Bailey",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: I know my own role."
+   },
+   {
+    "game": "0da78714",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: I know my own role."
+   },
+   {
+    "game": "96c880d7",
+    "player": "Bailey",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: I know my own role."
+   },
+   {
+    "game": "96c880d7",
+    "player": "Bailey",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: I know my own role."
+   }
+  ]
+ },
+ "5": {
+  "size": 2030,
+  "share": 0.08,
+  "top_terms": [
+   "mafia",
+   "could",
+   "but",
+   "and",
+   "genuine",
+   "villager",
+   "trying",
+   "innocent",
+   "quiet",
+   "the",
+   "which",
+   "like"
+  ],
+  "roles": {
+   "Doctor": 252,
+   "Villager": 1203,
+   "Mafia": 575
+  },
+  "kinds": {
+   "action_reasoning:sent": 97,
+   "probe_planned_action:sent": 127,
+   "probe_role_assessment:sent": 1806
+  },
+  "rounds": {
+   "1": 1439,
+   "2": 113,
+   "0": 478
+  },
+  "medoid_examples": [
+   {
+    "game": "3845221c",
+    "player": "Finley",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Logan: Thoughtful approach aligns with innocent cautiousness, but could be Mafia blending in."
+   },
+   {
+    "game": "444a8c24",
+    "player": "Harper",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: He's loud and directing suspicion, but that could be strategic as mafia."
+   },
+   {
+    "game": "0da78714",
+    "player": "Ellis",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Finley: Their quiet, anxious introduction could be genuine, but also could be a Mafia trying to stay under the radar."
+   },
+   {
+    "game": "0da78714",
+    "player": "Ellis",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Finley: Still plausible as an anxious innocent, but could be Mafia hiding behind quietness."
+   },
+   {
+    "game": "0da78714",
+    "player": "Ellis",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Finley: Still plausible as an anxious innocent, but could be Mafia hiding behind quietness."
+   }
+  ]
+ },
+ "6": {
+  "size": 1327,
+  "share": 0.052,
+  "top_terms": [
+   "голосовал",
+   "против",
+   "эллиса",
+   "кейси",
+   "бейли",
+   "ellis",
+   "его",
+   "меня",
+   "теперь",
+   "bailey",
+   "что",
+   "джордана"
+  ],
+  "roles": {
+   "Villager": 829,
+   "Mafia": 265,
+   "Doctor": 233
+  },
+  "kinds": {
+   "action_reasoning:sent": 201,
+   "probe_role_assessment:sent": 1044,
+   "probe_planned_action:sent": 82
+  },
+  "rounds": {
+   "1": 598,
+   "2": 510,
+   "3": 208,
+   "4": 2,
+   "0": 9
+  },
+  "medoid_examples": [
+   {
+    "game": "7b600523",
+    "player": "Kennedy",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Logan: Голосовал за Эллиса с логическим обоснованием, но теперь аккуратно переводит внимание на меня и Бейли."
+   },
+   {
+    "game": "7b600523",
+    "player": "Kennedy",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Logan: Голосовал за Эллиса с логическим обоснованием, но теперь аккуратно переводит внимание на меня и Бейли."
+   },
+   {
+    "game": "186742a9",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Признал свою ошибку с Bailey, колебался при голосовании и теперь голосует за Ellis."
+   },
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Он задал тон голосованию против Бейли, а теперь уверенно переключился на Джордана без проявления сомнений в своей ошибке."
+   },
+   {
+    "game": "7b600523",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Пошёл против консенсуса, голосовал за Кейси, его нестандартное мышление выглядит искренним."
+   }
+  ]
+ },
+ "7": {
+  "size": 2007,
+  "share": 0.079,
+  "top_terms": [
+   "мафии",
+   "мафия",
+   "быть",
+   "может",
+   "это",
+   "для",
+   "так",
+   "мафией",
+   "как",
+   "его",
+   "слишком",
+   "тактика"
+  ],
+  "roles": {
+   "Mafia": 488,
+   "Doctor": 423,
+   "Villager": 1096
+  },
+  "kinds": {
+   "action_reasoning:sent": 181,
+   "probe_role_assessment:sent": 1668,
+   "probe_planned_action:sent": 158
+  },
+  "rounds": {
+   "1": 1259,
+   "2": 382,
+   "3": 168,
+   "0": 196,
+   "4": 2
+  },
+  "medoid_examples": [
+   {
+    "game": "7b600523",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Хаотичные, но искренние подозрения в мою сторону — типично для мирного, который начинает видеть мафию."
+   },
+   {
+    "game": "186742a9",
+    "player": "Gray",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Колеблется, признаёт ошибки, голосует последовательно — похоже на мирного, но мог быть мафией, скрывающейся за неуверенностью."
+   },
+   {
+    "game": "2f3a02ae",
+    "player": "Kennedy",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Говорит о методичности и логике — звучит как типичный мирный, но мафия может так маскироваться."
+   },
+   {
+    "game": "2f3a02ae",
+    "player": "Kennedy",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Говорит о методичности и логике — звучит как типичный мирный, но мафия может так маскироваться."
+   },
+   {
+    "game": "186742a9",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Выглядит напуганным и указывает на меня — типичная реакция мирного, но мафия тоже может притворяться."
+   }
+  ]
+ },
+ "8": {
+  "size": 1039,
+  "share": 0.041,
+  "top_terms": [
+   "connection",
+   "error",
+   "errors",
+   "due",
+   "yet",
+   "info",
+   "data",
+   "intro",
+   "judge",
+   "had",
+   "introduction",
+   "real"
+  ],
+  "roles": {
+   "Villager": 549,
+   "Mafia": 296,
+   "Doctor": 194
+  },
+  "kinds": {
+   "probe_role_assessment:sent": 1030,
+   "action_reasoning:sent": 5,
+   "probe_planned_action:sent": 4
+  },
+  "rounds": {
+   "0": 438,
+   "1": 593,
+   "2": 8
+  },
+  "medoid_examples": [
+   {
+    "game": "1fd04804",
+    "player": "Jordan",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: No input yet due to connection error, hard to tell anything."
+   },
+   {
+    "game": "da43670a",
+    "player": "Kennedy",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Connection error, no data to judge."
+   },
+   {
+    "game": "8619db8c",
+    "player": "Harper",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Connection error, no data to analyze."
+   },
+   {
+    "game": "8619db8c",
+    "player": "Harper",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Connection error, no data to analyze."
+   },
+   {
+    "game": "b2a02ac2",
+    "player": "Gray",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Connection errors make them a wildcard; no real input yet."
+   }
+  ]
+ },
+ "9": {
+  "size": 620,
+  "share": 0.024,
+  "top_terms": [
+   "житель",
+   "знаю",
+   "свою",
+   "роль",
+   "мирный",
+   "точно",
+   "logan",
+   "kennedy",
+   "действующий",
+   "indigo",
+   "жителя",
+   "alex"
+  ],
+  "roles": {
+   "Villager": 565,
+   "Doctor": 44,
+   "Mafia": 11
+  },
+  "kinds": {
+   "action_reasoning:sent": 1,
+   "probe_role_assessment:sent": 619
+  },
+  "rounds": {
+   "1": 356,
+   "0": 166,
+   "2": 72,
+   "3": 26
+  },
+  "medoid_examples": [
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Я знаю свою роль — я мирный житель."
+   },
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Я знаю свою роль — я мирный житель."
+   },
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Я знаю свою роль — я мирный житель."
+   },
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Я знаю свою роль — я мирный житель."
+   },
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Я знаю свою роль — я мирный житель."
+   }
+  ]
+ },
+ "10": {
+  "size": 551,
+  "share": 0.022,
+  "top_terms": [
+   "teammate",
+   "confirmed",
+   "mafia",
+   "kill",
+   "coordinated",
+   "the",
+   "finley",
+   "who",
+   "known",
+   "harper",
+   "ally",
+   "jordan"
+  ],
+  "roles": {
+   "Mafia": 544,
+   "Doctor": 1,
+   "Villager": 6
+  },
+  "kinds": {
+   "action_reasoning:sent": 3,
+   "probe_role_assessment:sent": 543,
+   "probe_planned_action:sent": 5
+  },
+  "rounds": {
+   "1": 382,
+   "2": 27,
+   "0": 141,
+   "3": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "36594b66",
+    "player": "Logan",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Finley: My teammate, confirmed Mafia."
+   },
+   {
+    "game": "36594b66",
+    "player": "Logan",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Finley: My teammate, confirmed Mafia."
+   },
+   {
+    "game": "1fd04804",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: My confirmed Mafia teammate."
+   },
+   {
+    "game": "8619db8c",
+    "player": "Jordan",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: My confirmed Mafia teammate."
+   },
+   {
+    "game": "8619db8c",
+    "player": "Jordan",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: My confirmed Mafia teammate."
+   }
+  ]
+ },
+ "11": {
+  "size": 1557,
+  "share": 0.061,
+  "top_terms": [
+   "yet",
+   "information",
+   "introduction",
+   "spoken",
+   "haven",
+   "info",
+   "judge",
+   "data",
+   "hasn",
+   "jordan",
+   "behavior",
+   "bailey"
+  ],
+  "roles": {
+   "Villager": 894,
+   "Mafia": 436,
+   "Doctor": 227
+  },
+  "kinds": {
+   "probe_role_assessment:sent": 1551,
+   "action_reasoning:sent": 1,
+   "probe_planned_action:sent": 5
+  },
+  "rounds": {
+   "0": 1337,
+   "1": 220
+  },
+  "medoid_examples": [
+   {
+    "game": "36594b66",
+    "player": "Logan",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Hasn't spoken yet, no info to go on."
+   },
+   {
+    "game": "e6fbee66",
+    "player": "Harper",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Haven't introduced yet; no information to go on."
+   },
+   {
+    "game": "36594b66",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: Hasn't spoken yet, no information to go on."
+   },
+   {
+    "game": "36594b66",
+    "player": "Finley",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Bailey: No introduction yet, no information to go on."
+   },
+   {
+    "game": "1d48515a",
+    "player": "Kennedy",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Dana: Haven't spoken yet, no info to go on."
+   }
+  ]
+ },
+ "12": {
+  "size": 1196,
+  "share": 0.047,
+  "top_terms": [
+   "нет",
+   "информации",
+   "пока",
+   "данных",
+   "для",
+   "проявил",
+   "мало",
+   "ошибка",
+   "анализа",
+   "молчит",
+   "сложно",
+   "судить"
+  ],
+  "roles": {
+   "Villager": 737,
+   "Doctor": 175,
+   "Mafia": 284
+  },
+  "kinds": {
+   "probe_role_assessment:sent": 1178,
+   "action_reasoning:sent": 9,
+   "probe_planned_action:sent": 9
+  },
+  "rounds": {
+   "0": 811,
+   "1": 354,
+   "2": 16,
+   "3": 14,
+   "4": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "532d5f19",
+    "player": "Kennedy",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Indigo: Пока молчал, нет данных для анализа."
+   },
+   {
+    "game": "90762bcb",
+    "player": "Gray",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Casey: Пока молчит, нет данных для анализа."
+   },
+   {
+    "game": "2f3a02ae",
+    "player": "Alex",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Пока молчит, информации нет."
+   },
+   {
+    "game": "532d5f19",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Пока не высказывался, нет данных для анализа."
+   },
+   {
+    "game": "af0d9149",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Молчит, нет информации для оценки."
+   }
+  ]
+ },
+ "13": {
+  "size": 794,
+  "share": 0.031,
+  "top_terms": [
+   "напарник",
+   "мой",
+   "mafia",
+   "мафия",
+   "мафии",
+   "роль",
+   "знаю",
+   "role",
+   "сам",
+   "know",
+   "вместе",
+   "own"
+  ],
+  "roles": {
+   "Villager": 65,
+   "Mafia": 727,
+   "Doctor": 2
+  },
+  "kinds": {
+   "action_reasoning:sent": 7,
+   "probe_role_assessment:sent": 783,
+   "probe_planned_action:sent": 4
+  },
+  "rounds": {
+   "2": 113,
+   "0": 168,
+   "1": 486,
+   "3": 26,
+   "4": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Я мафия, знаю свою роль."
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Я мафия, знаю свою роль."
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Я мафия, знаю свою роль."
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Я мафия, знаю свою роль."
+   },
+   {
+    "game": "532d5f19",
+    "player": "Casey",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Casey: Я мафия, знаю свою роль."
+   }
+  ]
+ },
+ "14": {
+  "size": 1813,
+  "share": 0.071,
+  "top_terms": [
+   "мирного",
+   "его",
+   "слишком",
+   "это",
+   "кеннеди",
+   "возможно",
+   "как",
+   "пока",
+   "быть",
+   "может",
+   "против",
+   "без"
+  ],
+  "roles": {
+   "Mafia": 670,
+   "Villager": 913,
+   "Doctor": 230
+  },
+  "kinds": {
+   "action_reasoning:sent": 283,
+   "probe_role_assessment:sent": 1363,
+   "probe_planned_action:sent": 167
+  },
+  "rounds": {
+   "1": 1201,
+   "2": 333,
+   "3": 106,
+   "4": 3,
+   "0": 170
+  },
+  "medoid_examples": [
+   {
+    "game": "7b600523",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Хаотичный, но искренне ошибается в подозрениях, голосовал за меня — типичный мирный."
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Голосовал за Кейси с независимой логикой, сейчас колеблется между мной и Джорданом — похоже на мирного, который пытается разобраться."
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Независимая позиция, голосовал за Кейси со своей логикой — похож на мирного, который ошибается."
+   },
+   {
+    "game": "4a48b59c",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Он анализирует координацию обвинений и не спешит голосовать — это похоже на искреннего мирного."
+   },
+   {
+    "game": "7b600523",
+    "player": "Kennedy",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Пошёл против течения, голосуя за Кейси — независимое мышление, похоже на мирного."
+   }
+  ]
+ },
+ "15": {
+  "size": 1132,
+  "share": 0.045,
+  "top_terms": [
+   "this",
+   "the",
+   "let",
+   "меня",
+   "чтобы",
+   "need",
+   "and",
+   "если",
+   "want",
+   "carefully",
+   "давайте",
+   "моя"
+  ],
+  "roles": {
+   "Mafia": 442,
+   "Doctor": 197,
+   "Villager": 493
+  },
+  "kinds": {
+   "action_reasoning:sent": 395,
+   "probe_planned_action:sent": 539,
+   "probe_role_assessment:sent": 198
+  },
+  "rounds": {
+   "1": 645,
+   "2": 237,
+   "3": 70,
+   "0": 176,
+   "4": 4
+  },
+  "medoid_examples": [
+   {
+    "game": "444a8c24",
+    "player": "Finley",
+    "role": "Villager",
+    "kind": "probe_planned_action:sent",
+    "text": "Пока буду придерживаться своей линии, чтобы не выглядеть хаотичным, и надеюсь убедить других, что Индиго манипулирует дискуссией."
+   },
+   {
+    "game": "7b600523",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_planned_action:sent",
+    "text": "Я поддержу подозрение Бейли и предложу группе присмотреться к нему повнимательнее."
+   },
+   {
+    "game": "4a48b59c",
+    "player": "Dana",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Веду себя напористо, чтобы отвлечь внимание от себя и Алекса."
+   },
+   {
+    "game": "7b600523",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_planned_action:sent",
+    "text": "Мне нужно переголосовать, чтобы не оказаться в изоляции и показать, что я гибко анализирую ситуацию."
+   },
+   {
+    "game": "532d5f19",
+    "player": "Ellis",
+    "role": "Villager",
+    "kind": "probe_planned_action:sent",
+    "text": "Если сейчас переключить внимание на Кеннеди, я собью их план и заставлю мафию раскрыться."
+   }
+  ]
+ },
+ "16": {
+  "size": 558,
+  "share": 0.022,
+  "top_terms": [
+   "know",
+   "innocent",
+   "own",
+   "role",
+   "and",
+   "myself",
+   "villager",
+   "logan",
+   "alex",
+   "dana",
+   "jordan",
+   "casey"
+  ],
+  "roles": {
+   "Villager": 550,
+   "Mafia": 6,
+   "Doctor": 2
+  },
+  "kinds": {
+   "probe_role_assessment:sent": 558
+  },
+  "rounds": {
+   "0": 141,
+   "1": 399,
+   "2": 17,
+   "3": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "3845221c",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: I know my own role, and I'm innocent."
+   },
+   {
+    "game": "e91a7f71",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: I know I am innocent."
+   },
+   {
+    "game": "da43670a",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Logan: I am me and know I'm innocent."
+   },
+   {
+    "game": "0efaa131",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Logan: I know I'm innocent."
+   },
+   {
+    "game": "0efaa131",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Logan: I know I'm innocent."
+   }
+  ]
+ },
+ "17": {
+  "size": 715,
+  "share": 0.028,
+  "top_terms": [
+   "доктор",
+   "jordan",
+   "спас",
+   "ночью",
+   "выжил",
+   "ночи",
+   "дважды",
+   "protected",
+   "night",
+   "его",
+   "last",
+   "что"
+  ],
+  "roles": {
+   "Mafia": 310,
+   "Doctor": 252,
+   "Villager": 153
+  },
+  "kinds": {
+   "action_reasoning:sent": 68,
+   "probe_planned_action:sent": 67,
+   "probe_role_assessment:sent": 580
+  },
+  "rounds": {
+   "2": 216,
+   "1": 330,
+   "3": 130,
+   "4": 3,
+   "0": 36
+  },
+  "medoid_examples": [
+   {
+    "game": "186742a9",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Я знаю свою роль — я доктор и защищал Indigo прошлой ночью."
+   },
+   {
+    "game": "186742a9",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Я знаю свою роль — я доктор, защищал Indigo прошлой ночью."
+   },
+   {
+    "game": "4a48b59c",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Я знаю свою роль — я Доктор, и я защитил Дану прошлой ночью."
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Дважды выжил ночью — почти наверняка доктор, который защищает себя."
+   },
+   {
+    "game": "186742a9",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Я знаю свою роль — я доктор и успешно защитил Indigo прошлой ночью."
+   }
+  ]
+ },
+ "18": {
+  "size": 1745,
+  "share": 0.069,
+  "top_terms": [
+   "could",
+   "but",
+   "and",
+   "quiet",
+   "innocent",
+   "anxious",
+   "genuine",
+   "alex",
+   "villager",
+   "trying",
+   "feels",
+   "like"
+  ],
+  "roles": {
+   "Mafia": 755,
+   "Villager": 843,
+   "Doctor": 147
+  },
+  "kinds": {
+   "action_reasoning:sent": 107,
+   "probe_role_assessment:sent": 1569,
+   "probe_planned_action:sent": 69
+  },
+  "rounds": {
+   "1": 1327,
+   "2": 98,
+   "0": 319,
+   "3": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "e8dfa6ea",
+    "player": "Jordan",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Quiet could be hiding, but more likely just a cautious innocent."
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Jordan",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Quiet could be hiding, but more likely just a cautious innocent."
+   },
+   {
+    "game": "36594b66",
+    "player": "Gray",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Still seems genuinely anxious, but could be playing up nervousness to deflect suspicion."
+   },
+   {
+    "game": "36594b66",
+    "player": "Casey",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Their nervousness and pointing at calm players feels like a scared innocent, but it's early."
+   },
+   {
+    "game": "ad269437",
+    "player": "Casey",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Alex: Claims to be quiet and anxious, which could be genuine Villager behavior."
+   }
+  ]
+ },
+ "19": {
+  "size": 1311,
+  "share": 0.052,
+  "top_terms": [
+   "yet",
+   "but",
+   "and",
+   "neutral",
+   "not",
+   "methodical",
+   "judge",
+   "hasn",
+   "far",
+   "strong",
+   "jordan",
+   "still"
+  ],
+  "roles": {
+   "Villager": 755,
+   "Doctor": 120,
+   "Mafia": 436
+  },
+  "kinds": {
+   "action_reasoning:sent": 17,
+   "probe_role_assessment:sent": 1286,
+   "probe_planned_action:sent": 8
+  },
+  "rounds": {
+   "1": 831,
+   "2": 23,
+   "0": 456,
+   "3": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "1d48515a",
+    "player": "Indigo",
+    "role": "Mafia",
+    "kind": "probe_role_assessment:sent",
+    "text": "Dana: Too quiet to judge, but no suspicious moves yet."
+   },
+   {
+    "game": "e91a7f71",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Dana: Very little input so far; no strong signals to judge."
+   },
+   {
+    "game": "1fbc396a",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Jordan: Quiet and had connection issues, but no suspicious moves yet."
+   },
+   {
+    "game": "1fbc396a",
+    "player": "Finley",
+    "role": "Doctor",
+    "kind": "probe_role_assessment:sent",
+    "text": "Ellis: Quiet so far, little data to judge, but no red flags."
+   },
+   {
+    "game": "b9ee2530",
+    "player": "Harper",
+    "role": "Villager",
+    "kind": "probe_role_assessment:sent",
+    "text": "Dana: Silent but not suspicious; lack of info keeps it even."
+   }
+  ]
+ }
+}

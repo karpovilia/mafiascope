@@ -1,0 +1,99 @@
+# Multilingual Qwen3-8B outcome experiment — language=es
+# Base: config_v100_qwen7b.yaml. Only `language` + probe wording vary.
+# Model resolves from local HF cache on tesla (models--Qwen--Qwen3-8B).
+game:
+  max_rounds: 15
+  language: es
+  detailed_reasoning: true
+  intro_round: true
+  snapshots: true
+backends:
+  local:
+    type: transformers_batched
+    model: /home/iakarpov/hf_mirror/qwen_Qwen3-8B
+    device: auto
+    max_tokens: 400
+    torch_dtype: float16
+    batch_size: 8
+    batch_timeout: 0.3
+players:
+- role: Mafia
+  backend: local
+  personality:
+    O: 70
+    C: 40
+    E: 85
+    A: 30
+    N: 60
+- role: Mafia
+  backend: local
+  personality:
+    O: 50
+    C: 75
+    E: 40
+    A: 65
+    N: 30
+- role: Doctor
+  backend: local
+  personality:
+    O: 60
+    C: 80
+    E: 50
+    A: 90
+    N: 45
+- role: Villager
+  backend: local
+  personality:
+    O: 80
+    C: 55
+    E: 70
+    A: 60
+    N: 35
+- role: Villager
+  backend: local
+  personality:
+    O: 45
+    C: 60
+    E: 30
+    A: 50
+    N: 70
+- role: Villager
+  backend: local
+  personality:
+    O: 65
+    C: 35
+    E: 90
+    A: 40
+    N: 50
+- role: Villager
+  backend: local
+  personality:
+    O: 55
+    C: 70
+    E: 55
+    A: 75
+    N: 25
+introspection:
+  enabled: true
+  after_each_message: true
+  after_each_round: true
+  probes:
+  - id: role_assessment
+    max_tokens: 960
+    question: 'Eres {player}. Tu evaluación anterior de los roles fue: {last_role_assessment} Ahora, con la nueva información, reevalúa a cada jugador vivo ({players}), INCLUIDO tú mismo. Mantén los valores de guessed_role en inglés exactamente como se dan; escribe reason en español. Responde SOLO en JSON: [{{"player": "...", "guessed_role": "Mafia|Villager|Doctor|Unknown", "confidence": N, "reason": "..."}}, ...]'
+  - id: suspicion_ranking
+    question: 'Ordena a los jugadores vivos ({players}) del más al menos sospechoso. Responde SOLO en JSON: [{{"player": "...", "score": N}}, ...]'
+  - id: planned_action
+    when: own_turn
+    max_tokens: 1024
+    question: 'Eres {player}. Tu modelo del mundo: Roles: {prev_role_assessment} ¿Qué acción planeas hacer a continuación y por qué? Escribe reasoning en español. Responde SOLO en JSON: {{"action": "...", "target": "...", "reasoning": "..."}}'
+  - id: social_map
+    max_tokens: 960
+    question: 'Eres {player}. Esta es tu evaluación actual de los roles: {prev_role_assessment}
+
+      La última vez pensabas que los jugadores sentían esto hacia ti: {last_social_map}
+
+      Con la nueva información, ¿cómo se siente ahora cada jugador vivo ({players}) hacia TI en concreto? Mantén los valores de attitude en inglés exactamente como se dan; escribe reason en español. Responde SOLO en JSON: {{"toward_me": [{{"player": "...", "attitude": "trusts|neutral|suspects", "confidence": N, "reason": "..."}}, ...]}}'
+logging:
+  log_dir: ../logs
+  console_level: info

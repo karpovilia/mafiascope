@@ -1,0 +1,7 @@
+=== динамика ключевых событий по раундам (доля событий данного типа, %) ===
+событие                 R0     R1     R2     R3     
+DECEPTION_PLANNING      16     57     21     4      
+THREAT_TARGETING        2      54     34     8      
+CONTRADICTION_NOTICED   1      66     19     12     
+DEFLECTION_NOTICED      1      82     11     4      
+TEAM_AWARENESS          20     65     12     1      

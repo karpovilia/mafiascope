@@ -1,0 +1,280 @@
+{
+ "0": {
+  "size": 357,
+  "share": 0.397,
+  "top_terms": [
+   "его",
+   "это",
+   "как",
+   "если",
+   "что",
+   "мафии",
+   "мафия",
+   "слишком",
+   "может",
+   "меня",
+   "для",
+   "кеннеди"
+  ],
+  "roles": {
+   "Mafia": 148,
+   "Doctor": 72,
+   "Villager": 137
+  },
+  "kinds": {
+   "action_reasoning": 132,
+   "probe_planned_action": 225
+  },
+  "rounds": {
+   "1": 186,
+   "2": 85,
+   "3": 40,
+   "4": 2,
+   "0": 44
+  },
+  "medoid_examples": [
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "Я в растерянности... В прошлый раз я ошибся и голосовал за мирную Бейли. Теперь мафия пыталась убить Индиго — значит, он представляет для них угрозу, и это делает его менее подозрительным.\n\nСмотрю на оставшихся. Эллис голосует за Джордана, но сам начал обвинения против Бейли и задал тон тому голосованию. Джордан методичен и логичен, но это может быть маской. Грей тоже голосовал за Бейли и теперь о"
+   },
+   {
+    "game": "4a48b59c",
+    "player": "Indigo",
+    "role": "Villager",
+    "kind": "probe_planned_action",
+    "text": "Проанализировав все данные, я вижу, что моя оценка Джордана и Алекса как мафии имеет равную степень уверенности, но Алекс более опасен в долгосрочной перспективе — он прячется за маской аналитика и может влиять на ход игры незаметно. Дана и Логан уже указали на него с логикой, которую я разделяю: он голосует за Кеннеди, копируя чужие аргументы, и избегает самостоятельных выводов. Если я оставлю го"
+   },
+   {
+    "game": "7b600523",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Проанализируем ситуацию:\n\n1. Эллис слишком уверенно заявлял, что атака точно была и доктор защитил — это знание, которое мирный не может иметь. Однако теперь против него уже три голоса (Кейси, Джордан и скоро мой), что может быть попыткой мафии быстро убрать неугодного. Кейси тоже активно раздает подозрения с первой минуты и первой начала голосование — возможно, пытается задать верное для себя нап"
+   },
+   {
+    "game": "186742a9",
+    "player": "Gray",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Сейчас осталось пятеро, и это критический момент. Bailey была мирной, что делает наше положение сложным — теперь против меня есть логическая цепочка: если Bailey мирная, то среди голосовавших за неё находится мафия. Ellis слишком активно вёл обвинение, но если его убрать, подозрение может упасть на меня или Jordan. Alex и Indigo внимательно анализируют и могут вычислить нестыковки в моём поведении"
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Ситуация накаляется, и это хорошо. Кейси уже проголосовала за меня, пытаясь выставить мою уверенность как доказательство мафиозности. Но давайте здраво оценим: я просто логично предположил, что доктор спас кого-то — это базовая стратегия, а не insider info. Кейси же слишком быстро переводит стрелки, а Джордан методично раздает подозрения, хотя сам был целью ночью.\n\nБейли подметил странную уверенно"
+   }
+  ]
+ },
+ "1": {
+  "size": 153,
+  "share": 0.17,
+  "top_terms": [
+   "want",
+   "see",
+   "how",
+   "need",
+   "before",
+   "discussion",
+   "information",
+   "early",
+   "stay",
+   "since",
+   "and",
+   "for"
+  ],
+  "roles": {
+   "Villager": 73,
+   "Mafia": 46,
+   "Doctor": 34
+  },
+  "kinds": {
+   "probe_planned_action": 153
+  },
+  "rounds": {
+   "0": 95,
+   "1": 56,
+   "2": 2
+  },
+  "medoid_examples": [
+   {
+    "game": "9a3ef0d6",
+    "player": "Alex",
+    "role": "Mafia",
+    "kind": "probe_planned_action",
+    "text": "With two players having connection errors and little info yet, I need to let others speak first to gather clues. Acting too assertive could draw suspicion as Mafia. I'll stay methodical and let Dana's probing style or others' reactions reveal their roles before I decide who to target or vote."
+   },
+   {
+    "game": "36594b66",
+    "player": "Bailey",
+    "role": "Doctor",
+    "kind": "probe_planned_action",
+    "text": "It's early in the game and I need more information before forming solid opinions. I'll stay methodical, listen carefully to discussion patterns, and look for inconsistencies or aggressive pushes that might reveal Mafia behavior."
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Finley",
+    "role": "Mafia",
+    "kind": "probe_planned_action",
+    "text": "It's still early in the game. I should let the more vocal players like Dana lead discussion while I stay neutral and methodical, avoiding suspicion. My priority is to keep a low profile and build trust with innocents."
+   },
+   {
+    "game": "a8f5be46",
+    "player": "Alex",
+    "role": "Doctor",
+    "kind": "probe_planned_action",
+    "text": "I have no strong read on anyone yet, so I'll stay quiet and observe how the group interacts during discussion. This will help me form early impressions of who might be Mafia before I need to act."
+   },
+   {
+    "game": "3845221c",
+    "player": "Bailey",
+    "role": "Doctor",
+    "kind": "probe_planned_action",
+    "text": "As the Doctor, I need to stay calm and cooperative to avoid drawing suspicion. My strategy is to gently probe the quieter players like Finley and Harper without accusing anyone outright, since the Mafia likely targeted Gray to remove a vocal player and create confusion. I'll protect myself tonight so I can keep gathering information and protect key villagers later."
+   }
+  ]
+ },
+ "2": {
+  "size": 221,
+  "share": 0.246,
+  "top_terms": [
+   "feels",
+   "vote",
+   "that",
+   "mafia",
+   "like",
+   "but",
+   "with",
+   "this",
+   "was",
+   "finley",
+   "suspicious",
+   "innocent"
+  ],
+  "roles": {
+   "Villager": 136,
+   "Mafia": 67,
+   "Doctor": 18
+  },
+  "kinds": {
+   "action_reasoning": 96,
+   "probe_planned_action": 125
+  },
+  "rounds": {
+   "1": 190,
+   "2": 29,
+   "3": 1,
+   "0": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "0da78714",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Let me think this through carefully. Ellis and Finley have both voted for Harper, citing aggressive deflection and narrative control. That's three votes including mine if I join—enough to eliminate Harper. But I need to consider if this is a setup. Ellis pushed hard against quiet players first, then switched to Harper quickly. Finley seems genuinely nervous, which could be real or an act.\n\nThe lou"
+   },
+   {
+    "game": "e6fbee66",
+    "player": "Kennedy",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "Let me break this down carefully.\n\nHarper made a detailed, methodical case against Finley—consistent with their stated personality. The \"reasonable leader\" theory Finley pushed does feel like a broad net to cast suspicion on multiple active players while looking helpful. However, it's also possible Harper is Mafia trying to eliminate a vocal innocent.\n\nAlex's vote on Casey has some merit. Casey wa"
+   },
+   {
+    "game": "36594b66",
+    "player": "Gray",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "I need to address this head-on. My statement that \"quiet voices being innocent\" was about the Mafia often avoiding attention early, not a blanket defense—I was just sharing my reasoning, not trying to control the narrative. What I find telling is that Alex, Logan, Finley, Casey, and Bailey all jumped on me for that one observation without considering other possibilities, and Alex's anxious gut vot"
+   },
+   {
+    "game": "0da78714",
+    "player": "Jordan",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "I need to be very careful here. This is a critical vote.\n\nDana is aggressively pointing at me and Finley, calling us a coordinated Mafia pair. But Dana was quick to jump on Harper yesterday and is now the most vocal player deflecting suspicion. That's consistent with their chaotic personality, but it's also a perfect cover for Mafia.\n\nBailey has been almost invisible this entire game—neutral to th"
+   },
+   {
+    "game": "0da78714",
+    "player": "Dana",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "Okay, I've been chewing on this, and here's where I land. Harper's intro was all about \"ruffling feathers\" and shaking things up, which screams bold townie or Mafia looking to stir confusion. Then Finley floated a theory about loud players, and Harper instantly pounced on them—calling the theory \"weak\" and then turning suspicion right back on Finley and Jordan. That's textbook defensive aggression"
+   }
+  ]
+ },
+ "3": {
+  "size": 169,
+  "share": 0.188,
+  "top_terms": [
+   "action",
+   "doctor",
+   "threat",
+   "kill",
+   "vocal",
+   "could",
+   "them",
+   "they",
+   "likely",
+   "dangerous",
+   "protect",
+   "player"
+  ],
+  "roles": {
+   "Mafia": 139,
+   "Doctor": 28,
+   "Villager": 2
+  },
+  "kinds": {
+   "action_reasoning": 81,
+   "probe_planned_action": 88
+  },
+  "rounds": {
+   "1": 96,
+   "2": 70,
+   "3": 3
+  },
+  "medoid_examples": [
+   {
+    "game": "e6fbee66",
+    "player": "Harper",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "1. Kennedy is the biggest threat now. They've shown sharp, methodical reasoning and correctly voted with me against Finley—that kind of pattern recognition could expose me if they keep analyzing correctly.\n\n2. The Doctor likely is someone who's been cooperative but not too vocal. Jordan or Alex could be playing that role—Jordan stayed neutral and safe, while Alex has been active but not overly tar"
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Finley",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Let's assess the situation carefully.\n\n1. Casey is the biggest threat now—she was the first to push a theory and rally votes against Jordan, and she's proven she can drive the conversation effectively. Taking her out will leave the others without a strong leader.\n\n2. The Doctor is likely someone quiet and careful—Alex fits that profile, being anxious and observant, so they might be protecting a vo"
+   },
+   {
+    "game": "36594b66",
+    "player": "Logan",
+    "role": "Mafia",
+    "kind": "probe_planned_action",
+    "text": "Alex is the most vocal threat, but we just targeted them—if Alex is the Doctor, they might protect themselves, wasting our kill. Bailey is my top Doctor candidate, so killing them now risks hitting the protector and leaving a clear path. Casey is sharp, independent, and trusted by the group—eliminating her removes a strong logical voice that could turn against us tomorrow, while letting us reasses"
+   },
+   {
+    "game": "1d48515a",
+    "player": "Indigo",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Let me think this through carefully. Kennedy seems outgoing and vocal, which could make them a dangerous leader against us. Harper is methodical and analytical, which could be problematic too—they might piece things together. Bailey seems trusting and cooperative, making them a potential Doctor candidate if they're playing protectively. Finley appears anxious and cautious, which could also hint at"
+   },
+   {
+    "game": "0da78714",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "probe_planned_action",
+    "text": "Ellis is my biggest threat—they're vocal, strategic, and already showed they can pivot suspicions effectively. If they're the Doctor, killing them removes protective coverage for the remaining town. If they're a sharp villager, silencing them removes a powerful voice that could rally suspicion against me tomorrow. I've modeled them as 60% likely Doctor, but regardless of role, they're the most dan"
+   }
+  ]
+ }
+}

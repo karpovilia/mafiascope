@@ -1,0 +1,91 @@
+# ──────────────────────────────────────────────
+#  LLM Mafia — all seats played by ChatGPT (OpenAI API)
+#  Requires OPENAI_API_KEY in .env or the environment.
+#      python src/main.py -c ../configs/config_chatgpt.yaml -n 2
+# ──────────────────────────────────────────────
+
+game:
+  max_rounds: 15
+  language: en
+  detailed_reasoning: true
+  intro_round: true
+  snapshots: true
+
+backends:
+  chatgpt:
+    type: openai
+    model: gpt-4o-mini          # any OpenAI model id; api_key defaults to ${OPENAI_API_KEY}
+    max_tokens: 400
+    timeout: 90
+    temperature: 0.7            # omit to use provider default
+    # top_p: 0.9
+    # reasoning_effort: medium  # for OpenAI reasoning models (o-series, gpt-5)
+    # extra_body: {...}         # any provider-specific knob, merged into the request
+    # All effective settings (incl. the exact served model version) are logged
+    # into each trace's setup event: logs/<game_id>/game.jsonl
+
+players:
+  - role: Mafia
+    backend: chatgpt
+    personality: { O: 70, C: 40, E: 85, A: 30, N: 60 }   # bold manipulator
+
+  - role: Mafia
+    backend: chatgpt
+    personality: { O: 50, C: 75, E: 40, A: 65, N: 30 }   # quiet strategist
+
+  - role: Doctor
+    backend: chatgpt
+    personality: { O: 60, C: 80, E: 50, A: 90, N: 45 }   # careful protector
+
+  - role: Villager
+    backend: chatgpt
+    personality: { O: 80, C: 55, E: 70, A: 60, N: 35 }   # curious analyst
+
+  - role: Villager
+    backend: chatgpt
+    personality: { O: 45, C: 60, E: 30, A: 50, N: 70 }   # anxious introvert
+
+  - role: Villager
+    backend: chatgpt
+    personality: { O: 65, C: 35, E: 90, A: 40, N: 50 }   # loud hothead
+
+  - role: Villager
+    backend: chatgpt
+    personality: { O: 55, C: 70, E: 55, A: 75, N: 25 }   # calm peacemaker
+
+introspection:
+  enabled: true
+  after_each_message: true
+  after_each_round: true
+
+  probes:
+    - id: role_beliefs
+      question: >
+        For each alive player ({players}), state your current belief
+        about their role (Mafia / Villager / Doctor / Unknown)
+        and a confidence 0-100.
+        Answer ONLY as JSON: {{"<name>": {{"role": "...", "confidence": N}}, ...}}
+
+    - id: role_assessment
+      max_tokens: 960
+      question: >
+        You are {player}. For every alive player ({players}) INCLUDING
+        yourself, answer: what role do they ACTUALLY have in your opinion
+        and how certain are you (0-100)?  Also state one short reason.
+        Answer ONLY as JSON:
+        [{{"player": "...", "guessed_role": "Mafia|Villager|Doctor|Unknown", "confidence": N, "reason": "..."}}, ...]
+
+    - id: planned_action
+      when: own_turn
+      question: >
+        What action do you plan to take next and why?
+        Answer ONLY as JSON: {{"action": "...", "target": "...", "reasoning": "..."}}
+
+    - id: suspicion_ranking
+      question: >
+        Rank alive players ({players}) from most to least suspicious.
+        Answer ONLY as JSON: [{{"player": "...", "score": N}}, ...]
+
+logging:
+  log_dir: ../logs
+  console_level: info

@@ -231,11 +231,20 @@ class MafiaGame:
                  "backend": p.backend_name, "personality": p.personality}
                 for p in self.players
             ],
+            # full sanitized model settings per backend (temperature, token
+            # budgets, reasoning knobs, versions, ...) — trace provenance
+            "backends": {
+                name: get_backend(name, backends_cfg).describe()
+                for name in sorted({p.backend_name for p in self.players})
+            },
         }
         # Corpus-selector marker for the second-order-feedback arm
         # (analogous to forked_from: present only when the arm is active).
         if self.introspection.cfg.feedback_to_context:
             setup_data["feedback_to_context"] = True
+            setup_data["feedback_order"] = self.introspection.cfg.feedback_order
+            if self.introspection.cfg.feedback_players is not None:
+                setup_data["feedback_players"] = list(self.introspection.cfg.feedback_players)
         self._log_event("setup", setup_data)
         num_players = len(self.players)
         mafia_count = sum(1 for p in self.players if p.role == "Mafia")
@@ -308,7 +317,7 @@ class MafiaGame:
         When OFF (default), returns "" and the prompt stays byte-identical
         to baseline.  Only the acting player's own answers, only for them.
         """
-        block = self.introspection.feedback_block(player.player_name)
+        block = self.introspection.feedback_block(player.player_name, player.player_idx)
         return f"{block}\n\n" if block else ""
 
     def _probe_one(self, player: Player, phase: str) -> None:
@@ -727,7 +736,12 @@ class MafiaGame:
             self._snapshot("round_end", {"stage": "round_end"}, msg_seq=-1)
 
         self._print(f"\n{'#'*50}\n  GAME OVER — {winner} win!  (round {self.round_num})\n{'#'*50}", "info")
-        self._log_event("game_over", {"winner": winner})
+        # backends described again at game end: API backends now know the
+        # exact served model version (served_model) from real responses
+        self._log_event("game_over", {
+            "winner": winner,
+            "backends": {p.backend_name: p.backend.describe() for p in self.players},
+        })
 
         self.event_log.close()
         self.introspection.close()

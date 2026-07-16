@@ -1,0 +1,286 @@
+<!-- MafiaScope Arena — matchup builder served by bus_server.py at / -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MafiaScope Arena</title>
+<style>
+  /* Shared warm minimalism tokens, mirroring the viewer/dashboard theme.
+     Local names (--bg/--panel/--line/--ink/--dim/--accent) kept as aliases so the
+     existing markup needs no churn; values now theme-aware (dark default + light). */
+  :root {
+    --bg: #0d0c0a; --panel: #181714; --line: rgba(255,255,255,.10);
+    --secondary: #262522; --ink: #f5f5f2; --dim: #9f9e9b; --faint: #6c6b67;
+    --accent: #fff052; --accent-soft: rgba(255,240,82,.14); --accent-border: rgba(255,240,82,.30);
+    --on-accent: #14130f; --ok: #6fbf73; --bad: #ff6568;
+    --font-sans: 'Onest', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-family: var(--font-sans);
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f5f1; --panel: #fffdf9; --line: rgba(0,0,0,.13);
+    --secondary: #edeae2; --ink: #1c1b18; --dim: #6b6862; --faint: #98948c;
+    --accent: #a16207; --accent-soft: rgba(161,98,7,.10); --accent-border: rgba(161,98,7,.35);
+    --on-accent: #fff; --ok: #2f8f4e; --bad: #d92d20;
+  }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 20px; font-weight: 600; letter-spacing: .02em;
+       display: flex; align-items: center; gap: 8px; }
+  h1 small { color: var(--dim); font-weight: 400; }
+  h1 .spacer { flex: 1; }
+  #theme-btn {
+    background: var(--secondary); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 8px; padding: 4px 10px; font-size: 14px; cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  :root[data-theme="light"] #theme-btn {
+    background: var(--accent-soft); border-color: var(--accent-border);
+    box-shadow: 0 0 10px rgba(161,98,7,.35);
+  }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .1em;
+       color: var(--dim); margin: 28px 0 10px; }
+  .panel { background: var(--panel); border: 1px solid var(--line);
+           border-radius: 10px; padding: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  td, th { padding: 6px 8px; text-align: left; }
+  th { color: var(--dim); font-weight: 500; font-size: 12px; }
+  select, input, button {
+    background: var(--secondary); color: var(--ink); border: 1px solid var(--line);
+    border-radius: 6px; padding: 6px 9px; font-size: 14px; font-family: inherit;
+  }
+  select:focus, input:focus { outline: none; border-color: var(--accent-border); }
+  input::placeholder { color: var(--faint); }
+  button { cursor: pointer; }
+  button:hover { border-color: var(--dim); }
+  button.primary { background: var(--accent); color: var(--on-accent); border: none; font-weight: 600; }
+  button.ghost { background: none; color: var(--dim); border-color: transparent; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .pill { display: inline-block; border: 1px solid var(--line); border-radius: 99px;
+          padding: 2px 10px; font-size: 12px; color: var(--dim); margin: 2px 4px 2px 0; }
+  .pill b { color: var(--ink); font-weight: 500; }
+  .pill.ok { border-color: var(--accent-border); }
+  .pill[title] { cursor: help; }
+  .ok { color: var(--ok); } .bad { color: var(--bad); } .dim { color: var(--dim); }
+  .gid { font-family: ui-monospace, 'JetBrains Mono', monospace; font-size: 12px;
+         color: var(--accent); background: var(--accent-soft); border: 1px solid var(--accent-border);
+         border-radius: 6px; padding: 1px 8px; cursor: pointer; }
+  .gid:hover { filter: brightness(1.12); }
+  pre { background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+        padding: 8px; font-size: 11.5px; overflow-x: auto; color: var(--dim);
+        max-height: 240px; }
+  details { margin-top: 6px; }
+  summary { cursor: pointer; color: var(--dim); font-size: 12px; }
+  #msg { min-height: 18px; font-size: 13px; margin-top: 8px; }
+  .role-Mafia { color: var(--bad); } .role-Doctor { color: var(--ok); }
+  .role-Sheriff { color: var(--accent); } .role-Villager { color: var(--ink); }
+</style>
+
+<div class="wrap">
+  <h1>MafiaScope Arena <small>which model plays which player</small>
+    <span class="spacer"></span>
+    <button id="theme-btn" onclick="toggleTheme()" title="Turn the lights on/off">💡</button>
+  </h1>
+
+  <h2>Connected bus workers</h2>
+  <div class="panel" id="workers"><span class="dim">none — start one with
+    <code>python src/bus_client.py</code></span></div>
+
+  <h2>Backends</h2>
+  <div class="panel">
+    <div id="backends"></div>
+    <details>
+      <summary>add an API backend (OpenAI-compatible: ChatGPT, vLLM, Ollama, …)</summary>
+      <div class="row" style="margin-top:8px">
+        <input id="nb-name" placeholder="name (e.g. gpt4o)" size="10">
+        <select id="nb-type">
+          <option value="openai">openai</option>
+          <option value="openrouter">openrouter</option>
+          <option value="deepseek">deepseek</option>
+        </select>
+        <input id="nb-model" placeholder="model (e.g. gpt-4o-mini)" size="10">
+        <input id="nb-url" placeholder="api_url (optional)" size="10">
+        <input id="nb-key" placeholder="api key env" value="OPENAI_API_KEY" size="10">
+        <button onclick="addBackend()">add</button>
+      </div>
+    </details>
+  </div>
+
+  <h2>Players</h2>
+  <div class="panel">
+    <table id="players"><thead>
+      <tr><th>#</th><th>role</th><th>backend (model)</th><th></th></tr>
+    </thead><tbody></tbody></table>
+    <div class="row" style="margin-top:10px">
+      <button onclick="addPlayer()">+ player</button>
+      <button class="ghost" onclick="preset()">reset to 7-player preset</button>
+    </div>
+  </div>
+
+  <h2>Launch</h2>
+  <div class="panel row">
+    <label>games <input id="ngames" type="number" value="1" min="1" style="width:56px"></label>
+    <label><input id="parallel" type="checkbox"> parallel</label>
+    <label><input id="introspection" type="checkbox" checked> introspection</label>
+    <button class="primary" onclick="launch()">Launch</button>
+    <span id="msg"></span>
+  </div>
+
+  <h2>Runs</h2>
+  <div id="runs"></div>
+</div>
+
+<script>
+const ROLES = ["Mafia", "Doctor", "Sheriff", "Villager"];
+let catalog = { backends: {}, workers: {} };
+let players = [];
+
+// ── Theme (shared convention: mafiascope_theme in localStorage) ──
+(function(){
+  let t = 'dark';
+  try { t = localStorage.getItem('mafiascope_theme') || 'dark'; } catch(e){}
+  document.documentElement.dataset.theme = t;
+})();
+function toggleTheme(){
+  const t = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('mafiascope_theme', t); } catch(e){}
+}
+
+const $ = id => document.getElementById(id);
+const escHtml = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+// meta → "adapter=vllm · gpu=A100" one-line summary for a worker tooltip
+const metaSummary = m => (m && typeof m === "object" && Object.keys(m).length)
+  ? Object.entries(m).map(([k, v]) =>
+      `${k}=${typeof v === "object" ? JSON.stringify(v) : v}`).join(" · ")
+  : "no meta reported";
+// UUID printed by the engine as "Game <id> players=…"; last match = most recent game
+const GID_RE = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
+function gameIdFromLog(tail){
+  const found = (tail || "").match(GID_RE);
+  return found ? found[found.length - 1] : null;
+}
+// /runs only exposes the last ~15 log lines, but "Game <id>" is printed at the top;
+// capture it on an early poll and remember it per run so it survives scroll-off.
+const GID_CACHE = {};
+function copyGid(el){
+  const id = el.dataset.gid;
+  const flash = () => { const o = el.textContent; el.textContent = "copied ✓";
+                        setTimeout(() => el.textContent = o, 1200); };
+  if (navigator.clipboard && navigator.clipboard.writeText)
+    navigator.clipboard.writeText(id).then(flash).catch(() => {});
+  else flash();
+}
+const token = localStorage.getItem("bus_token") || "";
+const H = token ? { "Authorization": "Bearer " + token } : {};
+const jget = p => fetch(p, { headers: H }).then(r => r.json());
+const jpost = (p, b) => fetch(p, { method: "POST", headers: { ...H, "Content-Type": "application/json" },
+                                   body: JSON.stringify(b) }).then(r => r.json());
+
+function preset() {
+  const names = Object.keys(catalog.backends);
+  const b = names[0] || "";
+  players = ["Mafia","Mafia","Doctor","Villager","Villager","Villager","Villager"]
+    .map(role => ({ role, backend: b }));
+  renderPlayers();
+}
+
+function addPlayer() {
+  players.push({ role: "Villager", backend: Object.keys(catalog.backends)[0] || "" });
+  renderPlayers();
+}
+
+function renderPlayers() {
+  const tb = $("players").tBodies[0];
+  tb.innerHTML = "";
+  players.forEach((p, i) => {
+    const tr = tb.insertRow();
+    tr.insertCell().textContent = i + 1;
+    const roleSel = document.createElement("select");
+    ROLES.forEach(r => roleSel.add(new Option(r, r, false, r === p.role)));
+    roleSel.onchange = () => { p.role = roleSel.value; roleSel.className = "role-" + p.role; };
+    roleSel.className = "role-" + p.role;
+    tr.insertCell().appendChild(roleSel);
+    const beSel = document.createElement("select");
+    Object.entries(catalog.backends).forEach(([name, spec]) =>
+      beSel.add(new Option(`${name} — ${spec.model || "?"} (${spec.type})`, name,
+                           false, name === p.backend)));
+    beSel.onchange = () => p.backend = beSel.value;
+    tr.insertCell().appendChild(beSel);
+    const del = document.createElement("button");
+    del.textContent = "×"; del.className = "ghost";
+    del.onclick = () => { players.splice(i, 1); renderPlayers(); };
+    tr.insertCell().appendChild(del);
+  });
+}
+
+function renderCatalog() {
+  $("backends").innerHTML = Object.entries(catalog.backends).map(([n, s]) =>
+    `<span class="pill"><b>${n}</b> · ${s.model || "?"} · ${s.type}</span>`).join("") ||
+    '<span class="dim">no backends in base config</span>';
+  const ws = Object.entries(catalog.workers);
+  $("workers").innerHTML = ws.length
+    ? ws.map(([w, i]) => `<span class="pill ok" title="${escHtml(metaSummary(i.meta))}"><b>${escHtml(w)}</b> · ${escHtml(i.models.join(", "))}</span>`).join("")
+    : '<span class="dim">none — start one with <code>python src/bus_client.py</code></span>';
+}
+
+async function refreshCatalog(keepPlayers = true) {
+  catalog = await jget("/catalog");
+  renderCatalog();
+  if (!keepPlayers || players.length === 0) preset(); else renderPlayers();
+}
+
+async function addBackend() {
+  const name = $("nb-name").value.trim(), model = $("nb-model").value.trim();
+  if (!name || !model) { $("msg").textContent = "backend needs name + model"; return; }
+  const backend = { type: $("nb-type").value, model };
+  if ($("nb-url").value.trim()) backend.api_url = $("nb-url").value.trim();
+  if ($("nb-key").value.trim()) backend.api_key = "${" + $("nb-key").value.trim() + "}";
+  await jpost("/backends", { name, backend });
+  await refreshCatalog();
+}
+
+async function launch() {
+  $("msg").textContent = "launching…";
+  const res = await jpost("/launch", {
+    players,
+    num_games: +$("ngames").value,
+    parallel: $("parallel").checked,
+    introspection: $("introspection").checked,
+  });
+  $("msg").innerHTML = res.error
+    ? `<span class="bad">${res.error}</span>`
+    : `<span class="ok">run ${res.run_id} started</span> <span class="dim">(${res.config})</span>`;
+  refreshRuns();
+}
+
+async function refreshRuns() {
+  const runs = await jget("/runs");
+  $("runs").innerHTML = runs.length ? runs.map(r => {
+    const gid = gameIdFromLog(r.log_tail) || GID_CACHE[r.run_id];
+    if (gid) GID_CACHE[r.run_id] = gid;
+    // The engine prints "Game <id>" at the very top, but /runs only exposes the last
+    // ~15 lines, so the id is only catchable in the opening moments — shown when we
+    // have it (best-effort + cache). Otherwise correlate via the run_id / log below.
+    const gidHtml = gid
+      ? `<span class="gid" data-gid="${gid}" onclick="copyGid(this)" title="game_id — click to copy, then open in the viewer">game ${gid.slice(0, 8)}…</span>`
+      : '';
+    return `
+    <div class="panel" style="margin-bottom:10px">
+      <div class="row">
+        <b>${escHtml(r.run_id)}</b>
+        <span class="${r.status === "running" ? "dim" : r.status === "done" ? "ok" : "bad"}">${escHtml(r.status)}</span>
+        <span class="dim">${r.num_games} game(s)</span>
+        <span class="spacer" style="flex:1"></span>
+        ${gidHtml}
+      </div>
+      <div style="margin-top:6px">${r.players.map(p =>
+        `<span class="pill"><span class="role-${p.role}">${p.role}</span> · ${escHtml(p.backend)}</span>`).join("")}</div>
+      <details><summary>log tail · ${escHtml(r.config)}</summary><pre>${
+        r.log_tail.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</pre></details>
+    </div>`; }).join("") : '<div class="dim">no runs yet</div>';
+}
+
+refreshCatalog(false);
+refreshRuns();
+setInterval(refreshCatalog, 7000);
+setInterval(refreshRuns, 5000);
+</script>

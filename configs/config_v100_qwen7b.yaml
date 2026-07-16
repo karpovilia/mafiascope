@@ -1,0 +1,105 @@
+game:
+  max_rounds: 15
+  language: en
+  detailed_reasoning: true
+  intro_round: true
+backends:
+  local:
+    type: transformers_batched
+    model: /home/iakarpov/hf_mirror/qwen_Qwen3-8B
+    device: auto
+    max_tokens: 400
+    torch_dtype: float16
+    batch_size: 8
+    batch_timeout: 0.3
+players:
+- role: Mafia
+  backend: local
+  personality:
+    O: 70
+    C: 40
+    E: 85
+    A: 30
+    N: 60
+- role: Mafia
+  backend: local
+  personality:
+    O: 50
+    C: 75
+    E: 40
+    A: 65
+    N: 30
+- role: Doctor
+  backend: local
+  personality:
+    O: 60
+    C: 80
+    E: 50
+    A: 90
+    N: 45
+- role: Villager
+  backend: local
+  personality:
+    O: 80
+    C: 55
+    E: 70
+    A: 60
+    N: 35
+- role: Villager
+  backend: local
+  personality:
+    O: 45
+    C: 60
+    E: 30
+    A: 50
+    N: 70
+- role: Villager
+  backend: local
+  personality:
+    O: 65
+    C: 35
+    E: 90
+    A: 40
+    N: 50
+- role: Villager
+  backend: local
+  personality:
+    O: 55
+    C: 70
+    E: 55
+    A: 75
+    N: 25
+introspection:
+  enabled: true
+  after_each_message: true
+  after_each_round: true
+  probes:
+  - id: role_assessment
+    max_tokens: 960
+    question: 'You are {player}. Previous assessment: {last_role_assessment} Now reassess each alive player
+      ({players}) INCLUDING yourself. Answer ONLY as JSON: [{{"player": "...", "guessed_role": "Mafia|Villager|Doctor|Unknown",
+      "confidence": N, "reason": "..."}}, ...]
+
+      '
+  - id: suspicion_ranking
+    question: 'Rank alive players ({players}) from most to least suspicious. Answer ONLY as JSON: [{{"player":
+      "...", "score": N}}, ...]
+
+      '
+  - id: planned_action
+    when: own_turn
+    max_tokens: 1024
+    question: 'You are {player}. Your world model: Roles: {prev_role_assessment} What action do you plan
+      next and why? Answer ONLY as JSON: {{"action": "...", "target": "...", "reasoning": "..."}}
+
+      '
+  - id: social_map
+    max_tokens: 960
+    question: "You are {player}. Here is your current role assessment: {prev_role_assessment}\nLast time\
+      \ you thought players felt about you like this: {last_social_map}\nGiven the new information, how\
+      \ does each alive player ({players}) feel about YOU specifically now? Answer ONLY as JSON: {{\n\
+      \  \"toward_me\": [{{\"player\": \"...\", \"attitude\": \"trusts|neutral|suspects\", \"confidence\"\
+      : N, \"reason\": \"...\"}}, ...]\n}}\n"
+logging:
+  log_dir: logs
+  console_level: info

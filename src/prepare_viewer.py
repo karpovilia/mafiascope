@@ -14,6 +14,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
+
+_CYRILLIC_RE = re.compile(r"[Ѐ-ӿ]")
 
 PROBE_IDS = ("role_beliefs", "role_assessment", "planned_action",
              "suspicion_ranking", "social_map", "personality_profile")
@@ -270,6 +273,10 @@ def build_viewer_data(game_log: str, intro_log: str, game_id: str | None = None)
         "steps": steps,
         "total_steps": len(steps),
         "parse_stats": parse_stats,
+        # Search/filter facets for the games sidebar
+        "language": "ru" if _CYRILLIC_RE.search(
+            json.dumps(steps[:6], ensure_ascii=False)) else "en",
+        "models": sorted({(p.get("model") or "?") for p in players}),
         # Counterfactual-replay branch metadata (absent for root games)
         "forked_from": setup_event.get("forked_from"),
         "fork_point": setup_event.get("fork_point"),

@@ -28,6 +28,14 @@ class LLMBackend(ABC):
     def generate(self, messages: list[dict[str, str]], max_tokens: int = 400) -> str:
         """Chat-style generation.  messages = [{"role": ..., "content": ...}]"""
 
+    def describe(self) -> dict[str, Any]:
+        """Effective, sanitized settings of this backend (never includes api_key).
+
+        Logged into the game trace (setup event) so every trace records which
+        model played and under which parameters.
+        """
+        return dict(getattr(self, "_settings", {}))
+
     def generate_probe(self, messages: list[dict[str, str]], max_tokens: int = 400) -> str:
         """
         Generation for introspection probes.
@@ -59,6 +67,25 @@ def _torch_rng_devices() -> list[int]:
     return []
 
 
+def _local_settings(cfg: dict[str, Any], model_id: str, dtype_name: str,
+                    temperature: float, top_p: float, do_sample: bool) -> dict[str, Any]:
+    """Sanitized effective-settings dict for local transformers backends."""
+    import torch
+    import transformers
+
+    out = {k: v for k, v in cfg.items() if k != "api_key"}
+    out.update({
+        "resolved_model_path": model_id,
+        "torch_dtype": dtype_name,
+        "temperature": temperature,
+        "top_p": top_p,
+        "do_sample": do_sample,
+        "torch_version": torch.__version__,
+        "transformers_version": transformers.__version__,
+    })
+    return out
+
+
 def _resolve_model_path(model_id: str) -> str:
     """If models/ directory has a local copy, use it. Otherwise return original HF id."""
     local = os.path.join(os.path.dirname(__file__), "models", model_id.replace("/", "_"))
@@ -75,6 +102,16 @@ _RETRY_STATUSES = {408, 429, 500, 502, 503, 504}
 
 
 class _OpenAICompatibleBackend(LLMBackend):
+    """
+    Optional sampling / reasoning knobs (all forwarded only when set, so
+    provider defaults apply otherwise):
+        temperature: 0.7
+        top_p: 0.9
+        reasoning_effort: low|medium|high     # OpenAI reasoning models
+        extra_body: {...}   # merged verbatim into the request body — any
+                            # provider-specific knob (reasoning mode, etc.)
+    """
+
     def __init__(self, cfg: dict[str, Any], default_url: str):
         raw_key = cfg.get("api_key", "")
         if raw_key.startswith("${") and raw_key.endswith("}"):
@@ -84,6 +121,25 @@ class _OpenAICompatibleBackend(LLMBackend):
         self.model = cfg["model"]
         self.max_tokens = cfg.get("max_tokens", 400)
         self.timeout = cfg.get("timeout", 60)
+        self.temperature = cfg.get("temperature")
+        self.top_p = cfg.get("top_p")
+        self.reasoning_effort = cfg.get("reasoning_effort")
+        self.extra_body: dict[str, Any] = cfg.get("extra_body", {})
+        self.served_model: str | None = None  # exact version reported by the API
+        self._settings = {k: v for k, v in cfg.items() if k != "api_key"}
+        self._settings.update({
+            "api_url": self.api_url,
+            "api_key_set": bool(self.api_key),
+            # None = provider default was used
+            "temperature": self.temperature,
+            "top_p": self.top_p,
+        })
+
+    def describe(self) -> dict[str, Any]:
+        out = dict(self._settings)
+        if self.served_model:
+            out["served_model"] = self.served_model
+        return out
 
     def generate(self, messages: list[dict[str, str]], max_tokens: int | None = None) -> str:
         headers = {
@@ -95,6 +151,13 @@ class _OpenAICompatibleBackend(LLMBackend):
             "messages": messages,
             "max_tokens": max_tokens or self.max_tokens,
         }
+        if self.temperature is not None:
+            body["temperature"] = self.temperature
+        if self.top_p is not None:
+            body["top_p"] = self.top_p
+        if self.reasoning_effort is not None:
+            body["reasoning_effort"] = self.reasoning_effort
+        body.update(self.extra_body)
         last_err: Exception | None = None
         for attempt in range(1, 4):
             try:
@@ -103,7 +166,9 @@ class _OpenAICompatibleBackend(LLMBackend):
                     time.sleep(min(2 ** (attempt - 1), 4))
                     continue
                 r.raise_for_status()
-                return r.json()["choices"][0]["message"]["content"]
+                data = r.json()
+                self.served_model = data.get("model", self.served_model)
+                return data["choices"][0]["message"]["content"]
             except Exception as exc:
                 last_err = exc
                 if attempt < 3:
@@ -116,9 +181,82 @@ class OpenRouterBackend(_OpenAICompatibleBackend):
         super().__init__(cfg, default_url="https://openrouter.ai/api/v1/chat/completions")
 
 
+class OpenAIBackend(_OpenAICompatibleBackend):
+    """OpenAI (ChatGPT) or any OpenAI-compatible server via api_url override
+    (vLLM, Ollama, llama.cpp, LM Studio, text-generation-inference, ...)."""
+
+    def __init__(self, cfg: dict[str, Any]):
+        cfg = {"api_key": "${OPENAI_API_KEY}", **cfg}
+        super().__init__(cfg, default_url="https://api.openai.com/v1/chat/completions")
+
+
 class DeepSeekBackend(_OpenAICompatibleBackend):
     def __init__(self, cfg: dict[str, Any]):
         super().__init__(cfg, default_url="https://api.deepseek.com/chat/completions")
+
+
+# ────────────────────────────────────────────
+#  Bus — external model processes over the MafiaScope bus
+# ────────────────────────────────────────────
+class BusBackend(LLMBackend):
+    """
+    Delegates generation to an external worker connected to the bus hub
+    (src/bus_server.py).  Any process in any language can serve a model:
+    it registers on the hub and long-polls for work (see docs/bus_protocol.md,
+    reference client: src/bus_client.py).
+
+    Config:
+        type: bus
+        model: <routing key>       # matched against models declared by workers
+        bus_url: http://127.0.0.1:8765   # or env MAFIA_BUS_URL
+        timeout: 300               # seconds to wait for a worker's reply
+    """
+
+    def __init__(self, cfg: dict[str, Any]):
+        self.model = cfg["model"]
+        self.bus_url = cfg.get("bus_url") or os.environ.get(
+            "MAFIA_BUS_URL", "http://127.0.0.1:8765")
+        self.bus_url = self.bus_url.rstrip("/")
+        self.max_tokens = cfg.get("max_tokens", 400)
+        self.timeout = cfg.get("timeout", 300)
+        self._settings = {**{k: v for k, v in cfg.items() if k != "api_key"},
+                          "bus_url": self.bus_url}
+
+    def describe(self) -> dict[str, Any]:
+        out = dict(self._settings)
+        # best-effort provenance: which workers currently serve this model
+        try:
+            r = requests.get(f"{self.bus_url}/status", timeout=3)
+            workers = r.json().get("workers", {})
+            out["bus_workers"] = {
+                w: i.get("meta", {}) for w, i in workers.items()
+                if "*" in i.get("models", []) or self.model in i.get("models", [])
+            }
+        except Exception:
+            pass
+        return out
+
+    def _call(self, messages: list[dict[str, str]], max_tokens: int | None, kind: str) -> str:
+        body = {
+            "model": self.model,
+            "messages": messages,
+            "max_tokens": max_tokens or self.max_tokens,
+            "kind": kind,
+        }
+        try:
+            r = requests.post(f"{self.bus_url}/generate", json=body, timeout=self.timeout)
+            r.raise_for_status()
+            return r.json()["text"]
+        except Exception as exc:
+            return f"ERROR: bus request failed: {exc}"
+
+    def generate(self, messages: list[dict[str, str]], max_tokens: int | None = None) -> str:
+        return self._call(messages, max_tokens, "generate")
+
+    def generate_probe(self, messages: list[dict[str, str]], max_tokens: int | None = None) -> str:
+        # The kind flag travels to the worker so stateful workers can isolate
+        # probe side effects (e.g. fork their RNG) like local backends do.
+        return self._call(messages, max_tokens, "probe")
 
 
 # ────────────────────────────────────────────
@@ -133,6 +271,9 @@ class TransformersBackend(LLMBackend):
 
         self.model_id: str = _resolve_model_path(cfg["model"])
         self.max_tokens: int = cfg.get("max_tokens", 400)
+        self.temperature: float = cfg.get("temperature", 0.7)
+        self.top_p: float = cfg.get("top_p", 0.9)
+        self.do_sample: bool = cfg.get("do_sample", True)
 
         dtype_name = cfg.get("torch_dtype", "bfloat16")
         dtype_map = {
@@ -143,6 +284,8 @@ class TransformersBackend(LLMBackend):
         torch_dtype = dtype_map.get(dtype_name, torch.bfloat16)
 
         device = cfg.get("device", "auto")
+        self._settings = _local_settings(cfg, self.model_id, dtype_name,
+                                         self.temperature, self.top_p, self.do_sample)
 
         print(f"[transformers] loading {self.model_id}  dtype={dtype_name}  device={device}")
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_id, trust_remote_code=True)
@@ -169,9 +312,9 @@ class TransformersBackend(LLMBackend):
             out = self.model.generate(
                 **inputs,
                 max_new_tokens=max_tokens or self.max_tokens,
-                do_sample=True,
-                temperature=0.7,
-                top_p=0.9,
+                do_sample=self.do_sample,
+                temperature=self.temperature,
+                top_p=self.top_p,
             )
         generated = out[0][inputs["input_ids"].shape[1]:]
         return self.tokenizer.decode(generated, skip_special_tokens=True)
@@ -224,6 +367,9 @@ class BatchedTransformersBackend(LLMBackend):
         self.max_tokens: int = cfg.get("max_tokens", 400)
         self.batch_size: int = cfg.get("batch_size", 16)
         self.batch_timeout: float = cfg.get("batch_timeout", 0.5)
+        self.temperature: float = cfg.get("temperature", 0.7)
+        self.top_p: float = cfg.get("top_p", 0.9)
+        self.do_sample: bool = cfg.get("do_sample", True)
 
         dtype_name = cfg.get("torch_dtype", "bfloat16")
         dtype_map = {
@@ -233,6 +379,8 @@ class BatchedTransformersBackend(LLMBackend):
         }
         torch_dtype = dtype_map.get(dtype_name, torch.bfloat16)
         device = cfg.get("device", "auto")
+        self._settings = _local_settings(cfg, self.model_id, dtype_name,
+                                         self.temperature, self.top_p, self.do_sample)
 
         print(f"[batched-transformers] loading {self.model_id}  "
               f"dtype={dtype_name}  device={device}  batch_size={self.batch_size}")
@@ -375,9 +523,9 @@ class BatchedTransformersBackend(LLMBackend):
                     outputs = self.model.generate(
                         **inputs,
                         max_new_tokens=max_new,
-                        do_sample=True,
-                        temperature=0.7,
-                        top_p=0.9,
+                        do_sample=self.do_sample,
+                        temperature=self.temperature,
+                        top_p=self.top_p,
                         pad_token_id=self.tokenizer.pad_token_id,
                     )
 
@@ -404,20 +552,30 @@ class BatchedTransformersBackend(LLMBackend):
 _REGISTRY: dict[str, type[LLMBackend]] = {
     "openrouter": OpenRouterBackend,
     "deepseek": DeepSeekBackend,
+    "openai": OpenAIBackend,
+    "bus": BusBackend,
     "transformers": TransformersBackend,
     "transformers_batched": BatchedTransformersBackend,
 }
 
 _INSTANCES: dict[str, LLMBackend] = {}
+_INSTANCES_LOCK = threading.Lock()
 
 
 def get_backend(name: str, backends_cfg: dict[str, Any]) -> LLMBackend:
-    """Return (possibly cached) backend instance by config name."""
-    if name not in _INSTANCES:
-        cfg = backends_cfg[name]
-        cls = _REGISTRY[cfg["type"]]
-        _INSTANCES[name] = cls(cfg)
-    return _INSTANCES[name]
+    """Return (possibly cached) backend instance by config name.
+
+    Serialized: with --parallel, N game threads race here on first use, and
+    without the lock each would load its own copy of a local model onto the
+    GPU (meta-tensor / OOM chaos). First caller loads, the rest wait and
+    share the instance.
+    """
+    with _INSTANCES_LOCK:
+        if name not in _INSTANCES:
+            cfg = backends_cfg[name]
+            cls = _REGISTRY[cfg["type"]]
+            _INSTANCES[name] = cls(cfg)
+        return _INSTANCES[name]
 
 
 def shutdown_backends() -> None:

@@ -12,6 +12,13 @@ scores beliefs against ground truth, and — because every step is a full
 serialized snapshot — lets you branch the game at any utterance and replay
 the counterfactual.
 
+Games are **model-agnostic and mixable**: every seat picks its own backend
+(DeepSeek, ChatGPT or any OpenAI-compatible endpoint, local HuggingFace
+models, or an external process on another machine speaking the plain-HTTP
+[model bus](docs/bus_protocol.md)), so "ChatGPT Mafia vs. a local Qwen town"
+is a config file, not a fork. Each trace records exactly which model played
+each seat and under which settings.
+
 ![MafiaScope viewer — ground-truth graph with per-agent belief panels](docs/img/overview.png)
 
 - **Video demo:** <https://vimeo.com/1208920221>
@@ -42,6 +49,18 @@ the counterfactual.
 - **Belief-dynamics metrics** — suspicion volatility, top-suspect flip
   rate, return rate, plus a timestamped-edge export for temporal graph
   network (TGN) research (`belief_dynamics.py --export-graph`).
+- **Heterogeneous line-ups and a model bus** — assign a different LLM to
+  every seat (`players[].backend`); backend types cover DeepSeek,
+  OpenRouter, OpenAI/ChatGPT (and any OpenAI-compatible server: vLLM,
+  Ollama, LM Studio), local `transformers` (single or GPU-batched), and a
+  four-call plain-HTTP **bus** that lets a process in any language, on any
+  machine, play seats. The **Arena** web panel assigns models to seats and
+  launches batches from the browser. Setup guide:
+  [docs/multi_model_setup.md](docs/multi_model_setup.md).
+- **Model provenance in every trace** — the `setup` and `game_over` events
+  of `game.jsonl` record each backend's effective settings (model id,
+  temperature/top_p, token budget, reasoning knobs, library versions, and
+  the exact model version the API served), with API keys never logged.
 - **Reproducible metrics library** — `src/metrics_lib.py` is the single
   source of truth for corpus selection and every published number
   (game-level cluster bootstrap CIs, raw vs. repaired parse modes).
@@ -75,6 +94,32 @@ python main.py -c ../configs/config_en_demo.yaml -n 5 --parallel   # batch of 5
 
 Each game writes `logs/<game_id>/{game,introspection,state}.jsonl`
 (`state.jsonl` only when `game.snapshots: true` in the config).
+
+### Mix models & connect external engines (Arena + bus)
+
+Any player slot can be served by a different model: `players[].backend` in
+the config points into the named `backends:` registry (`deepseek`,
+`openrouter`, `openai` = ChatGPT or any OpenAI-compatible endpoint such as
+vLLM/Ollama, local `transformers`, or `bus` = an external process).
+`configs/config_gpt_vs_qwen.yaml` is a worked heterogeneous matchup
+(ChatGPT mafia vs. Qwen town).
+
+The **bus** decouples the engine from inference entirely — any process in
+any language can play seats over four plain-HTTP calls
+([docs/bus_protocol.md](docs/bus_protocol.md)):
+
+```bash
+python src/bus_server.py                  # hub + Arena web UI on :8765
+python src/bus_client.py --adapter transformers --model Qwen/Qwen2.5-7B-Instruct  # worker (any host)
+```
+
+The Arena UI at `http://localhost:8765/` shows connected workers and lets
+you assign a backend to each player slot, launch batches, and watch run
+status — no YAML editing required (it writes configs to `configs/generated/`).
+
+Step-by-step recipes for spreading models across machines and services
+(API keys, vLLM/Ollama servers, a GPU box behind NAT via an SSH tunnel,
+SLURM clusters): [docs/multi_model_setup.md](docs/multi_model_setup.md).
 
 ### View games
 
@@ -125,7 +170,17 @@ machine-readable [docs/corpora.json](docs/corpora.json).
 
 ## Documentation
 
+MafiaScope is several cooperating parts — the game engine, the probe
+engine, the LLM backends with the model bus and Arena, the **runners**
+(single/batch entry point, paired seed-grid driver, snapshot resume
+driver, remote wrappers), the counterfactual replay, the viewer, and the
+metrics/analysis pipeline — coupled only through the per-game JSONL logs.
+The part map lives in [docs/running.md](docs/running.md).
+
 - [docs/architecture.md](docs/architecture.md) — components, data flow, JSONL schemas
+- [docs/running.md](docs/running.md) — the runner subsystem: `main.py`, seed grids, snapshot resume, remote wrappers
+- [docs/multi_model_setup.md](docs/multi_model_setup.md) — running several models across servers/services
+- [docs/bus_protocol.md](docs/bus_protocol.md) — the model bus wire protocol
 - [docs/dataset.md](docs/dataset.md) — corpora, instrument versions, counts
 - [docs/replay_experiment.md](docs/replay_experiment.md) — counterfactual replay experiment
 - [docs/user_study_protocol.md](docs/user_study_protocol.md) — user study protocol
@@ -135,8 +190,13 @@ machine-readable [docs/corpora.json](docs/corpora.json).
 ## Repository layout
 
 - `src/game.py` — game loop (night / day / vote) with introspection hooks and snapshots
+- `src/main.py` — entry point: one game or a parallel batch from a YAML config
+- `src/run_lang_games.py` — paired seed-grid driver with a resumable per-language ledger
+- `src/resume_games.py` — finishes interrupted games from `state.jsonl` snapshots (fork chains)
+- `run_lang_batch.sh` — LAN GPU box run-kit (sync / run / pull) for the seed-grid driver
 - `src/introspection.py` — private probe engine (answers logged, never fed back)
-- `src/llm_backend.py` — DeepSeek / OpenRouter / local `transformers` backends
+- `src/llm_backend.py` — DeepSeek / OpenRouter / OpenAI-compatible / bus / local `transformers` backends
+- `src/bus_server.py`, `src/bus_client.py`, `src/bus_ui.html` — model bus hub, reference worker, Arena UI
 - `src/replay.py`, `src/replay_experiment.py` — fork API and attribution experiment
 - `src/prepare_viewer.py`, `src/serve_viewer.py`, `src/viewer.html`, `src/dashboard.html` — viewer
 - `src/metrics_lib.py`, `src/analyze_metrics.py`, `src/belief_dynamics.py` — metrics

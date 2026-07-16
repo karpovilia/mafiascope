@@ -1,0 +1,558 @@
+{
+ "0": {
+  "size": 683,
+  "share": 0.16,
+  "top_terms": [
+   "yet",
+   "role",
+   "know",
+   "villager",
+   "intro",
+   "own",
+   "could",
+   "methodical",
+   "judge",
+   "info",
+   "casey",
+   "information"
+  ],
+  "roles": {
+   "Villager": 346,
+   "Mafia": 249,
+   "Doctor": 88
+  },
+  "kinds": {
+   "probe_role_assessment": 683
+  },
+  "rounds": {
+   "0": 443,
+   "1": 239,
+   "2": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "0da78714",
+    "player": "Dana",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Dana: I know my own role as an innocent. | Finley: Quiet and anxious intro still feels genuine, but could be a cautious Mafia hiding. | Ellis: Outgoing and pushy, but no alignment tell yet; could be testing reactions. | Bailey: Level-headed observer, no strong tells so far. | Harper: Bold and confrontational, but that could be either side trying to shake things up. | Alex: Methodical and collabora"
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Harper",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Harper: I am innocent myself. | Dana: Very social and gut-driven, typical villager behavior, but could be a confident Mafia. | Casey: Methodical and fair intro seems genuine, but still need more action to confirm. | Finley: Very calculated and neutral—could be careful Mafia or true Villager. | Jordan: Direct and pushy, could be either side—too early to read. | Gray: Calm and methodical intro, but "
+   },
+   {
+    "game": "0da78714",
+    "player": "Dana",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Dana: I know my own role as an innocent. | Finley: Quiet and anxious intro feels genuine, but could still be a cautious Mafia. | Ellis: Talkative and pushy, but that's their personality—no alignment tell yet. | Bailey: Level-headed observer, no strong tells so far. | Harper: Bold and confrontational, but that could be either side testing reactions. | Alex: No interaction yet to form a read. | Jord"
+   },
+   {
+    "game": "1fbc396a",
+    "player": "Casey",
+    "role": "Mafia",
+    "kind": "probe_role_assessment",
+    "text": "Casey: I know my own role is Mafia. | Ellis: Ellis is my known teammate. | Jordan: Jordan's intro error was suspiciously vague, could be Doctor trying to stay quiet. | Logan: Logan had a similar error, making him look like an innocent who's just confused. | Alex: No strong reads yet, but Alex could be a typical villager. | Harper: Neutral first impression, likely an innocent bystander. | Finley: N"
+   },
+   {
+    "game": "a8f5be46",
+    "player": "Kennedy",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Jordan: No introduction or interaction yet. | Ellis: Methodical and cautious intro, but could be Mafia hiding. | Kennedy: I know my own role. | Logan: No introduction or interaction yet. | Alex: Calm and methodical, typical innocent behavior but not confirmed. | Casey: Organized and fact-focused, could be genuine or Mafia blending in. | Dana: No introduction or interaction yet."
+   }
+  ]
+ },
+ "1": {
+  "size": 359,
+  "share": 0.084,
+  "top_terms": [
+   "если",
+   "джордан",
+   "кеннеди",
+   "чтобы",
+   "кто",
+   "это",
+   "что",
+   "уже",
+   "алекс",
+   "как",
+   "его",
+   "меня"
+  ],
+  "roles": {
+   "Mafia": 146,
+   "Doctor": 74,
+   "Villager": 139
+  },
+  "kinds": {
+   "action_reasoning": 128,
+   "probe_planned_action": 231
+  },
+  "rounds": {
+   "1": 187,
+   "2": 84,
+   "3": 36,
+   "4": 2,
+   "0": 50
+  },
+  "medoid_examples": [
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "Я в растерянности... В прошлый раз я ошибся и голосовал за мирную Бейли. Теперь мафия пыталась убить Индиго — значит, он представляет для них угрозу, и это делает его менее подозрительным.\n\nСмотрю на оставшихся. Эллис голосует за Джордана, но сам начал обвинения против Бейли и задал тон тому голосованию. Джордан методичен и логичен, но это может быть маской. Грей тоже голосовал за Бейли и теперь о"
+   },
+   {
+    "game": "4a48b59c",
+    "player": "Indigo",
+    "role": "Villager",
+    "kind": "probe_planned_action",
+    "text": "Проанализировав все данные, я вижу, что моя оценка Джордана и Алекса как мафии имеет равную степень уверенности, но Алекс более опасен в долгосрочной перспективе — он прячется за маской аналитика и может влиять на ход игры незаметно. Дана и Логан уже указали на него с логикой, которую я разделяю: он голосует за Кеннеди, копируя чужие аргументы, и избегает самостоятельных выводов. Если я оставлю го"
+   },
+   {
+    "game": "7b600523",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Проанализируем ситуацию:\n\n1. Эллис слишком уверенно заявлял, что атака точно была и доктор защитил — это знание, которое мирный не может иметь. Однако теперь против него уже три голоса (Кейси, Джордан и скоро мой), что может быть попыткой мафии быстро убрать неугодного. Кейси тоже активно раздает подозрения с первой минуты и первой начала голосование — возможно, пытается задать верное для себя нап"
+   },
+   {
+    "game": "186742a9",
+    "player": "Gray",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Сейчас осталось пятеро, и это критический момент. Bailey была мирной, что делает наше положение сложным — теперь против меня есть логическая цепочка: если Bailey мирная, то среди голосовавших за неё находится мафия. Ellis слишком активно вёл обвинение, но если его убрать, подозрение может упасть на меня или Jordan. Alex и Indigo внимательно анализируют и могут вычислить нестыковки в моём поведении"
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Ситуация накаляется, и это хорошо. Кейси уже проголосовала за меня, пытаясь выставить мою уверенность как доказательство мафиозности. Но давайте здраво оценим: я просто логично предположил, что доктор спас кого-то — это базовая стратегия, а не insider info. Кейси же слишком быстро переводит стрелки, а Джордан методично раздает подозрения, хотя сам был целью ночью.\n\nБейли подметил странную уверенно"
+   }
+  ]
+ },
+ "2": {
+  "size": 482,
+  "share": 0.113,
+  "top_terms": [
+   "yet",
+   "indigo",
+   "role",
+   "connection",
+   "know",
+   "own",
+   "data",
+   "judge",
+   "gray",
+   "errors",
+   "villager",
+   "behavior"
+  ],
+  "roles": {
+   "Villager": 261,
+   "Mafia": 178,
+   "Doctor": 43
+  },
+  "kinds": {
+   "probe_role_assessment": 474,
+   "probe_planned_action": 1,
+   "action_reasoning": 7
+  },
+  "rounds": {
+   "0": 162,
+   "1": 310,
+   "2": 10
+  },
+  "medoid_examples": [
+   {
+    "game": "96c880d7",
+    "player": "Bailey",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Bailey: I know my own role. | Ellis: Only introduced with a connection error, no behavioral data yet. | Dana: Also had a connection error, no substance to judge. | Harper: Connection error on introduction, nothing to go on. | Finley: Seems genuinely anxious and honest about being quiet, but could be a Mafia trying to appear innocent. | Gray: Connection error on introduction, no information availab"
+   },
+   {
+    "game": "1d48515a",
+    "player": "Gray",
+    "role": "Mafia",
+    "kind": "probe_role_assessment",
+    "text": "Gray: I am Mafia, I know my own role. | Indigo: My teammate who coordinated the kill on Kennedy. | Harper: Voted quickly for Finley, seems genuinely suspicious but could be a villager trying to solve. | Dana: Haven't spoken yet, no info to go on. | Bailey: Haven't contributed much, not enough to judge. | Finley: Anxious tone seems genuine, and Harper's argument against them feels like a safe misdi"
+   },
+   {
+    "game": "1d48515a",
+    "player": "Gray",
+    "role": "Mafia",
+    "kind": "probe_role_assessment",
+    "text": "Gray: I am Mafia. | Kennedy: Outgoing and collaborative, but still no strong evidence. | Harper: Calm and methodical, neutral impression still holds. | Dana: No info yet, disconnected intro. | Bailey: Seems methodical and trusting, but too early to judge. | Indigo: Confirmed teammate from secret role knowledge. | Finley: No info yet, hasn't spoken."
+   },
+   {
+    "game": "b2a02ac2",
+    "player": "Gray",
+    "role": "Mafia",
+    "kind": "probe_role_assessment",
+    "text": "Finley: Connection error could be genuine tech issue, not necessarily a tell. | Kennedy: Anxious intro fits a careful villager; likely not hiding anything. | Ellis: Outgoing nature is neutral; no strong evidence either way. | Bailey: Haven't spoken yet; keeping open mind but no suspicion. | Gray: I am Gray, and I know my own Mafia role. | Jordan: My known teammate; we have to work together. | Indi"
+   },
+   {
+    "game": "1d48515a",
+    "player": "Dana",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Gray: No info yet; connection error masked their intro. | Harper: Calm and methodical vibe feels innocent, but could be a cover. | Dana: I know my own role—definitely not Mafia. | Bailey: Cooperative and trusting tone seems genuine, but early days. | Indigo: Connection error—no intro or interaction to judge. | Finley: Anxious and cautious could be a Villager afraid of suspicion."
+   }
+  ]
+ },
+ "3": {
+  "size": 500,
+  "share": 0.117,
+  "top_terms": [
+   "the",
+   "who",
+   "most",
+   "this",
+   "they",
+   "for",
+   "that",
+   "while",
+   "them",
+   "threat",
+   "player",
+   "suspicion"
+  ],
+  "roles": {
+   "Mafia": 240,
+   "Doctor": 76,
+   "Villager": 184
+  },
+  "kinds": {
+   "action_reasoning": 145,
+   "probe_planned_action": 355
+  },
+  "rounds": {
+   "1": 311,
+   "2": 95,
+   "3": 4,
+   "0": 90
+  },
+  "medoid_examples": [
+   {
+    "game": "0da78714",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Let me think this through carefully. Ellis and Finley have both voted for Harper, citing aggressive deflection and narrative control. That's three votes including mine if I join—enough to eliminate Harper. But I need to consider if this is a setup. Ellis pushed hard against quiet players first, then switched to Harper quickly. Finley seems genuinely nervous, which could be real or an act.\n\nThe lou"
+   },
+   {
+    "game": "36594b66",
+    "player": "Gray",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "I need to address this head-on. My statement that \"quiet voices being innocent\" was about the Mafia often avoiding attention early, not a blanket defense—I was just sharing my reasoning, not trying to control the narrative. What I find telling is that Alex, Logan, Finley, Casey, and Bailey all jumped on me for that one observation without considering other possibilities, and Alex's anxious gut vot"
+   },
+   {
+    "game": "0da78714",
+    "player": "Bailey",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "The situation is tight—four players left, and I'm the only Mafia. If I can get one more innocent eliminated, we'll be at three with me still hidden, giving me a shot at final victory. Let me assess the evidence.\n\nFinley started the Harper train yesterday and has been consistently nervous—that could be genuine or a clever act. Dana is aggressively pointing at Finley now, which feels like either a t"
+   },
+   {
+    "game": "0da78714",
+    "player": "Jordan",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "I need to be very careful here. This is a critical vote.\n\nDana is aggressively pointing at me and Finley, calling us a coordinated Mafia pair. But Dana was quick to jump on Harper yesterday and is now the most vocal player deflecting suspicion. That's consistent with their chaotic personality, but it's also a perfect cover for Mafia.\n\nBailey has been almost invisible this entire game—neutral to th"
+   },
+   {
+    "game": "4762f2e4",
+    "player": "Jordan",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "Let me break this down. Finley is my mafia teammate, so their vote for Indigo is strategic cover. Indigo's quick suspicion of quiet players is natural for an innocent trying to find patterns. Logan's pushback on Indigo is reasonable, and he seems genuinely engaged. The ones who were completely silent—Ellis and Kennedy—are the easy targets for mafia to hide behind. But Indigo's approach actually se"
+   }
+  ]
+ },
+ "4": {
+  "size": 698,
+  "share": 0.163,
+  "top_terms": [
+   "его",
+   "против",
+   "мафия",
+   "роль",
+   "голосовал",
+   "мафии",
+   "мирный",
+   "мирного",
+   "знаю",
+   "свою",
+   "после",
+   "быть"
+  ],
+  "roles": {
+   "Mafia": 217,
+   "Villager": 344,
+   "Doctor": 137
+  },
+  "kinds": {
+   "action_reasoning": 4,
+   "probe_role_assessment": 693,
+   "probe_planned_action": 1
+  },
+  "rounds": {
+   "2": 212,
+   "3": 104,
+   "1": 381,
+   "4": 1
+  },
+  "medoid_examples": [
+   {
+    "game": "7b600523",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment",
+    "text": "Ellis: Дважды спасён мной как доктором — он мирный. Его уверенность была логической ошибкой, а не insider info. | Jordan: Я знаю свою роль. Две ночи защищал Эллиса, обе без убийств — моя стратегия работает. | Bailey: Сначала указывал на меня и Эллиса, потом легко присоединился к большинству. Теперь активно намекает на моё выживание — мафиозная тактика отвлечения. | Alex: Пошёл против консенсуса, г"
+   },
+   {
+    "game": "7b600523",
+    "player": "Jordan",
+    "role": "Doctor",
+    "kind": "probe_role_assessment",
+    "text": "Ellis: Дважды спасён мной как доктором; его настойчивость на моём выживании логична для мирного, мафия избегала бы такой открытой атаки на явную цель. | Jordan: Я знаю свою роль — две ночи защищал Эллиса, предотвратив убийства и привлекая подозрения на себя, что соответствует поведению доктора. | Bailey: Голосует в унисон с Эллисом без самостоятельной аргументации; его позиция колеблется от указан"
+   },
+   {
+    "game": "7b600523",
+    "player": "Casey",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Casey: Я знаю свою роль — я мирный житель, активно ищу мафию. | Ellis: Его уверенность в атаке и защите доктора остается сильным индикатором инсайдерской информации. Он упорно голосовал за меня, даже когда против него было много голосов — это похоже на отчаянную защиту мафии. | Jordan: Логичный и последовательный анализ, голосование за Эллиса, методичная игра — все это выглядит искренне и в интере"
+   },
+   {
+    "game": "7b600523",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Ellis: Чудом избежав казни в первый день, теперь слишком уверенно ведет кампанию против Джордана. Либо он доктор, пытающийся защитить себя, но его настойчивость выглядит манипулятивной. | Jordan: Дважды выжил ночью — сильный признак, что доктор защищает его. Его логичная игра и сопротивление обвинениям тоже свойственны мирному. Если бы он был мафией, зачем так привлекать внимание? | Bailey: Сначал"
+   },
+   {
+    "game": "7b600523",
+    "player": "Ellis",
+    "role": "Mafia",
+    "kind": "probe_role_assessment",
+    "text": "Ellis: Моя собственная роль — я мафия. | Jordan: Был целью ночной атаки и выжил. Его методичная защита и аналитика похожи на доктора, пытающегося разоблачить мафию, но не раскрывающегося напрямую. | Bailey: Мой напарник — он проголосовал за меня, чтобы сохранить легенду, это классический мафиозный ход. | Alex: Пошёл против толпы и голосовал за Кейси. Независимое мышление и хаотичность — признаки м"
+   }
+  ]
+ },
+ "5": {
+  "size": 99,
+  "share": 0.023,
+  "top_terms": [
+   "peer",
+   "connectionreseterror",
+   "aborted",
+   "reset",
+   "error",
+   "connection",
+   "api",
+   "deepseek",
+   "timeout",
+   "com",
+   "port",
+   "httpsconnectionpool"
+  ],
+  "roles": {
+   "Doctor": 24,
+   "Villager": 30,
+   "Mafia": 45
+  },
+  "kinds": {
+   "action_reasoning": 99
+  },
+  "rounds": {
+   "1": 82,
+   "2": 17
+  },
+  "medoid_examples": [
+   {
+    "game": "0efaa131",
+    "player": "Alex",
+    "role": "Doctor",
+    "kind": "action_reasoning",
+    "text": "ERROR: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
+   },
+   {
+    "game": "0efaa131",
+    "player": "Ellis",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "ERROR: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
+   },
+   {
+    "game": "0efaa131",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "ERROR: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
+   },
+   {
+    "game": "0efaa131",
+    "player": "Indigo",
+    "role": "Villager",
+    "kind": "action_reasoning",
+    "text": "ERROR: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
+   },
+   {
+    "game": "1d48515a",
+    "player": "Gray",
+    "role": "Mafia",
+    "kind": "action_reasoning",
+    "text": "ERROR: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))"
+   }
+  ]
+ },
+ "6": {
+  "size": 620,
+  "share": 0.145,
+  "top_terms": [
+   "знаю",
+   "информации",
+   "пока",
+   "быть",
+   "может",
+   "роль",
+   "свою",
+   "нет",
+   "данных",
+   "мирный",
+   "житель",
+   "для"
+  ],
+  "roles": {
+   "Villager": 365,
+   "Mafia": 180,
+   "Doctor": 75
+  },
+  "kinds": {
+   "probe_role_assessment": 620
+  },
+  "rounds": {
+   "0": 282,
+   "1": 330,
+   "2": 8
+  },
+  "medoid_examples": [
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Alex: Я знаю свою роль — я мирный житель. | Logan: Очень напорист и любит внимание, такое поведение может быть прикрытием мафии. Нужно следить. | Ellis: Говорит о поиске нестандартных решений, но это может быть попыткой выглядеть активным мирным. | Indigo: Заявляет о наблюдательности и порядке — это типично для мирного, но и мафия может так маскироваться. | Gray: Делает упор на логику, но пока мал"
+   },
+   {
+    "game": "4a48b59c",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Logan: Я знаю свою роль — я мирный житель. | Kennedy: Громкое заявление может быть тактикой мафии для захвата контроля, но и активный мирный тоже возможен. Нужны его действия. | Jordan: Тихий и аналитичный стиль может быть мафией, прячущейся за наблюдением. Но может быть и добросовестным мирным. | Gray: Нерешительное поведение и уход от споров — подозрительный признак, но пока слишком мало информа"
+   },
+   {
+    "game": "4a48b59c",
+    "player": "Logan",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Logan: Я знаю свою роль — я мирный житель. | Kennedy: Громкое заявление может быть как активным мирным, так и мафией, которая хочет контролировать игру. Пока неясно. | Jordan: Тихий и наблюдательный стиль — классическая тактика мафии, но может быть и просто спокойным мирным. Нужны его действия в разговоре. | Gray: Пока молчит, нет информации для анализа. | Alex: Нет данных, нужно наблюдать. | Dana"
+   },
+   {
+    "game": "7e623a8d",
+    "player": "Indigo",
+    "role": "Mafia",
+    "kind": "probe_role_assessment",
+    "text": "Ellis: Противопоставил меня остальным — это может быть как тактика мафии, так и искренняя реакция мирного. | Indigo: Моя секретная роль — мафия, я это знаю наверняка. | Dana: Её активность и нейтральные высказывания пока не выдают принадлежности к мафии. | Harper: Harper — мой напарник по мафии, мы вместе выбираем цель ночью. | Bailey: Сдержанность и редкие реплики могут указывать на роль доктора,"
+   },
+   {
+    "game": "186742a9",
+    "player": "Alex",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Alex: Я знаю свою роль — я мирный житель. | Logan: Очень активен, но это может быть прикрытием мафии. | Ellis: Говорит о нестандартных подходах, но реальных улик нет. | Indigo: Почти не проявлялся, сложно судить. | Gray: Молчит, нет информации для анализа. | Jordan: Нейтральное поведение, нужно больше данных. | Bailey: Без активности сложно что-то сказать."
+   }
+  ]
+ },
+ "7": {
+  "size": 831,
+  "share": 0.195,
+  "top_terms": [
+   "not",
+   "genuine",
+   "innocent",
+   "with",
+   "feels",
+   "consistent",
+   "like",
+   "quiet",
+   "vote",
+   "voted",
+   "still",
+   "but"
+  ],
+  "roles": {
+   "Mafia": 271,
+   "Villager": 459,
+   "Doctor": 101
+  },
+  "kinds": {
+   "action_reasoning": 25,
+   "probe_role_assessment": 803,
+   "probe_planned_action": 3
+  },
+  "rounds": {
+   "1": 704,
+   "2": 110,
+   "0": 15,
+   "3": 2
+  },
+  "medoid_examples": [
+   {
+    "game": "0da78714",
+    "player": "Dana",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Dana: I know I'm innocent—actively hunting Mafia and pushing discussion. | Finley: Their anxious, self-doubting vote on Harper feels genuine and not calculated. | Ellis: Jumped on quiet players right away—could be Mafia setting an early narrative to deflect. | Bailey: Staying calm and measured without pushing hard—looks like an innocent observer. | Harper: Came in wanting chaos, then aggressively "
+   },
+   {
+    "game": "0da78714",
+    "player": "Dana",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Dana: I know I'm innocent and actively hunting for Mafia. | Finley: Their anxious, self-doubting vote on Harper feels genuine, but could be a calculated play. | Ellis: Immediately jumped on quiet players after Alex died—feels like setting a narrative to protect themselves. | Bailey: Staying calm and analytical without pushing too hard—textbook innocent observer. | Harper: Came in wanting chaos, no"
+   },
+   {
+    "game": "e8dfa6ea",
+    "player": "Gray",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Gray: I know I'm innocent — I've been calm, consistent, and focused on logical analysis throughout. | Finley: Analytical and voted against Jordan with reasoning, but their theory about quieter players could be Mafia deflecting; still leaning innocent. | Alex: Anxious behavior feels genuine, but they're now pushing suspicion toward me without solid evidence — could be Mafia trying to shift attentio"
+   },
+   {
+    "game": "3845221c",
+    "player": "Jordan",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Alex: Loud and pushing votes, but targeting silent Finley is obvious — could be Mafia hiding in plain sight too. | Logan: Got disconnected mid-vote, which is suspicious timing, but his earlier analysis wasn't unreasonable. | Finley: Complete silence through errors and no defense at all is the easiest Mafia strategy. | Bailey: Calm and reasonable tone feels genuine, not panicked like Mafia might be"
+   },
+   {
+    "game": "0da78714",
+    "player": "Finley",
+    "role": "Villager",
+    "kind": "probe_role_assessment",
+    "text": "Finley: I know I'm innocent, just anxious and trying to figure things out. | Ellis: Immediately shifted blame to calm players after I suggested talkative ones might be suspicious—feels like defensive redirection. | Bailey: Neutral and observant, could be innocent or just laying low; no clear evidence yet. | Dana: Embracing chaos while pointing at Harper and Jordan—distracting from themselves, but "
+   }
+  ]
+ }
+}

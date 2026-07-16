@@ -47,6 +47,10 @@ class IntrospectionConfig:
     # its private prompt before each of its own moves.  Invasive by design;
     # strictly opt-in — False reproduces the baseline engine bit-for-bit.
     feedback_to_context: bool = False
+    # Which orders to feed back: 1 = own role beliefs only, 2 = + social map.
+    feedback_order: int = 2
+    # Player slot indices that receive feedback (None = all players).
+    feedback_players: list | None = None
 
 
 @dataclass
@@ -186,7 +190,7 @@ class IntrospectionEngine:
         if self.logger:
             self.logger.close()
 
-    def feedback_block(self, player_name: str) -> str | None:
+    def feedback_block(self, player_name: str, player_idx: int | None = None) -> str | None:
         """Second-order-feedback arm (introspection.feedback_to_context).
 
         Returns a short private block with THIS player's own latest probe
@@ -198,6 +202,8 @@ class IntrospectionEngine:
         """
         if not self.cfg.enabled or not self.cfg.feedback_to_context:
             return None
+        if self.cfg.feedback_players is not None and player_idx not in self.cfg.feedback_players:
+            return None
         last = self._last_answers.get(player_name)
         if not last:
             return None
@@ -206,7 +212,7 @@ class IntrospectionEngine:
         if ra and ra != "N/A":
             parts.append(f"role beliefs: {ra}")
         sm = last.get("social_map")
-        if sm and sm != "N/A":
+        if self.cfg.feedback_order >= 2 and sm and sm != "N/A":
             parts.append(f"how others see you: {sm}")
         if not parts:
             return None
@@ -428,4 +434,6 @@ def load_introspection_config(raw: dict[str, Any]) -> IntrospectionConfig:
         probes=probes,
         log_file=raw.get("log_file", "logs/introspection.jsonl"),
         feedback_to_context=raw.get("feedback_to_context", False),
+        feedback_order=raw.get("feedback_order", 2),
+        feedback_players=raw.get("feedback_players"),
     )

@@ -26,7 +26,7 @@ import shutil
 from prepare_viewer import scan_game_dirs
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-STATIC_FILES = ["viewer.html", "dashboard.html", "d3.v7.min.js",
+STATIC_FILES = ["viewer.html", "dashboard.html", "probe_editor.html", "d3.v7.min.js",
                 "fonts/onest-latin.woff2", "fonts/onest-cyrillic.woff2"]
 
 INDEX_HTML = """<!DOCTYPE html>

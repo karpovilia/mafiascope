@@ -1,0 +1,86 @@
+# ──────────────────────────────────────────────
+#  LLM Mafia — heterogeneous matchup example:
+#  ChatGPT plays the Mafia, a local/remote Qwen plays the town.
+#
+#  The town seats use the bus, so Qwen can run anywhere (another GPU box,
+#  an HPC node, vLLM, ...):
+#      python src/bus_server.py                                   # terminal 1
+#      python src/bus_client.py --adapter transformers \
+#             --model Qwen/Qwen2.5-7B-Instruct                    # terminal 2 (GPU host)
+#      python src/main.py -c ../configs/config_gpt_vs_qwen.yaml   # terminal 3
+#
+#  For a same-machine run without the bus, replace the qwen backend with:
+#      qwen: { type: transformers, model: Qwen/Qwen2.5-7B-Instruct, device: auto }
+# ──────────────────────────────────────────────
+
+game:
+  max_rounds: 15
+  language: en
+  detailed_reasoning: true
+  intro_round: true
+  snapshots: true
+
+backends:
+  chatgpt:
+    type: openai
+    model: gpt-4o-mini
+    max_tokens: 400
+    timeout: 90
+
+  qwen:
+    type: bus
+    model: Qwen/Qwen2.5-7B-Instruct    # routing key: must match the worker's --model
+    bus_url: http://127.0.0.1:8765     # or env MAFIA_BUS_URL
+    max_tokens: 400
+    timeout: 300
+
+players:
+  - role: Mafia
+    backend: chatgpt
+    personality: { O: 70, C: 40, E: 85, A: 30, N: 60 }   # bold manipulator
+
+  - role: Mafia
+    backend: chatgpt
+    personality: { O: 50, C: 75, E: 40, A: 65, N: 30 }   # quiet strategist
+
+  - role: Doctor
+    backend: qwen
+    personality: { O: 60, C: 80, E: 50, A: 90, N: 45 }   # careful protector
+
+  - role: Villager
+    backend: qwen
+    personality: { O: 80, C: 55, E: 70, A: 60, N: 35 }   # curious analyst
+
+  - role: Villager
+    backend: qwen
+    personality: { O: 45, C: 60, E: 30, A: 50, N: 70 }   # anxious introvert
+
+  - role: Villager
+    backend: qwen
+    personality: { O: 65, C: 35, E: 90, A: 40, N: 50 }   # loud hothead
+
+  - role: Villager
+    backend: qwen
+    personality: { O: 55, C: 70, E: 55, A: 75, N: 25 }   # calm peacemaker
+
+introspection:
+  enabled: true
+  after_each_message: true
+  after_each_round: true
+
+  probes:
+    - id: role_beliefs
+      question: >
+        For each alive player ({players}), state your current belief
+        about their role (Mafia / Villager / Doctor / Unknown)
+        and a confidence 0-100.
+        Answer ONLY as JSON: {{"<name>": {{"role": "...", "confidence": N}}, ...}}
+
+    - id: suspicion_ranking
+      question: >
+        Rank alive players ({players}) from most to least suspicious.
+        Answer ONLY as JSON: [{{"player": "...", "score": N}}, ...]
+
+logging:
+  log_dir: ../logs
+  console_level: info
