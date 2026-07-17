@@ -13,7 +13,7 @@ import re
 from typing import Any
 
 from llm_backend import LLMBackend
-from prompts import SYSTEM_PROMPTS, ACTION_PATTERNS, build_personality_block
+from prompts import get_skin_pack, build_personality_block
 
 
 class Player:
@@ -22,13 +22,14 @@ class Player:
         *,
         player_name: str,
         player_idx: int,
-        role: str,           # "Mafia" | "Doctor" | "Villager"
+        role: str,           # "Mafia" | "Doctor" | "Sheriff" | "Villager" (internal keys, skin-invariant)
         backend: LLMBackend,
         backend_name: str,   # config key, e.g. "deepseek" or "local"
         model_label: str,    # human-readable, e.g. "deepseek/deepseek-chat"
         language: str = "en",
         mafia_partners: list[str] | None = None,
         personality: dict | None = None,
+        skin: str = "mafia", # surface lexicon only ("mafia" | "werewolf")
     ):
         self.player_name = player_name
         self.player_idx = player_idx
@@ -38,11 +39,13 @@ class Player:
         self.model_label = model_label
         self.language = language
         self.personality = personality or {}
+        self.skin = skin
+        self._pack = get_skin_pack(skin)
         self.alive = True
 
         # Build the system prompt (set once, never changes)
         partners = ", ".join(mafia_partners) if mafia_partners else "none"
-        tpl = SYSTEM_PROMPTS[language][role]
+        tpl = self._pack["SYSTEM_PROMPTS"].get(language, self._pack["SYSTEM_PROMPTS"]["en"])[role]
         self.system_prompt: str = tpl.format(
             player_name=player_name,
             mafia_partners=partners,
@@ -96,7 +99,8 @@ class Player:
 
     def parse_action(self, text: str, action: str) -> str | None:
         """Extract a target name from ACTION/VOTE patterns.  action = 'kill'|'protect'|'vote'."""
-        pat = ACTION_PATTERNS.get(self.language, ACTION_PATTERNS["en"]).get(action)
+        patterns = self._pack["ACTION_PATTERNS"]
+        pat = patterns.get(self.language, patterns["en"]).get(action)
         if not pat:
             return None
         m = re.search(pat, text, re.IGNORECASE)

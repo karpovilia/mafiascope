@@ -178,6 +178,18 @@ def load_games(logs_dir: str, tolerant: bool = False) -> list[Game]:
     return games
 
 
+def registry_game_ids(key: str) -> list[str]:
+    """Game ids of a corpus registered in the docs/corpora.json manifest."""
+    reg_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "..", "docs", "corpora.json")
+    with open(reg_path, encoding="utf-8") as f:
+        reg = json.load(f)
+    entry = reg.get(key)
+    if not entry or "game_ids" not in entry:
+        raise ValueError(f"registry entry {key!r} missing or has no game_ids")
+    return list(entry["game_ids"])
+
+
 def select_corpus(games: Sequence[Game], corpus: str) -> list[Game]:
     """Inclusion criteria.
 
@@ -191,9 +203,17 @@ def select_corpus(games: Sequence[Game], corpus: str) -> list[Game]:
       ablation batch (config_ablation_demand.yaml).
     * ``"ru_clean"`` — the 2026-07-10 RU batch with the clean wording
       (config_deepseek.yaml post-fix); matched arm for ``ablation_demand``.
+    * ``"corpus32"`` — the pinned 32-game case-study corpus of the demo
+      paper, resolved from the machine-readable manifest
+      ``docs/corpora.json``.
+    * ``"gpt4omini28"`` — the 28-game full-gpt-4o-mini cross-model corpus,
+      also resolved from the manifest.
     """
     # replay forks (counterfactual branches) are never corpus games
     with_probes = [g for g in games if g.probes and g.forked_from is None]
+    if corpus in ("corpus32", "gpt4omini28"):
+        ids = set(registry_game_ids(corpus))
+        return [g for g in with_probes if g.game_id in ids]
     if corpus == "paper32":
         return [g for g in with_probes
                 if g.game_id not in

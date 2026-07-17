@@ -193,6 +193,7 @@ const STRINGS = {
   tileMeanRounds: 'mean rounds',
   tileParseRate: 'probe parse rate',
   tileBranches: 'counterfactual branches',
+  tileNonMafia: 'non-mafia games (werewolf / resistance)',
   accuracyTitle: '1st-order accuracy by round (mean per model)',
   recallTitle: 'Crowd mafia recall by round (all games)',
   recallSeries: 'crowd mafia recall',
@@ -242,7 +243,7 @@ function rootMatches(root){
 
 async function load(){
   let games=[];
-  try{ const r=await fetch('all_games.json?t='+Date.now()); if(r.ok) games=await r.json(); }catch(e){}
+  try{ const r=await fetch('all_games.json'); if(r.ok) games=await r.json(); }catch(e){}
   if(!games.length){ document.getElementById('summary').innerHTML=`<div class="tile"><div class="v">${STRINGS.noData}</div><div class="l">${STRINGS.noDataSub}</div></div>`; return; }
   ALL_GAMES = games;
   const allRoots = games.filter(g=>!g.forked_from);
@@ -268,18 +269,25 @@ function render(games, allGames){
   const mColor=m=>MODEL_PALETTE[Math.max(0,models.indexOf(m))%MODEL_PALETTE.length];
 
   // ── summary tiles ──
-  const mafiaWins=games.filter(g=>g.winner==='Mafia').length;
-  const done=games.filter(g=>g.winner!=='Pending');
+  // Mafia-family stats exclude other game families (werewolf/resistance showcase)
+  const gtOf=g=>g.game_type||'mafia';
+  const mafiaFam=games.filter(g=>gtOf(g)==='mafia');
+  const nonMafia=games.length-mafiaFam.length;
+  const mafiaWins=mafiaFam.filter(g=>g.winner==='Mafia').length;
+  const done=mafiaFam.filter(g=>g.winner!=='Pending');
   const meanRounds=d3.mean(games,g=>g.steps.length?g.steps[g.steps.length-1].round:0);
   const psOk=d3.sum(games,g=>g.parse_stats?g.parse_stats.ok:0), psTot=d3.sum(games,g=>g.parse_stats?g.parse_stats.total:0);
   const branches=allGames.filter(g=>g.forked_from).length;
-  document.getElementById('hdr-info').textContent=STRINGS.hdrInfo(games.length, branches, models.join(', '));
+  const families=[...new Set(games.map(gtOf))].sort().join(', ');
+  document.getElementById('hdr-info').textContent=
+    STRINGS.hdrInfo(games.length, branches, models.join(', '))+(nonMafia?` · families: ${families}`:'');
   document.getElementById('summary').innerHTML=[
     [games.length,STRINGS.tileRootGames],
     [`${Math.round(100*mafiaWins/Math.max(1,done.length))}%`,STRINGS.tileMafiaWinRate],
     [meanRounds?meanRounds.toFixed(1):'—',STRINGS.tileMeanRounds],
     [psTot?Math.round(100*psOk/psTot)+'%':'—',STRINGS.tileParseRate],
     [branches,STRINGS.tileBranches],
+    ...(nonMafia?[[nonMafia,STRINGS.tileNonMafia]]:[]),
   ].map(([v,l])=>`<div class="tile"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
 
   // ── per-game per-round metrics ──
@@ -354,7 +362,8 @@ function render(games, allGames){
   games.forEach(g=>{
     const mafiaModels=[...new Set(g.players.filter(p=>p.role==='Mafia').map(p=>p.model))].sort().join(' + ');
     const townModels=[...new Set(g.players.filter(p=>p.role!=='Mafia').map(p=>p.model))].sort().join(' + ');
-    const key=`${mafiaModels} ⚔ ${townModels}`;
+    const fam=(g.game_type&&g.game_type!=='mafia')?`[${g.game_type}] `:'';
+    const key=`${fam}${mafiaModels} ⚔ ${townModels}`;
     const mm=matchups[key]=matchups[key]||{mafia:0,villagers:0,other:0,rounds:[]};
     if(g.winner==='Mafia')mm.mafia++; else if(g.winner==='Villagers')mm.villagers++; else mm.other++;
     if(g.steps.length)mm.rounds.push(g.steps[g.steps.length-1].round);

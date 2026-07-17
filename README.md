@@ -65,6 +65,37 @@ each seat and under which settings.
   source of truth for corpus selection and every published number
   (game-level cluster bootstrap CIs, raw vs. repaired parse modes).
 
+## Run with Docker
+
+The fastest way to explore MafiaScope — an image with the interactive
+viewer, the full curated dataset (including the bifurcation-point panel and
+its 320 fork games), and the counterfactual fork API, ready in one command:
+
+```bash
+docker run --rm -p 8080:8080 ghcr.io/karpovilia/mafiascope:latest
+# then open http://localhost:8080/viewer.html
+```
+
+The viewer is fully functional without any keys. To also use the **⑂ Branch**
+button (live counterfactual forks via the DeepSeek API), pass a key:
+
+```bash
+docker run --rm -p 8080:8080 -e DEEPSEEK_API_KEY=sk-... ghcr.io/karpovilia/mafiascope:latest
+```
+
+Or build the image from the repo (`podman` works identically to `docker`):
+
+```bash
+git clone https://github.com/karpovilia/mafiascope.git && cd mafiascope
+docker build -t mafiascope .
+docker run --rm -p 8080:8080 mafiascope
+```
+
+The build pre-generates all viewer data, so the container starts instantly.
+Bifurcation-panel data is staged as `bifdata/bifurcation/` in the build
+context (see the header of the [Dockerfile](Dockerfile)); if absent, the
+image builds fine and the viewer simply shows no bifurcation panel.
+
 ## Quickstart
 
 Requires **Python 3.11+** and a [DeepSeek API key](https://platform.deepseek.com/)

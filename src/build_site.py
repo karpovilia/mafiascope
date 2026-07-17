@@ -23,11 +23,21 @@ import json
 import os
 import shutil
 
-from prepare_viewer import scan_game_dirs
+from prepare_viewer import scan_game_dirs, load_bifurcation
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STATIC_FILES = ["viewer.html", "dashboard.html", "probe_editor.html", "d3.v7.min.js",
                 "fonts/onest-latin.woff2", "fonts/onest-cyrillic.woff2"]
+
+# Showcase bifurcation points whose 20 forks ship as full replayable games.
+# All other bifurcation forks are pruned from the static build (their outcomes
+# still render in the fan panel — they live in the parent's bifurcation_points
+# metadata); this keeps all_games.json within static-host budget.
+DEFAULT_SHOWCASE_POINTS = [
+    "poli_3845221c_r1_Alex",   # policy gap, 4/20 flips (paper screenshot)
+    "poli_0da78714_r2_Dana",   # policy gap, 3/20 flips
+    "perc_36594b66_r1_Casey",  # perception gap, lock-in 498/500
+]
 
 INDEX_HTML = """<!DOCTYPE html>
 <meta charset="utf-8">
@@ -42,16 +52,51 @@ def main() -> None:
     parser.add_argument("-o", "--output", default="../site")
     parser.add_argument("--max-games", type=int, default=None,
                         help="Keep only the N newest root games (+ their branches)")
+    parser.add_argument("--bifurcation-dir", default="../../mafia2/data/bifurcation",
+                        help="Bifurcation experiment data (points.json etc.); "
+                             "missing dir degrades softly to no panel")
+    parser.add_argument("--bifurcation-full-forks",
+                        default=",".join(DEFAULT_SHOWCASE_POINTS),
+                        help="Comma-separated point_ids whose forks keep full replay "
+                             "data in the build; 'all' keeps every fork, 'none' drops "
+                             "them all (fan-panel outcomes stay either way)")
     args = parser.parse_args()
 
-    games = scan_game_dirs(args.logs_dir)
+    bif_data = load_bifurcation(args.bifurcation_dir)
+    if bif_data:
+        print(f"Bifurcation data: "
+              f"{sum(len(v) for v in bif_data.values())} points across {len(bif_data)} games")
+
+    games = scan_game_dirs(args.logs_dir, bif_data=bif_data)
     if not games:
         raise SystemExit("No games found — nothing to publish")
+
+    # Prune non-showcase bifurcation forks: a static host should not ship 320
+    # full replays; the fan panel reads all outcomes from the parent metadata.
+    sel = (args.bifurcation_full_forks or "").strip()
+    if bif_data and sel != "all":
+        keep_pts = set() if sel in ("", "none") else {s.strip() for s in sel.split(",")}
+        all_pts = {p["point_id"] for pts in bif_data.values() for p in pts}
+        unknown = keep_pts - all_pts
+        if unknown:
+            print(f"  ⚠ unknown point_id(s) in --bifurcation-full-forks: {sorted(unknown)}")
+        fork_to_pt = {v["fork_game_id"]: p["point_id"]
+                      for pts in bif_data.values() for p in pts
+                      for v in p["variants"] if v.get("fork_game_id")}
+        before = len(games)
+        games = [g for g in games
+                 if g["game_id"] not in fork_to_pt
+                 or fork_to_pt[g["game_id"]] in keep_pts]
+        print(f"  bifurcation forks: kept full replays for {sorted(keep_pts & all_pts)}, "
+              f"pruned {before - len(games)} fork games")
 
     if args.max_games:
         roots = sorted([g for g in games if not g.get("forked_from")],
                        key=lambda g: -(g.get("started_at") or 0))[: args.max_games]
         keep = {g["game_id"] for g in roots}
+        # bifurcation-point parents always survive the cut — they carry the
+        # fan-panel metadata the demo is built around
+        keep |= {g["game_id"] for g in games if g.get("bifurcation_points")}
         games = [g for g in games
                  if g["game_id"] in keep or g.get("forked_from") in keep]
 

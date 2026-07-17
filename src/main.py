@@ -17,7 +17,12 @@ import threading
 import time
 
 import yaml
-from dotenv import load_dotenv
+
+try:
+    from dotenv import load_dotenv
+except ModuleNotFoundError:  # optional dep — local-model boxes may lack it
+    def load_dotenv(*_a, **_k):  # env vars (API keys) can still be set directly
+        return False
 
 from game import MafiaGame
 from llm_backend import shutdown_backends
@@ -28,10 +33,25 @@ def load_config(path: str) -> dict:
         return yaml.safe_load(f)
 
 
-def run_one_game(cfg: dict, game_idx: int, results: list) -> None:
-    """Run a single game. Designed to be called from a thread."""
+def run_one_game(cfg: dict, game_idx: int, results: list,
+                 seed: int | None = None) -> None:
+    """Run a single game. Designed to be called from a thread.
+
+    If `seed` is given, it is injected as the game's per-game RNG seed
+    (reproducible roster/name assignment, independent of the global RNG and
+    of thread interleaving) — this realizes the seed grid used across the
+    multigame corpora (e.g. seed=9000+i)."""
     try:
-        game = MafiaGame(cfg)
+        if seed is not None:
+            import copy
+            cfg = copy.deepcopy(cfg)
+            cfg.setdefault("game", {})["seed"] = seed
+        # game_type routes to the right engine; default = Mafia (skin-aware).
+        if cfg.get("game", {}).get("game_type") == "resistance":
+            from game_resistance import ResistanceGame
+            game = ResistanceGame(cfg)
+        else:
+            game = MafiaGame(cfg)
         result = game.run()
         result["game_idx"] = game_idx
         result["log_dir"] = game.game_log_dir
@@ -55,8 +75,15 @@ def main() -> None:
     parser.add_argument("--parallel", action="store_true",
                         help="Run games in parallel threads (use with transformers_batched)")
     parser.add_argument("--no-introspection", action="store_true")
+    parser.add_argument("--max-rounds", type=int, default=None,
+                        help="Override game.max_rounds (e.g. cap rounds for a fast "
+                             "test-partition env/config smoke).")
     parser.add_argument("--seed", type=int, default=None,
-                        help="Random seed for reproducibility")
+                        help="Global random seed (seeds the module RNG once)")
+    parser.add_argument("--seed-base", type=int, default=None,
+                        help="Per-game seed grid: game i uses seed_base+i as its "
+                             "own reproducible RNG (roster/names), independent of "
+                             "--parallel interleaving. Used by the multigame corpora.")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
@@ -66,6 +93,9 @@ def main() -> None:
 
     if args.no_introspection:
         cfg.setdefault("introspection", {})["enabled"] = False
+
+    if args.max_rounds is not None:
+        cfg.setdefault("game", {})["max_rounds"] = args.max_rounds
 
     # CLI flag overrides config, config overrides default of 1
     n = args.num_games or cfg.get("game", {}).get("num_games", 1)
@@ -79,7 +109,8 @@ def main() -> None:
 
         threads = []
         for i in range(n):
-            t = threading.Thread(target=run_one_game, args=(cfg, i + 1, results))
+            seed_i = args.seed_base + i if args.seed_base is not None else None
+            t = threading.Thread(target=run_one_game, args=(cfg, i + 1, results, seed_i))
             threads.append(t)
             t.start()
 
@@ -90,7 +121,8 @@ def main() -> None:
             print(f"\n{'━'*60}")
             print(f"  GAME {i + 1} / {n}")
             print(f"{'━'*60}")
-            run_one_game(cfg, i + 1, results)
+            seed_i = args.seed_base + i if args.seed_base is not None else None
+            run_one_game(cfg, i + 1, results, seed_i)
 
     elapsed = time.monotonic() - t0
 

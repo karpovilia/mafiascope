@@ -22,12 +22,7 @@ from llm_backend import get_backend
 from player import Player
 from prompts import (
     PLAYER_NAMES,
-    NIGHT_ACTION,
-    DAY_DISCUSS,
-    DAY_DISCUSS_DETAILED,
-    DAY_VOTE,
-    DAY_VOTE_DETAILED,
-    INTRO_PROMPT,
+    get_skin_pack,
 )
 from introspection import (
     IntrospectionEngine,
@@ -69,6 +64,16 @@ class MafiaGame:
         self.detailed_reasoning: bool = game_cfg.get("detailed_reasoning", False)
         self.intro_round: bool = game_cfg.get("intro_round", False)
         self.snapshots_enabled: bool = game_cfg.get("snapshots", True)
+        # Skin = surface lexicon only (Mafia vs Werewolf); mechanics unchanged.
+        # game_type = analytics label distinguishing the corpus (mafia,
+        # werewolf_skin, werewolf_seer, ...); recorded in the setup event so
+        # downstream analysis never conflates corpora.
+        self.skin: str = game_cfg.get("skin", "mafia")
+        self.game_type: str = game_cfg.get("game_type", self.skin)
+        self.pack = get_skin_pack(self.skin)
+        # Per-game RNG for reproducible rosters (seed grid), independent of
+        # the global random state so --parallel threads don't interfere.
+        self._seed = game_cfg.get("seed")
 
         self.players: list[Player] = []
         self.round_num = 0
@@ -157,6 +162,7 @@ class MafiaGame:
                 language=ps.get("language", game.language),
                 mafia_partners=partners,
                 personality=ps.get("personality"),
+                skin=game.skin,
             )
             p.restore_context(ps["messages"])
             p.alive = ps["alive"]
@@ -170,6 +176,7 @@ class MafiaGame:
             ],
             "forked_from": rec["game_id"],
             "fork_point": [round_num, msg_seq],
+            "language": game.language,
             **(fork_meta or {}),
         }
         if game.introspection.cfg.feedback_to_context:
@@ -187,12 +194,18 @@ class MafiaGame:
         backends_cfg = self.cfg["backends"]
         roster = self.cfg["players"]  # list of {role, backend}
 
-        names = random.sample(PLAYER_NAMES, len(roster))
-        random.shuffle(names)  # shuffle so role order isn't predictable
+        # Per-game RNG: when a seed is supplied (seed grid), the roster and
+        # name assignment are reproducible regardless of thread interleaving.
+        # Falls back to the global `random` module (legacy behaviour) when no
+        # seed is set, so unseeded runs are byte-identical to before.
+        rng = random.Random(self._seed) if self._seed is not None else random
+
+        names = rng.sample(PLAYER_NAMES, len(roster))
+        rng.shuffle(names)  # shuffle so role order isn't predictable
 
         # Shuffle the roster too so roles aren't in config order
         indexed_roster = list(enumerate(roster))
-        random.shuffle(indexed_roster)
+        rng.shuffle(indexed_roster)
 
         # First pass: collect mafia names
         player_data: list[dict[str, Any]] = []
@@ -222,10 +235,14 @@ class MafiaGame:
                 language=self.language,
                 mafia_partners=partners,
                 personality=d.get("personality"),
+                skin=self.skin,
             )
             self.players.append(p)
 
         setup_data: dict[str, Any] = {
+            "game_type": self.game_type,
+            "skin": self.skin,
+            "language": self.language,
             "players": [
                 {"name": p.player_name, "role": p.role, "model": p.model_label,
                  "backend": p.backend_name, "personality": p.personality}
@@ -384,12 +401,17 @@ class MafiaGame:
 
     # ── sheriff history string ───────────────
 
+    def _check_label(self, canonical: str) -> str:
+        """Render a canonical check result ("Mafia"/"Not Mafia") in the
+        current skin's lexicon (e.g. "a Werewolf"/"Not a Werewolf")."""
+        return self.pack.get("check_labels", {}).get(canonical, canonical)
+
     def _sheriff_history_str(self) -> str:
         if not self._sheriff_checks:
             return "You have not checked anyone yet."
         lines = ["Your previous check results:"]
         for name, result in self._sheriff_checks.items():
-            lines.append(f"  - {name}: {result}")
+            lines.append(f"  - {name}: {self._check_label(result)}")
         return "\n".join(lines)
 
     # ── night phase ──────────────────────────
@@ -413,7 +435,7 @@ class MafiaGame:
             for i, p in enumerate(mafia_players):
                 if stage == "night_mafia" and remaining is not None and p.player_name not in remaining:
                     continue
-                prompt = NIGHT_ACTION[self.language]["Mafia"].format(
+                prompt = self.pack["NIGHT_ACTION"][self.language]["Mafia"].format(
                     round=self.round_num, alive=alive_str,
                 )
                 self._print(f"  [Mafia] {p.player_name} thinking...", "info")
@@ -455,7 +477,7 @@ class MafiaGame:
             for i, p in enumerate(doctors):
                 if stage == "night_doctor" and remaining is not None and p.player_name not in remaining:
                     continue
-                prompt = NIGHT_ACTION[self.language]["Doctor"].format(
+                prompt = self.pack["NIGHT_ACTION"][self.language]["Doctor"].format(
                     round=self.round_num, alive=alive_str,
                 )
                 self._print(f"  [Doctor] {p.player_name} thinking...", "info")
@@ -482,7 +504,7 @@ class MafiaGame:
         for i, p in enumerate(sheriffs):
             if stage == "night_sheriff" and remaining is not None and p.player_name not in remaining:
                 continue
-            prompt = NIGHT_ACTION[self.language]["Sheriff"].format(
+            prompt = self.pack["NIGHT_ACTION"][self.language]["Sheriff"].format(
                 round=self.round_num,
                 alive=alive_str,
                 sheriff_history=self._sheriff_history_str(),
@@ -500,10 +522,12 @@ class MafiaGame:
                 if checked:
                     check_result = "Mafia" if checked.role == "Mafia" else "Not Mafia"
                     self._sheriff_checks[checked.player_name] = check_result
-                    # Tell the sheriff the result (added to their context)
-                    result_msg = f"CHECK RESULT: {checked.player_name} is {check_result}."
+                    # Tell the sheriff the result (added to their context) —
+                    # rendered in the skin's lexicon, kept private to them.
+                    label = self._check_label(check_result)
+                    result_msg = f"CHECK RESULT: {checked.player_name} is {label}."
                     p.add_observation(result_msg)
-                    self._print(f"  [Sheriff] >> {checked.player_name} is {check_result}", "info")
+                    self._print(f"  [Sheriff] >> {checked.player_name} is {label}", "info")
                     self._log_event("night_sheriff_result", {
                         "sheriff": p.player_name,
                         "checked": checked.player_name,
@@ -567,7 +591,7 @@ class MafiaGame:
 
         # Discussion
         if stage != "day_vote":
-            discuss_tpl = DAY_DISCUSS_DETAILED if self.detailed_reasoning else DAY_DISCUSS
+            discuss_tpl = self.pack["DAY_DISCUSS_DETAILED"] if self.detailed_reasoning else self.pack["DAY_DISCUSS"]
             discuss_prompt = discuss_tpl[self.language].format(
                 round=self.round_num, alive=alive_str, night_result=night_result,
             )
@@ -591,7 +615,7 @@ class MafiaGame:
                 }, night_result=night_result)
 
         # Voting
-        vote_tpl = DAY_VOTE_DETAILED if self.detailed_reasoning else DAY_VOTE
+        vote_tpl = self.pack["DAY_VOTE_DETAILED"] if self.detailed_reasoning else self.pack["DAY_VOTE"]
         vote_prompt = vote_tpl[self.language].format(
             round=self.round_num, alive=alive_str,
         )
@@ -656,7 +680,7 @@ class MafiaGame:
         """Introduction round — players meet and present themselves."""
         self._print(f"\n{'='*50}\n  INTRODUCTION ROUND\n{'='*50}", "info")
         alive_str = ", ".join(self.alive_names())
-        prompt = INTRO_PROMPT[self.language].format(alive=alive_str)
+        prompt = self.pack["INTRO_PROMPT"][self.language].format(alive=alive_str)
         remaining = set(resume.get("remaining", [])) if resume else None
 
         alive_players = self.alive()

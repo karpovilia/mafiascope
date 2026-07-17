@@ -18,6 +18,10 @@ that put them on other machines (a LAN GPU box or a SLURM cluster).
 | **Viewer** — timeline replay, belief graphs, impersonate, metrics panel, branch UI | `src/prepare_viewer.py`, `src/serve_viewer.py`, `src/viewer.html`, `src/dashboard.html`, `src/build_site.py` | [DOCUMENTATION.md](DOCUMENTATION.md) §7 |
 | **Metrics & analysis** — corpus selection, paper metrics, belief dynamics, event labeling | `src/metrics_lib.py`, `src/analyze_metrics.py`, `src/belief_dynamics.py`, `src/event_labeler.py`, `src/aggregate_events.py` | [dataset.md](dataset.md) |
 
+The viewer + curated dataset + fork API also ship as a container image:
+`docker run --rm -p 8080:8080 -e DEEPSEEK_API_KEY=sk-... ghcr.io/karpovilia/mafiascope:latest`
+(see the README section "Run with Docker" and the root `Dockerfile`).
+
 Scaled experiments (large corpora, HPC array runs, GRPO training) live in a
 separate experiments repository that reuses this engine through a symlink;
 this repo stays the engine + demo + dataset home.

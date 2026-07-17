@@ -29,18 +29,19 @@ from pathlib import Path
 import yaml
 from dotenv import load_dotenv
 
-from prepare_viewer import scan_game_dirs, build_viewer_data
+from prepare_viewer import scan_game_dirs, build_viewer_data, load_bifurcation
 
 # ── shared state ────────────────────────────
 FORK_BATCHES: dict[str, dict] = {}
 _BATCH_LOCK = threading.Lock()
 ARGS = None
 CFG = None
+BIF_DATA: dict = {}
 
 
 def rebuild_data_files(logs_dir: str) -> int:
     """Regenerate all_games.json / viewer_data.json in the served directory."""
-    all_games = scan_game_dirs(logs_dir)
+    all_games = scan_game_dirs(logs_dir, bif_data=BIF_DATA)
     if all_games:
         Path("viewer_data.json").write_text(
             json.dumps(all_games[-1], ensure_ascii=False), encoding="utf-8")
@@ -150,7 +151,12 @@ def main():
     parser.add_argument("-c", "--config", default="../configs/config.yaml",
                         help="Config used for fork replays")
     parser.add_argument("--game-id", default=None, help="Single game (default: all)")
+    parser.add_argument("--bifurcation-dir", default="../../mafia2/data/bifurcation",
+                        help="Bifurcation experiment data dir (soft-optional)")
     parser.add_argument("--no-open", action="store_true")
+    parser.add_argument("--no-rebuild", action="store_true",
+                        help="Reuse an existing all_games.json instead of rescanning "
+                             "logs at startup (instant start, e.g. in the Docker image)")
     ARGS = parser.parse_args()
 
     with open(ARGS.config, "r", encoding="utf-8") as f:
@@ -161,18 +167,28 @@ def main():
     print("Preparing viewer data...")
     os.chdir(Path(__file__).parent)
 
+    global BIF_DATA
+    BIF_DATA = load_bifurcation(ARGS.bifurcation_dir)
+    if BIF_DATA:
+        print(f"Bifurcation data: "
+              f"{sum(len(v) for v in BIF_DATA.values())} points across {len(BIF_DATA)} games")
+
     if ARGS.game_id:
         game_dir = os.path.join(ARGS.logs_dir, ARGS.game_id)
         data = build_viewer_data(
             os.path.join(game_dir, "game.jsonl"),
             os.path.join(game_dir, "introspection.jsonl"),
             game_id=ARGS.game_id,
+            bif_points=BIF_DATA.get(ARGS.game_id),
         )
         Path("viewer_data.json").write_text(
             json.dumps(data, ensure_ascii=False), encoding="utf-8")
         Path("all_games.json").write_text(
             json.dumps([data], ensure_ascii=False), encoding="utf-8")
         n = 1
+    elif ARGS.no_rebuild and Path("all_games.json").is_file():
+        n = len(json.loads(Path("all_games.json").read_text(encoding="utf-8")))
+        print("Reusing prebuilt all_games.json (--no-rebuild)")
     else:
         n = rebuild_data_files(ARGS.logs_dir)
 

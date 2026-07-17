@@ -274,6 +274,9 @@ class TransformersBackend(LLMBackend):
         self.temperature: float = cfg.get("temperature", 0.7)
         self.top_p: float = cfg.get("top_p", 0.9)
         self.do_sample: bool = cfg.get("do_sample", True)
+        # Optional hybrid-reasoning switch (Qwen3 etc.): when set, forwarded to
+        # apply_chat_template. None = don't pass the kwarg (default behaviour).
+        self.enable_thinking = cfg.get("enable_thinking")
 
         dtype_name = cfg.get("torch_dtype", "bfloat16")
         dtype_map = {
@@ -306,7 +309,10 @@ class TransformersBackend(LLMBackend):
     def generate(self, messages: list[dict[str, str]], max_tokens: int | None = None) -> str:
         import torch
 
-        text = self.tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+        text = self.tokenizer.apply_chat_template(
+            messages, tokenize=False, add_generation_prompt=True,
+            **({"enable_thinking": self.enable_thinking}
+               if self.enable_thinking is not None else {}))
         inputs = self.tokenizer(text, return_tensors="pt").to(self.device)
         with torch.no_grad():
             out = self.model.generate(
@@ -370,6 +376,8 @@ class BatchedTransformersBackend(LLMBackend):
         self.temperature: float = cfg.get("temperature", 0.7)
         self.top_p: float = cfg.get("top_p", 0.9)
         self.do_sample: bool = cfg.get("do_sample", True)
+        # Optional hybrid-reasoning switch (Qwen3 etc.); see TransformersBackend.
+        self.enable_thinking = cfg.get("enable_thinking")
 
         dtype_name = cfg.get("torch_dtype", "bfloat16")
         dtype_map = {
@@ -435,8 +443,9 @@ class BatchedTransformersBackend(LLMBackend):
 
     def _enqueue(self, messages: list[dict[str, str]], max_tokens: int | None, *, is_probe: bool) -> str:
         text = self.tokenizer.apply_chat_template(
-            messages, tokenize=False, add_generation_prompt=True
-        )
+            messages, tokenize=False, add_generation_prompt=True,
+            **({"enable_thinking": self.enable_thinking}
+               if self.enable_thinking is not None else {}))
         req = _BatchRequest(text, max_tokens or self.max_tokens, is_probe=is_probe)
 
         with self._has_work:

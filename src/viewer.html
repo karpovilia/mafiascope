@@ -280,6 +280,61 @@ body.metrics-open #metrics-panel { display: grid; }
   background: var(--secondary); max-width: 300px;
 }
 .step-tick.has-branch { box-shadow: inset 0 -3px 0 var(--brand); }
+/* Bifurcation points (idea 06): quadrant-colored top stripe on the tick */
+.step-tick.bif { box-shadow: inset 0 4px 0 var(--bif-c); cursor: pointer; }
+.step-tick.bif.has-branch { box-shadow: inset 0 4px 0 var(--bif-c), inset 0 -3px 0 var(--brand); }
+#bif-legend { display: none; gap: 10px; align-items: center; font-size: 10px;
+  color: var(--muted-foreground); white-space: nowrap; }
+.bif-swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block;
+  margin-right: 4px; vertical-align: -1px; }
+#bif-badge {
+  display: none; border: none; cursor: pointer; border-radius: 999px;
+  padding: 3px 11px; font-size: 11px; font-weight: 700; color: #fff;
+  font-family: inherit; white-space: nowrap;
+}
+#bif-badge:hover { filter: brightness(1.15); }
+
+/* Bifurcation fan panel */
+#bif-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 300;
+  align-items: center; justify-content: center;
+}
+#bif-overlay.open { display: flex; }
+#bif-modal {
+  background: var(--popover); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  width: 700px; max-width: 94vw; max-height: 88vh; padding: 16px 18px 12px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.6); display: flex; flex-direction: column;
+}
+#bif-modal h2 { font-size: 13px; font-weight: 600; color: var(--foreground);
+  margin-bottom: 8px; letter-spacing: .01em; display: flex; align-items: center; gap: 8px; }
+#bif-modal .bif-quad-chip { padding: 1px 8px; border-radius: 999px; font-size: 10px;
+  font-weight: 700; color: #fff; }
+#bif-summary { font-size: 11px; color: var(--muted-foreground); line-height: 1.6;
+  margin-bottom: 8px; }
+#bif-summary b { color: var(--foreground); }
+.bif-bar { height: 8px; border-radius: 4px; background: var(--secondary);
+  overflow: hidden; display: flex; margin: 3px 0 8px; }
+.bif-bar span { height: 100%; }
+#bif-variants { flex: 1; overflow-y: auto; border-top: 1px solid var(--border-soft); }
+.bif-variant {
+  display: flex; gap: 8px; align-items: baseline; padding: 5px 4px;
+  border-bottom: 1px solid var(--border-soft); cursor: pointer; min-width: 0;
+  transition: background .12s ease;
+}
+.bif-variant:hover { background: rgba(255,255,255,.05); }
+:root[data-theme="light"] .bif-variant:hover { background: rgba(0,0,0,.05); }
+.bif-variant.flip { background: rgba(86,180,233,.10); }
+.bif-variant.flip:hover { background: rgba(86,180,233,.18); }
+.bif-rank { font-size: 9px; color: var(--faint); width: 38px; flex-shrink: 0;
+  font-family: var(--font-mono); }
+.bif-chip { padding: 1px 7px; border-radius: 999px; font-size: 9px; font-weight: 700;
+  flex-shrink: 0; white-space: nowrap; }
+.bif-chip.outcome-flip { background: #56B4E9; color: #14130f; }
+.bif-chip.outcome-same { background: var(--secondary); color: var(--muted-foreground);
+  border: 1px solid var(--border-soft); }
+.bif-text { font-size: 10px; color: var(--muted-foreground); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.bif-note { font-size: 10px; color: var(--faint); padding: 6px 2px 2px; }
 .batch-header {
   padding: 6px 16px 4px 24px; font-size: 10px; color: var(--brand);
   border-bottom: 1px solid var(--border-soft); background: rgba(255,240,82,.05);
@@ -370,6 +425,7 @@ body.metrics-open #metrics-panel { display: grid; }
 .imp-panel {
   border: 1px solid var(--border); border-radius: var(--radius);
   background: var(--card); overflow: hidden; display: flex; flex-direction: column;
+  min-width: 0; min-height: 0; /* grid items must not stretch columns on long content */
 }
 .imp-panel .panel-title { background: rgba(255,255,255,.03); border-bottom: 1px solid var(--border-soft); }
 .imp-log { flex: 1; overflow-y: auto; padding: 8px 12px; font-size: 12px; line-height: 1.7; }
@@ -381,6 +437,25 @@ body.metrics-open #metrics-panel { display: grid; }
 .role-Villager { background: #56B4E9; color: #14130f; }
 .role-Sheriff { background: #CC79A7; color: #14130f; }
 .role-Unknown { background: #3a3934; color: #d6d5d1; }
+/* Non-mafia game families: Resistance maps onto the town/mafia hues */
+.role-Resistance { background: #56B4E9; color: #14130f; }
+.role-Spy { background: #D55E00; color: #fff; }
+.type-badge {
+  background: var(--secondary); color: var(--muted-foreground);
+  border: 1px solid var(--border-soft); padding: 1px 7px; border-radius: 999px;
+  font-size: 9px; font-weight: 700; white-space: nowrap;
+}
+
+/* Initial-load splash (86 MB corpus fetch needs visible progress) */
+#load-splash {
+  grid-column: 1 / -1; display: flex; flex-direction: column; gap: 10px;
+  align-items: center; justify-content: center; color: var(--muted-foreground);
+  font-size: 13px;
+}
+#load-splash .load-bar {
+  width: 260px; height: 6px; border-radius: 3px; background: var(--secondary); overflow: hidden;
+}
+#load-splash .load-bar span { display: block; height: 100%; background: var(--brand); width: 0%; }
 .truth-badge { background: var(--brand-muted); color: var(--brand); border: 1px solid var(--brand-border); }
 .believed-badge { background: rgba(230,159,0,.15); color: #E69F00; border: 1px solid rgba(230,159,0,.4); }
 .actual-badge { background: rgba(188,140,255,.14); color: #bc8cff; border: 1px solid rgba(188,140,255,.4); }
@@ -444,6 +519,8 @@ body.metrics-open #metrics-panel { display: grid; }
 <div id="header">
   <h1 id="brand" onclick="toggleSidebar()" title="Browse games">MafiaScope <span class="brand-caret">▾</span></h1>
   <span id="current-game" title="Current game — click MafiaScope to switch"></span>
+  <span id="game-type-badge" class="type-badge" style="display:none"></span>
+  <button id="copy-link-btn" class="hdr-btn" onclick="copyLink()" title="Copy a shareable link to this exact view (game, step, agent, mode)">🔗</button>
   <button id="metrics-btn" class="hdr-btn" onclick="toggleMetrics()">Metrics</button>
   <button id="calib-btn" class="hdr-btn" onclick="openCalibration()">Calibration</button>
   <button id="theme-btn" class="hdr-btn" onclick="toggleTheme()" title="Turn the lights on/off">💡</button>
@@ -457,6 +534,8 @@ body.metrics-open #metrics-panel { display: grid; }
 <div id="timeline">
   <div id="timeline-label">-</div>
   <div id="timeline-bar"></div>
+  <span id="bif-legend"></span>
+  <button id="bif-badge" onclick="openBifPanelCurrent()"></button>
   <button id="branch-btn" class="hdr-btn" onclick="openForkDialog()" title="Counterfactual replay: fork the game from the selected step">⑂ Branch</button>
 </div>
 <div id="main-grid"></div>
@@ -499,6 +578,14 @@ body.metrics-open #metrics-panel { display: grid; }
   </div>
 </div>
 <div id="fork-toast"></div>
+<div id="bif-overlay" onclick="if(event.target===this)closeBifPanel()">
+  <div id="bif-modal">
+    <h2 id="bif-title"></h2>
+    <div id="bif-summary"></div>
+    <div id="bif-variants"></div>
+    <div class="bif-note" id="bif-note"></div>
+  </div>
+</div>
 <div id="tooltip"></div>
 
 <script>
@@ -507,7 +594,13 @@ body.metrics-open #metrics-panel { display: grid; }
 const ROLE_COLORS = {
   Mafia: '#D55E00', Doctor: '#009E73', Sheriff: '#CC79A7',
   Villager: '#56B4E9', Unknown: '#6e7681',
+  // Non-mafia families: Resistance maps onto the town/mafia hues
+  Resistance: '#56B4E9', Spy: '#D55E00',
 };
+// Hidden-team roles across game families (drawn with a pact link in GT)
+const EVIL_ROLES = new Set(['Mafia', 'Spy']);
+// Transcript-only games (probes off): timeline + utterances, no belief panels
+function hasProbes(){ return !!(DATA && DATA.parse_stats && DATA.parse_stats.total); }
 
 // Chrome (non-data) colors — theme tokens, mirror the CSS custom properties.
 // SVG attributes can't read CSS vars, hence the JS mirror (refreshed on theme switch).
@@ -553,6 +646,12 @@ function toggleTheme(){
 // Game DATA (agent messages, player names, probe output) renders as-is from logs.
 const STRINGS = {
   noData: 'No data. Run: python serve_viewer.py',
+  loading: 'MafiaScope — loading the demo corpus…',
+  loadingMB: (got, total) => total ? `${got.toFixed(1)} MB of ~${total.toFixed(1)} MB` : `${got.toFixed(1)} MB`,
+  loadingParse: 'parsing…',
+  transcriptOnly: 'transcript only — no probe data',
+  copied: '🔗 Link copied',
+  copyFailed: 'Copy failed — copy the URL from the address bar',
   pending: 'Pending',
   wins: w => `${w} wins`,
   cardMeta: (np, ns, nr) => `${np} players · ${ns} steps · ${nr} rounds`,
@@ -564,6 +663,19 @@ const STRINGS = {
   impersonateBadge: name => `${name} — Esc to exit`,
   tickTitle: (label, phase) => `${label} ${phase}`,
   tickBranches: n => ` — ⑂ ${n} branch(es)`,
+  tickBif: (quad, voter) => ` — ◆ bifurcation: ${quad} (${voter})`,
+  bifBadge: (quad, voter, tgt) => `◆ ${quad} · ${voter} → ${tgt}`,
+  bifBadgeTitle: 'Bifurcation point — click to open the fork fan',
+  bifTitle: (voter, tgt, r, seq) => `${voter} voted ${tgt} — R${r}.${seq}`,
+  bifLockIn: (n, total, tgt, pct) => `Lock-in: <b>${n}/${total}</b> samples repeat the modal target <b>${tgt}</b> (${pct}%)`,
+  bifFlipShare: (flips, total, pct) => `Flip share: <b>${flips}/${total}</b> forks flip the outcome to a Villagers win (${pct}%)`,
+  bifNoVote: 'no vote',
+  bifFactualTag: 'factual',
+  bifOutcome: (w, r) => `${w} · ${r}R`,
+  bifFlipChip: r => `FLIP · Villagers · ${r}R`,
+  bifNoOutcome: 'n/a',
+  bifForkMissing: ' — full replay not included in the static demo',
+  bifNote: '20 forks per point: the factual reply plus alternatives ordered by dissimilarity (farthest-point on e5 embeddings, vote-target coverage first). Click a row to replay that fork.',
   eliminated: 'ELIMINATED',
   noDataYet: 'No data yet',
   noDataShort: 'No data',
@@ -594,7 +706,7 @@ const STRINGS = {
   calibXAxis: 'stated confidence bin',
   calibYAxis: 'actual accuracy (hatched = overconfident)',
   forkPoint: (label, r, seq, phase) => `${label} (round ${r}, seq ${seq}, ${phase})`,
-  forkApiUnavailable: 'Fork API unavailable — run: python serve_viewer.py',
+  forkApiUnavailable: 'Fork API is unavailable on a static host — run the docker image or serve_viewer.py locally',
   forkProgress: (done, total) => `⑂ Fork ${done}/${total}`,
   forkFailed: n => ` (${n} failed)`,
   forkDone: ' — done',
@@ -615,26 +727,101 @@ let conversationLog = [];
 let impersonating = null; // player name or null
 
 // ── Load ───────────────────────────────────
+// Streaming fetch with progress: the static corpus is tens of MB, the visitor
+// must see bytes moving, not an empty grid. No cache-buster — let the browser
+// (and the static host's max-age) cache the blob between reloads.
+function setLoadStatus(text, frac){
+  const el=document.getElementById('load-progress');
+  if(el) el.textContent=text;
+  const bar=document.querySelector('#load-splash .load-bar span');
+  if(bar && frac!==undefined) bar.style.width=`${Math.min(100, Math.round(frac*100))}%`;
+}
+function showLoading(){
+  document.getElementById('main-grid').innerHTML=
+    `<div id="load-splash"><div>${esc(STRINGS.loading)}</div>`+
+    `<div class="load-bar"><span></span></div><div id="load-progress"></div></div>`;
+}
+async function fetchJsonProgress(url){
+  const r = await fetch(url);
+  if(!r.ok) throw new Error(`${url}: ${r.status}`);
+  // content-length is the transfer (possibly compressed) size — treat the
+  // ratio as approximate and clamp; absent on some hosts.
+  const total = +r.headers.get('content-length') || 0;
+  if(!r.body || !r.body.getReader) return await r.json();
+  const reader = r.body.getReader();
+  const chunks=[]; let got=0;
+  for(;;){
+    const {done, value} = await reader.read();
+    if(done) break;
+    chunks.push(value); got += value.length;
+    setLoadStatus(STRINGS.loadingMB(got/1e6, total/1e6), total ? got/total : undefined);
+  }
+  setLoadStatus(STRINGS.loadingParse, 1);
+  return JSON.parse(await new Blob(chunks).text());
+}
+
 async function loadData() {
+  showLoading();
   let loaded = false;
-  try { const r = await fetch('all_games.json?t='+Date.now()); if(r.ok){(await r.json()).forEach(d=>ALL_GAMES[d.game_id]=d);loaded=true;}} catch{}
-  if(!loaded) try { const r = await fetch('viewer_data.json?t='+Date.now()); if(r.ok){const d=await r.json();ALL_GAMES[d.game_id]=d;loaded=true;}} catch{}
+  try { const arr = await fetchJsonProgress('all_games.json'); arr.forEach(d=>ALL_GAMES[d.game_id]=d); loaded=true; } catch{}
+  if(!loaded) try { const d = await fetchJsonProgress('viewer_data.json'); ALL_GAMES[d.game_id]=d; loaded=true; } catch{}
   if(!loaded){document.getElementById('main-grid').innerHTML=`<p style="padding:20px;color:${CHROME.destructive};">${esc(STRINGS.noData)}</p>`;return;}
   populateGameSelect();
+  checkForkApi();
   const newest = Object.entries(ALL_GAMES).sort((a,b)=>(b[1].started_at||0)-(a[1].started_at||0));
-  switchGame(newest[0][0]);
-  // Deep links: #game=<id> selects a game, #metrics opens the metrics panel,
-  // #calibration the calibration view, #imp=Name enters impersonate mode,
-  // #step=N seeks the timeline, #fork opens the branch dialog
-  const gameM = location.hash.match(/game=([0-9a-fA-F-]{8,})/);
-  if(gameM){ const gid = Object.keys(ALL_GAMES).find(id=>id.startsWith(gameM[1])); if(gid) switchGame(gid); }
-  if(location.hash.includes('metrics')) toggleMetrics();
-  if(location.hash.includes('calib')) openCalibration();
-  const stepM = location.hash.match(/step=(\d+)/);
-  if(stepM) setStep(+stepM[1]);
-  const impM = location.hash.match(/imp=([A-Za-z]+)/);
-  if(impM && DATA.players.some(p=>p.name===impM[1])) enterImpersonate(impM[1]);
-  if(location.hash.includes('fork')) openForkDialog();
+  applyHashState(newest[0][0]);
+}
+
+// ── Shareable deep links ────────────────────
+// Compact form: #g=<gid-prefix>&s=<step>&a=<agent>&m=imp|metrics|calib
+// Legacy form still accepted: #game= #step= #imp= #metrics #calib #bif= #fork
+let RESTORING_HASH = false;
+function applyHashState(fallbackGid){
+  RESTORING_HASH = true;
+  try {
+    const h = location.hash;
+    const q = {};
+    h.replace(/^#/,'').split('&').forEach(kv=>{
+      const i=kv.indexOf('='); if(i>0) q[kv.slice(0,i)]=decodeURIComponent(kv.slice(i+1));
+    });
+    const gidRef = q.g || (h.match(/game=([0-9a-fA-F-]{8,})/)||[])[1];
+    const gid = gidRef && Object.keys(ALL_GAMES).find(id=>id.startsWith(gidRef));
+    switchGame(gid || fallbackGid);
+    const step = q.s ?? (h.match(/step=(\d+)/)||[])[1];
+    if(step!==undefined) setStep(+step);
+    const agent = q.a || (h.match(/imp=([A-Za-z]+)/)||[])[1];
+    const mode = q.m || (h.includes('metrics')?'metrics':h.includes('calib')?'calib':'');
+    if(agent && (mode==='imp'||!q.m) && DATA.players.some(p=>p.name===agent)) enterImpersonate(agent);
+    if(mode==='metrics' && !document.body.classList.contains('metrics-open')) toggleMetrics();
+    if(mode==='calib') openCalibration();
+    // #bif=<point_id> seeks to the bifurcation step and opens the fork-fan panel
+    const bifM = h.match(/bif=([\w.-]+)/);
+    if(bifM) openBifPanelById(bifM[1]);
+    if(h.includes('fork')) openForkDialog();
+  } finally { RESTORING_HASH = false; }
+  updateHash();
+}
+function updateHash(){
+  if(RESTORING_HASH || !DATA) return;
+  let h = `#g=${DATA.game_id.slice(0,8)}&s=${currentStep}`;
+  if(impersonating) h += `&a=${encodeURIComponent(impersonating)}&m=imp`;
+  else if(document.getElementById('calib-overlay').classList.contains('open')) h += '&m=calib';
+  else if(document.body.classList.contains('metrics-open')) h += '&m=metrics';
+  try { history.replaceState(null, '', h); } catch(e){}
+}
+async function copyLink(){
+  const url = location.href;
+  let ok = false;
+  try { await navigator.clipboard.writeText(url); ok = true; } catch(e){
+    try { // fallback for file:// and older browsers
+      const ta=document.createElement('textarea'); ta.value=url; document.body.appendChild(ta);
+      ta.select(); ok=document.execCommand('copy'); ta.remove();
+    } catch(e2){}
+  }
+  const toast=document.getElementById('fork-toast');
+  toast.textContent = ok ? STRINGS.copied : STRINGS.copyFailed;
+  toast.style.display='block';
+  setTimeout(()=>{toast.style.display='none';}, 1800);
 }
 
 function toggleSidebar() {
@@ -679,6 +866,28 @@ function populateModelFilter(){
   [...models].sort().forEach(m => sel.add(new Option(m, m)));
 }
 
+// Branch grouping key: replay batches use fork_batch_id; injected-message forks
+// (bifurcation experiment) have none — group them per experiment/point/agent.
+function branchBatchKey(d){
+  if (d.fork_batch_id) return d.fork_batch_id;
+  const iv = d.intervention;
+  if (iv && iv.experiment)
+    return `${d.forked_from}|${iv.experiment}@${(d.fork_point||[]).join('.')}:${iv.player||''}`;
+  return d.game_id;
+}
+// Run label inside a batch: replica_idx for replays, variant idx for injected forks
+function runLabel(d){
+  if (d.replica_idx !== undefined && d.replica_idx !== null) return d.replica_idx;
+  const iv = d.intervention;
+  if (iv && iv.variant_idx !== undefined && iv.variant_idx !== null) return `v${iv.variant_idx}`;
+  return '?';
+}
+function runOrder(d){
+  if (d.replica_idx !== undefined && d.replica_idx !== null) return d.replica_idx;
+  const iv = d.intervention;
+  return (iv && iv.variant_idx) || 0;
+}
+
 function mkGameCard(d, isBranch) {
   const card = document.createElement('div');
   card.className = 'game-card' + (isBranch ? ' branch' : '');
@@ -689,7 +898,7 @@ function mkGameCard(d, isBranch) {
     day: '2-digit', month: '2-digit', year: 'numeric',
     hour: '2-digit', minute: '2-digit'
   }) : '??';
-  const title = isBranch ? `run#${d.replica_idx ?? '?'} · ${d.game_id.slice(0,8)}` : dateStr;
+  const title = isBranch ? `run#${runLabel(d)} · ${d.game_id.slice(0,8)}` : dateStr;
 
   const rounds = d.steps.length > 0 ? d.steps[d.steps.length - 1].round : '?';
   const isPending = d.winner === 'Pending';
@@ -698,7 +907,9 @@ function mkGameCard(d, isBranch) {
   const ps = d.parse_stats;
   const parseStr = (ps && ps.total) ? STRINGS.cardParse(Math.round(100*ps.ok/ps.total)) : '';
 
-  const facet = `<b>${gameLang(d).toUpperCase()}</b> · ${esc(gameModels(d).join(', '))}`;
+  const gtType = d.game_type && d.game_type !== 'mafia'
+    ? ` <span class="type-badge">${esc(d.game_type)}</span>` : '';
+  const facet = `<b>${gameLang(d).toUpperCase()}</b> · ${esc(gameModels(d).join(', '))}${gtType}`;
   card.innerHTML = `
     <div class="game-card-date">${title}</div>
     <div class="game-card-meta">${STRINGS.cardMeta(d.players.length, d.total_steps, rounds)}${parseStr}</div>
@@ -738,11 +949,11 @@ function populateGameSelect() {
     list.appendChild(mkGameCard(root, false));
     const batches = {};
     (byParent[root.game_id] || []).forEach(k => {
-      const key = k.fork_batch_id || k.game_id;
+      const key = branchBatchKey(k);
       (batches[key] = batches[key] || []).push(k);
     });
     Object.values(batches).forEach(runs => {
-      runs.sort((a,b)=>(a.replica_idx||0)-(b.replica_idx||0));
+      runs.sort((a,b)=>runOrder(a)-runOrder(b));
       const fp = runs[0].fork_point || ['?','?'];
       const wins = {};
       runs.forEach(r => { wins[r.winner] = (wins[r.winner]||0)+1; });
@@ -767,6 +978,16 @@ function updateGameCards() {
     const ts = DATA.started_at ? new Date(DATA.started_at * 1000) : null;
     const ds = ts ? ts.toLocaleString('en-GB', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'}) : '??';
     cg.textContent = `${ds} — ${DATA.winner}`;
+  }
+  // Game-family badge for non-mafia games (werewolf skins / resistance)
+  const tb = document.getElementById('game-type-badge');
+  if (tb) {
+    const gt = DATA && (DATA.game_type || 'mafia');
+    if (gt && gt !== 'mafia') {
+      tb.style.display = 'inline-block';
+      tb.textContent = gt;
+      tb.title = DATA.skin ? `game_type: ${gt} · skin: ${DATA.skin}` : `game_type: ${gt}`;
+    } else tb.style.display = 'none';
   }
 }
 
@@ -793,6 +1014,7 @@ document.addEventListener('keydown', e=>{
     e.target.blur();
   }
   if(e.key==='Escape'&&document.getElementById('sidebar').classList.contains('open')){closeSidebar();return;}
+  if(e.key==='Escape'&&document.getElementById('bif-overlay').classList.contains('open')){closeBifPanel();return;}
   if(e.key==='Escape'&&document.getElementById('fork-overlay').classList.contains('open')){closeForkDialog();return;}
   if(e.key==='Escape'&&document.getElementById('calib-overlay').classList.contains('open')){closeCalibration();return;}
   if(e.key==='Escape'&&impersonating){exitImpersonate();return;}
@@ -819,17 +1041,99 @@ function buildTimeline(){
     const t=document.createElement('div');t.className=`step-tick ${s.phase}`;
     t.title=STRINGS.tickTitle(s.label, s.phase);
     if(forkSteps.has(i)){t.classList.add('has-branch');t.title+=STRINGS.tickBranches(forkSteps.get(i));}
-    t.addEventListener('click',()=>setStep(i));bar.appendChild(t);
+    const bp=bifAt(s);
+    if(bp){
+      t.classList.add('bif');
+      t.style.setProperty('--bif-c', BIF_COLORS[bp.quadrant]||CHROME.brand);
+      t.title+=STRINGS.tickBif(BIF_LABELS[bp.quadrant]||bp.quadrant, bp.voter);
+    }
+    t.addEventListener('click',()=>{setStep(i);if(bp)openBifPanel(bp);});
+    bar.appendChild(t);
   });
+  // quadrant legend appears only for games that carry bifurcation points
+  const leg=document.getElementById('bif-legend');
+  if(bifPoints().length){
+    leg.style.display='flex';
+    leg.innerHTML=Object.keys(BIF_LABELS).map(q=>
+      `<span title="${BIF_TITLES[q]}"><span class="bif-swatch" style="background:${BIF_COLORS[q]}"></span>${BIF_LABELS[q]}</span>`).join('');
+  } else leg.style.display='none';
   updateOutcomeStrip();
+}
+
+// ── Bifurcation points (idea 06: 500 samples → 20 diverse forks) ──
+// Quadrant colors from the Okabe-Ito palette (not used for roles on the timeline):
+// policy gap = blue (beliefs right, move bad), perception gap = orange (board misread).
+const BIF_COLORS={policy_gap:'#0072B2',perception_gap:'#E69F00'};
+const BIF_LABELS={policy_gap:'policy gap',perception_gap:'perception gap'};
+const BIF_TITLES={
+  policy_gap:'Policy gap: the agent read the board correctly but made a bad move',
+  perception_gap:'Perception gap: the agent misread the board (S1 wrong)',
+};
+function bifPoints(){return (DATA&&DATA.bifurcation_points)||[];}
+function bifAt(step){return bifPoints().find(p=>p.round===step.round&&p.msg_seq===step.msg_seq)||null;}
+function openBifPanelCurrent(){const p=bifAt(DATA.steps[currentStep]);if(p)openBifPanel(p);}
+function openBifPanelById(pid){
+  const p=bifPoints().find(x=>x.point_id===pid);if(!p)return;
+  const i=DATA.steps.findIndex(s=>s.round===p.round&&s.msg_seq===p.msg_seq);
+  if(i>=0)setStep(i);
+  openBifPanel(p);
+}
+function openBifPanel(p){renderBifPanel(p);document.getElementById('bif-overlay').classList.add('open');}
+function closeBifPanel(){document.getElementById('bif-overlay').classList.remove('open');}
+function bifJump(gid){if(gid&&ALL_GAMES[gid]){closeBifPanel();switchGame(gid);}}
+
+function bifTargetChip(tgt){
+  if(!tgt||tgt==='None')return `<span class="role-badge role-Unknown">${STRINGS.bifNoVote}</span>`;
+  const role=(DATA.truth[tgt]&&DATA.truth[tgt].role)||'Unknown';
+  return `<span class="role-badge role-${role}" title="${esc(tgt)} — ${role}">→ ${esc(tgt)}</span>`;
+}
+
+function renderBifPanel(p){
+  const quad=BIF_LABELS[p.quadrant]||p.quadrant, qc=BIF_COLORS[p.quadrant]||CHROME.brand;
+  document.getElementById('bif-title').innerHTML=
+    `<span class="bif-quad-chip" style="background:${qc}" title="${BIF_TITLES[p.quadrant]||''}">◆ ${quad}</span>`+
+    `<span>${STRINGS.bifTitle(esc(p.voter), esc(p.factual_target||'?'), p.round, p.msg_seq)}</span>`+
+    `${bifTargetChip(p.factual_target)}`;
+  const li=p.lock_in||{}, nS=li.n_samples||0, nM=li.modal_count||0;
+  const pctL=nS?Math.round(100*nM/nS):0;
+  const nF=p.n_forks||0, nFl=p.n_flips||0, pctF=nF?Math.round(100*nFl/nF):0;
+  document.getElementById('bif-summary').innerHTML=
+    `<div>${STRINGS.bifLockIn(nM, nS, esc(li.modal_target||'?'), pctL)}${li.factual_is_modal?'':' — the factual vote is NOT the modal one'}</div>`+
+    `<div class="bif-bar"><span style="width:${pctL}%;background:${qc}" title="lock-in ${pctL}%"></span></div>`+
+    `<div>${STRINGS.bifFlipShare(nFl, nF, pctF)}</div>`+
+    `<div class="bif-bar"><span style="width:${pctF}%;background:#56B4E9" title="flip share ${pctF}%"></span></div>`;
+  const list=document.getElementById('bif-variants');list.innerHTML='';
+  const variants=[...(p.variants||[])].sort((a,b)=>a.variant_idx-b.variant_idx);
+  variants.forEach(v=>{
+    const row=document.createElement('div');
+    row.className='bif-variant'+(v.flip?' flip':'');
+    const loaded=v.fork_game_id&&ALL_GAMES[v.fork_game_id];
+    const rank=v.source==='factual'?STRINGS.bifFactualTag:`#${v.variant_idx}`;
+    const outcome=!v.winner?`<span class="bif-chip outcome-same">${STRINGS.bifNoOutcome}</span>`
+      : v.flip?`<span class="bif-chip outcome-flip">${STRINGS.bifFlipChip(v.rounds)}</span>`
+      : `<span class="bif-chip outcome-same">${STRINGS.bifOutcome(esc(v.winner), v.rounds)}</span>`;
+    row.innerHTML=`<span class="bif-rank">${rank}</span>${bifTargetChip(v.vote_target)}${outcome}`+
+      `<span class="bif-text">${esc(v.text_short||'')}</span>`;
+    if(loaded){
+      row.title=v.text_short||'';
+      row.addEventListener('click',()=>bifJump(v.fork_game_id));
+    } else {
+      // static build without this fork's full replay: dim, non-clickable
+      row.style.opacity='.55'; row.style.cursor='default';
+      row.title=(v.text_short||'')+STRINGS.bifForkMissing;
+    }
+    list.appendChild(row);
+  });
+  document.getElementById('bif-note').textContent=STRINGS.bifNote;
 }
 
 // ── Counterfactual replay UI ────────────────
 function updateOutcomeStrip(){
   const el=document.getElementById('outcome-strip');
-  if(!DATA||!DATA.fork_batch_id){el.style.display='none';document.body.classList.remove('strip-open');return;}
+  if(!DATA||!(DATA.fork_batch_id||DATA.forked_from)){el.style.display='none';document.body.classList.remove('strip-open');return;}
   document.body.classList.add('strip-open');
-  const runs=Object.values(ALL_GAMES).filter(d=>d.fork_batch_id===DATA.fork_batch_id);
+  const myKey=branchBatchKey(DATA);
+  const runs=Object.values(ALL_GAMES).filter(d=>d.forked_from&&branchBatchKey(d)===myKey);
   const wins={};runs.forEach(r=>{wins[r.winner]=(wins[r.winner]||0)+1;});
   const fp=DATA.fork_point||['?','?'];
   const colors={Mafia:'#D55E00',Villagers:'#56B4E9',Pending:CHROME.brand};
@@ -839,18 +1143,32 @@ function updateOutcomeStrip(){
   const parentLink=DATA.forked_from&&ALL_GAMES[DATA.forked_from]
     ? `<a href="#" onclick="switchGame('${DATA.forked_from}');return false" style="color:${CHROME.brand}">${DATA.forked_from.slice(0,8)}</a>`
     : (DATA.forked_from||'?').slice(0,8);
-  el.innerHTML=`<span>${STRINGS.branchOf(parentLink, fp[0], fp[1], DATA.replica_idx??'?')}</span>`+
+  el.innerHTML=`<span>${STRINGS.branchOf(parentLink, fp[0], fp[1], runLabel(DATA))}</span>`+
     `<span class="strip-bar">${bars}</span>`+
     `<span>${Object.entries(wins).map(([w,c])=>`${w} ${c}/${total}`).join(' · ')}</span>`+
     (DATA.intervention?`<span style="color:${CHROME.brand}">${STRINGS.intervention(esc(JSON.stringify(DATA.intervention)))}</span>`:'');
   el.style.display='flex';
 }
 
+// Static-host detection: /api/batches answers JSON only under serve_viewer.py.
+// On GitHub Pages the path 404s (or returns an HTML error page) — remember it
+// once and warn inside the Branch dialog instead of surfacing a SyntaxError.
+let FORK_API = null; // null = unknown, true = live server, false = static host
+async function checkForkApi(){
+  try{
+    const r = await fetch('api/batches');
+    const ct = r.headers.get('content-type') || '';
+    FORK_API = r.ok && ct.includes('json');
+  }catch(e){ FORK_API = false; }
+  const b = document.getElementById('branch-btn');
+  if(FORK_API === false && b){ b.style.opacity = '.6'; b.title = STRINGS.forkApiUnavailable; }
+}
+
 function openForkDialog(){
   if(!DATA||!DATA.steps.length)return;
   const s=DATA.steps[currentStep];
   document.getElementById('fork-point-label').textContent=STRINGS.forkPoint(s.label, s.round, s.msg_seq, s.phase.replace(/_/g,' '));
-  document.getElementById('fork-error').textContent='';
+  document.getElementById('fork-error').textContent = FORK_API===false ? STRINGS.forkApiUnavailable : '';
   document.getElementById('fork-overlay').classList.add('open');
 }
 function closeForkDialog(){document.getElementById('fork-overlay').classList.remove('open');}
@@ -863,13 +1181,17 @@ async function submitFork(){
     const r=await fetch('/api/fork',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({game_id:DATA.game_id,round:s.round,seq:s.msg_seq,
                            n_replays:n,backend_override:backend||null})});
+    // A static host answers 404/405 with an HTML body — r.json() would throw a
+    // raw SyntaxError; check status and content-type first (P0-5 / review W4).
+    const ct=(r.headers.get('content-type')||'');
+    if(!r.ok||!ct.includes('json')) throw new Error(STRINGS.forkApiUnavailable);
     const j=await r.json();
     if(j.error)throw new Error(j.error);
     closeForkDialog();
     pollForkBatch(j.fork_batch_id,j.total);
   }catch(e){
     document.getElementById('fork-error').textContent =
-      /fetch|network/i.test(e.message)?STRINGS.forkApiUnavailable:e.message;
+      /fetch|network|json|unexpected token/i.test(e.message)?STRINGS.forkApiUnavailable:e.message;
   }
 }
 
@@ -905,6 +1227,14 @@ function updateTimeline(idx){
   const s=DATA.steps[idx];document.getElementById('timeline-label').textContent=s.label;
   const imp=impersonating?` [${impersonating}]`:'';
   document.getElementById('step-info').textContent=STRINGS.stepInfo(idx+1, DATA.total_steps, s.phase.replace(/_/g,' '), s.speaker||'—', DATA.winner)+imp;
+  // bifurcation badge for the current step
+  const bb=document.getElementById('bif-badge'), bp=bifAt(s);
+  if(bp){
+    bb.style.display='inline-block';
+    bb.style.background=BIF_COLORS[bp.quadrant]||CHROME.brand;
+    bb.textContent=STRINGS.bifBadge(BIF_LABELS[bp.quadrant]||bp.quadrant, bp.voter, bp.factual_target||'?');
+    bb.title=STRINGS.bifBadgeTitle+(BIF_TITLES[bp.quadrant]?`\n${BIF_TITLES[bp.quadrant]}`:'');
+  } else bb.style.display='none';
 }
 
 // ── Layout ─────────────────────────────────
@@ -916,6 +1246,16 @@ function buildLayout(){
 }
 
 function buildNormalLayout(grid){
+  if(!hasProbes()){
+    // Transcript-only game (probes off): ground truth + replay log full-width,
+    // no per-agent belief panels — there is nothing to draw in them.
+    grid.style.gridTemplateColumns='1fr'; grid.style.gridTemplateRows='1fr';
+    const gt=mkGTPanel();
+    gt.querySelector('.panel-title').insertAdjacentHTML('beforeend',
+      `<span class="type-badge" title="${esc(STRINGS.transcriptOnly)}">${esc(STRINGS.transcriptOnly)}</span>`);
+    grid.appendChild(gt);
+    return;
+  }
   const N=DATA.players.length, leftCount=Math.ceil(N/2);
   grid.style.gridTemplateColumns='1fr 2.5fr 1fr'; grid.style.gridTemplateRows='1fr';
   const leftCol=mkCol(), rightCol=mkCol();
@@ -948,7 +1288,10 @@ function mkAgentPanel(p){
 }
 
 // ── Impersonate ────────────────────────────
-function enterImpersonate(name){impersonating=name;buildLayout();renderStep(currentStep);}
+function enterImpersonate(name){
+  if(!hasProbes()) return; // transcript-only games carry no belief data
+  impersonating=name;buildLayout();renderStep(currentStep);
+}
 function exitImpersonate(){impersonating=null;buildLayout();renderStep(currentStep);}
 function updateImpersonateBadge(){
   const b=document.getElementById('impersonate-badge');
@@ -1017,6 +1360,7 @@ function renderStep(idx){
     if(impersonating) renderImpersonateStep(step,idx);
     else { renderGTGraph(step);renderGTLog(idx);DATA.players.forEach(p=>renderAgentGraph(p,step)); }
     updateMetricsCursor(idx);
+    updateHash();
   } catch(e) { console.error('renderStep error:', e, e.stack); }
 }
 
@@ -1083,7 +1427,8 @@ function renderLogEntries(container, entries, currentIdx, opts={}){
     div.className=`log-entry ${isCurrent?'current':''}`;
     let html='';
     if(entry.type==='event'){
-      const icons={kill:'💀',save:'🛡️',eliminate:'⚖️',vote_tally:'🗳️'};
+      const icons={kill:'💀',save:'🛡️',eliminate:'⚖️',vote_tally:'🗳️',
+                   team:'🧭',team_vote:'🗳️',mission:'🎯'};
       html=`<div class="log-event">${icons[entry.eventType]||'📢'} ${esc(entry.text)}</div>`;
     } else if(entry.type==='announcement'){
       html=`<div class="log-event">🌙 ${esc(entry.text)}</div>`;
@@ -1196,7 +1541,7 @@ function filterLogForPlayer(log, playerName, playerRole) {
 function renderGTGraph(step, svgId='#gt-graph'){
   const svg=d3.select(svgId);svg.selectAll('*').remove();
   const alive=new Set(step.alive), g=svg.append('g');
-  const mafiaNames=DATA.players.filter(p=>p.role==='Mafia').map(p=>p.name);
+  const mafiaNames=DATA.players.filter(p=>EVIL_ROLES.has(p.role)).map(p=>p.name);
   for(let i=0;i<mafiaNames.length;i++)for(let j=i+1;j<mafiaNames.length;j++){
     const s=fixedPositions[mafiaNames[i]],t=fixedPositions[mafiaNames[j]];
     g.append('line').attr('x1',s.x).attr('y1',s.y).attr('x2',t.x).attr('y2',t.y).attr('stroke','#D55E0066').attr('stroke-width',3);
@@ -1305,10 +1650,13 @@ function believedAttitudeMap(beliefs, name, alive){
   if(!beliefs||!beliefs.has_data) return out;
   const towardMe = beliefs.social_map && Array.isArray(beliefs.social_map.toward_me) ? beliefs.social_map.toward_me : [];
   towardMe.forEach(t=>{ if(t&&t.player&&t.player!==name&&alive.has(t.player)&&t.attitude) out[t.player]=t.attitude; });
-  if(!Object.keys(out).length && Array.isArray(beliefs.role_assessment)){
-    beliefs.role_assessment.forEach(a=>{
-      if(!a||!a.player||a.player===name||!alive.has(a.player)) return;
-      out[a.player]=guessToAttitude(a.guessed_role, a.confidence);
+  if(!Object.keys(out).length){
+    // Fallback for batteries without social_map: infer from role_assessment,
+    // or (older probe batteries, e.g. role_beliefs-only games) from role_beliefs.
+    const am = assessMapOf(beliefs);
+    Object.entries(am).forEach(([pl,g])=>{
+      if(pl===name||!alive.has(pl)) return;
+      out[pl]=guessToAttitude(g.role, g.confidence);
     });
   }
   return out;
@@ -1379,6 +1727,20 @@ function renderMyWorldLog(step, idx, name){
     if(Array.isArray(assess)&&i===idx){
       const summary=assess.map(a=>`${a.player}: ${a.guessed_role} ${a.confidence}% (${a.reason||''})`).join('\n');
       entries.push({idx:i,label:s.label,phase:s.phase,type:'thinking',text:summary,color:'#009E73'});
+    } else if(i===idx){
+      // Older probe batteries: no planned_action/role_assessment — summarize
+      // role_beliefs (+ suspicion ranking) so the center column is never empty.
+      const am=assessMapOf(b);
+      const parts=Object.entries(am).filter(([pl])=>pl!==name)
+        .map(([pl,g])=>`${pl}: ${g.role} ${g.confidence}%`);
+      if(parts.length)
+        entries.push({idx:i,label:s.label,phase:s.phase,type:'thinking',
+          text:parts.join('\n'),color:'#009E73'});
+      const susp=b.suspicion_ranking;
+      if(Array.isArray(susp)&&susp.length)
+        entries.push({idx:i,label:s.label,phase:s.phase,type:'thinking',
+          text:'Suspicion: '+susp.map(x=>`${x.player} ${x.score??'?'}`).join(', '),
+          color:'#D55E00'});
     }
   }
   renderLogEntries(log, entries, idx);
@@ -1407,22 +1769,20 @@ function renderBelievedEgoGraph(step, beliefs, name, mismatch){
   if(!alive.has(name)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).text(STRINGS.eliminated);return;}
   if(!beliefs||!beliefs.has_data){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).text(STRINGS.noDataShort);return;}
 
-  // Extract toward_me from social_map, with fallback to role_assessment
+  // Extract toward_me from social_map, with fallback to my own role guesses
   const socialMap=beliefs?.social_map;
   const towardMe=(socialMap&&socialMap.toward_me)||[];
   const attMap={};
   if(Array.isArray(towardMe))towardMe.forEach(t=>{attMap[t.player]=t;});
 
-  // Fallback: infer from my role_assessment of others
-  // If I think someone is Mafia → I think they suspect me
-  // If I think someone is Villager/Doctor → I think they're neutral/trusting
-  const assessment=beliefs?.role_assessment||[];
-  const assessMap={};
-  if(Array.isArray(assessment))assessment.forEach(a=>{assessMap[a.player]=a;});
+  // Fallback: infer from what I think their role is — role_assessment when
+  // present, else role_beliefs (older probe batteries record only those).
+  // If I think someone is Mafia → I think they suspect me.
+  const am=assessMapOf(beliefs);
 
   const hasSocial=Array.isArray(towardMe)&&towardMe.length>0;
-  if(!hasSocial&&!(Array.isArray(assessment)&&assessment.length)){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).text(STRINGS.noSocialMap);return;}
-  if(!hasSocial)svg.append('text').attr('x',150).attr('y',14).attr('text-anchor','middle').attr('fill','#E69F00').attr('font-size',9).text(STRINGS.inferredNote);
+  if(!hasSocial&&!Object.keys(am).length){svg.append('text').attr('x',150).attr('y',100).attr('text-anchor','middle').attr('fill',CHROME.faint).text(STRINGS.noSocialMap);return;}
+  if(!hasSocial)svg.append('text').attr('x',6).attr('y',12).attr('text-anchor','start').attr('fill','#E69F00').attr('font-size',8).text(STRINGS.inferredNote);
 
   const attColors={trusts:'#009E73',neutral:'#999999',suspects:'#D55E00'};
 
@@ -1435,11 +1795,10 @@ function renderBelievedEgoGraph(step, beliefs, name, mismatch){
     if(att && att.attitude){
       // social_map data available
       attitude=att.attitude; confidence=att.confidence||0; reason=att.reason||'';
-    } else if(assessMap[p.name]){
-      // Fallback: infer from what I think their role is (same conf>=50 rule as scoring)
-      const a=assessMap[p.name];
-      const gr=a.guessed_role||'Unknown';
-      confidence=a.confidence||0;
+    } else if(am[p.name]){
+      // Fallback: infer from my role guess (same conf>=50 rule as scoring)
+      const gr=am[p.name].role||'Unknown';
+      confidence=am[p.name].confidence||0;
       attitude=guessToAttitude(gr, confidence);
       reason=`I think ${p.name} is ${gr} (${confidence}%) → ${attitude==='neutral'?'no strong signal':`likely ${attitude} me`}`;
     }
@@ -1481,20 +1840,18 @@ function renderBelievedEgoLog(step, beliefs, name){
         color:attColors[t.attitude]||CHROME.faint});
     });
   } else {
-    // Fallback: infer from role_assessment
-    const assessment=beliefs?.role_assessment||[];
-    if(Array.isArray(assessment)&&assessment.length)
+    // Fallback: infer from my own role guesses (role_assessment or role_beliefs)
+    const am=assessMapOf(beliefs);
+    if(Object.keys(am).length)
       entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',text:STRINGS.inferredLogNote,color:'#E69F00'});
-    if(Array.isArray(assessment)){
-      assessment.forEach(a=>{
-        if(a.player===name) return;
-        const gr=a.guessed_role||'Unknown';
-        const attitude=guessToAttitude(gr, a.confidence||0);
-        entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',
-          text:`${a.player}: ${attitude} ${a.confidence||0}% — I think they're ${gr}: ${a.reason||''}`,
-          color:attColors[attitude]||CHROME.faint});
-      });
-    }
+    Object.entries(am).forEach(([pl,g])=>{
+      if(pl===name) return;
+      const gr=g.role||'Unknown';
+      const attitude=guessToAttitude(gr, g.confidence||0);
+      entries.push({idx:step.idx,label:step.label,phase:step.phase,type:'thinking',
+        text:`${pl}: ${attitude} ${g.confidence||0}% — I think they're ${gr}`,
+        color:attColors[attitude]||CHROME.faint});
+    });
   }
   if(!entries.length) entries.push({idx:0,label:'',phase:'',type:'thinking',text:STRINGS.noDataYet,color:CHROME.faint});
   renderLogEntries(log,entries,step.idx);
@@ -1511,13 +1868,12 @@ function renderEgoGraph(step, name, mismatch){
     const pos=fixedPositions[p.name];
     const b=step.player_beliefs[p.name];
     if(!b||!b.has_data||!alive.has(p.name)) return;
-    const assess=b.role_assessment||[];
-    const assessMap={};
-    if(Array.isArray(assess))assess.forEach(a=>{assessMap[a.player]=a;});
-    const myAssess=assessMap[name];
+    // role_assessment with fallback to role_beliefs (older probe batteries)
+    const myAssess=assessMapOf(b)[name];
     if(!myAssess) return;
-    const guessedRole=myAssess.guessed_role||'Unknown';
+    const guessedRole=myAssess.role||'Unknown';
     const confidence=myAssess.confidence||0;
+    const reasonTxt=(b.role_assessment&&Array.isArray(b.role_assessment)&&(b.role_assessment.find(a=>a&&a.player===name)||{}).reason)||'';
     const color=ROLE_COLORS[guessedRole]||ROLE_COLORS.Unknown;
     // Link from other player to me
     const opacity=Math.min(0.9,confidence/100);
@@ -1525,7 +1881,7 @@ function renderEgoGraph(step, name, mismatch){
       .attr('stroke',color).attr('stroke-opacity',opacity).attr('stroke-width',Math.max(1,confidence/30));
     // Other player node
     const ng=g.append('g').attr('class','node').attr('transform',`translate(${pos.x},${pos.y})`)
-      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:STRINGS.thinksIm(guessedRole),confidence,reason:myAssess.reason||''})).on('mouseout',hideTooltip);
+      .on('mouseover',(ev)=>showTooltip(ev,{id:p.name,role:STRINGS.thinksIm(guessedRole),confidence,reason:reasonTxt})).on('mouseout',hideTooltip);
     ng.append('circle').attr('r',12).attr('fill',ROLE_COLORS[p.role]).attr('fill-opacity',0.7).attr('stroke',ROLE_COLORS[p.role]).attr('stroke-width',2);
     if(mismatch&&mismatch.has(p.name))
       ng.append('circle').attr('r',16).attr('fill','none').attr('stroke','#E69F00')
@@ -1546,13 +1902,13 @@ function renderEgoLog(step, idx, name){
     if(p.name===name||!step.alive.includes(p.name)) return;
     const b=step.player_beliefs[p.name];
     if(!b||!b.has_data) return;
-    const assess=b.role_assessment||[];
-    const assessMap={};if(Array.isArray(assess))assess.forEach(a=>{assessMap[a.player]=a;});
-    const my=assessMap[name];
+    // role_assessment with fallback to role_beliefs (older probe batteries)
+    const my=assessMapOf(b)[name];
     if(my){
+      const reasonTxt=(Array.isArray(b.role_assessment)&&(b.role_assessment.find(a=>a&&a.player===name)||{}).reason)||'';
       const color=ROLE_COLORS[DATA.truth[p.name]?.role]||'#888';
       entries.push({idx,label:step.label,phase:step.phase,type:'thinking',
-        text:STRINGS.theyThink(p.name, my.guessed_role, my.confidence, my.reason||''),color});
+        text:STRINGS.theyThink(p.name, my.role, my.confidence, reasonTxt),color});
     }
   });
   renderLogEntries(log,entries,idx);
@@ -1728,6 +2084,7 @@ function toggleMetrics(){
   const open = document.body.classList.toggle('metrics-open');
   document.getElementById('metrics-btn').classList.toggle('on', open);
   if(open) renderMetricsPanel();
+  updateHash();
 }
 
 function drawMetricChart(svgId, series, currentIdx){
@@ -1836,7 +2193,16 @@ function updateMetricsCursor(idx){
 function updateParseBadge(){
   const el = document.getElementById('parse-badge');
   const ps = DATA && DATA.parse_stats;
-  if(!ps||!ps.total){ el.style.display='none'; return; }
+  if(!ps||!ps.total){
+    if(DATA){ // transcript-only game: label it instead of hiding the badge
+      el.style.display='inline-block';
+      el.textContent=STRINGS.transcriptOnly;
+      el.style.background='var(--secondary)'; el.style.color='var(--muted-foreground)';
+      el.style.borderColor='var(--border-soft)';
+      el.title=STRINGS.transcriptOnly;
+    } else el.style.display='none';
+    return;
+  }
   const pct = Math.round(100*ps.ok/ps.total);
   el.style.display='inline-block';
   el.textContent = STRINGS.parseBadge(pct);
@@ -1886,8 +2252,9 @@ function openCalibration(){
     DATA.players.map(p=>`<option value="${p.name}">${STRINGS.agentOption(p.name, p.role)}</option>`).join('');
   document.getElementById('calib-overlay').classList.add('open');
   renderCalibration();
+  updateHash();
 }
-function closeCalibration(){ document.getElementById('calib-overlay').classList.remove('open'); }
+function closeCalibration(){ document.getElementById('calib-overlay').classList.remove('open'); updateHash(); }
 
 // 95% Wilson score interval for a binomial proportion (cheap, deterministic
 // stand-in for a bootstrap CI on ok/n)
