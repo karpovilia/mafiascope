@@ -145,11 +145,10 @@ body {
 #sidebar {
   position: fixed; top: 0; left: -360px; width: 360px; height: 100vh;
   background: var(--card); border-right: 1px solid var(--border);
-  box-shadow: 0 0 48px rgba(0,0,0,.55);
   z-index: 200; transition: left 0.22s ease;
   display: flex; flex-direction: column;
 }
-#sidebar.open { left: 0; }
+#sidebar.open { left: 0; box-shadow: 0 0 48px rgba(0,0,0,.55); }
 #sidebar-header {
   padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid var(--border-soft);
@@ -281,6 +280,61 @@ body.metrics-open #metrics-panel { display: grid; }
   background: var(--secondary); max-width: 300px;
 }
 .step-tick.has-branch { box-shadow: inset 0 -3px 0 var(--brand); }
+/* Bifurcation points (idea 06): quadrant-colored top stripe on the tick */
+.step-tick.bif { box-shadow: inset 0 4px 0 var(--bif-c); cursor: pointer; }
+.step-tick.bif.has-branch { box-shadow: inset 0 4px 0 var(--bif-c), inset 0 -3px 0 var(--brand); }
+#bif-legend { display: none; gap: 10px; align-items: center; font-size: 10px;
+  color: var(--muted-foreground); white-space: nowrap; }
+.bif-swatch { width: 10px; height: 10px; border-radius: 3px; display: inline-block;
+  margin-right: 4px; vertical-align: -1px; }
+#bif-badge {
+  display: none; border: none; cursor: pointer; border-radius: 999px;
+  padding: 3px 11px; font-size: 11px; font-weight: 700; color: #fff;
+  font-family: inherit; white-space: nowrap;
+}
+#bif-badge:hover { filter: brightness(1.15); }
+
+/* Bifurcation fan panel */
+#bif-overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 300;
+  align-items: center; justify-content: center;
+}
+#bif-overlay.open { display: flex; }
+#bif-modal {
+  background: var(--popover); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  width: 700px; max-width: 94vw; max-height: 88vh; padding: 16px 18px 12px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.6); display: flex; flex-direction: column;
+}
+#bif-modal h2 { font-size: 13px; font-weight: 600; color: var(--foreground);
+  margin-bottom: 8px; letter-spacing: .01em; display: flex; align-items: center; gap: 8px; }
+#bif-modal .bif-quad-chip { padding: 1px 8px; border-radius: 999px; font-size: 10px;
+  font-weight: 700; color: #fff; }
+#bif-summary { font-size: 11px; color: var(--muted-foreground); line-height: 1.6;
+  margin-bottom: 8px; }
+#bif-summary b { color: var(--foreground); }
+.bif-bar { height: 8px; border-radius: 4px; background: var(--secondary);
+  overflow: hidden; display: flex; margin: 3px 0 8px; }
+.bif-bar span { height: 100%; }
+#bif-variants { flex: 1; overflow-y: auto; border-top: 1px solid var(--border-soft); }
+.bif-variant {
+  display: flex; gap: 8px; align-items: baseline; padding: 5px 4px;
+  border-bottom: 1px solid var(--border-soft); cursor: pointer; min-width: 0;
+  transition: background .12s ease;
+}
+.bif-variant:hover { background: rgba(255,255,255,.05); }
+:root[data-theme="light"] .bif-variant:hover { background: rgba(0,0,0,.05); }
+.bif-variant.flip { background: rgba(86,180,233,.10); }
+.bif-variant.flip:hover { background: rgba(86,180,233,.18); }
+.bif-rank { font-size: 9px; color: var(--faint); width: 38px; flex-shrink: 0;
+  font-family: var(--font-mono); }
+.bif-chip { padding: 1px 7px; border-radius: 999px; font-size: 9px; font-weight: 700;
+  flex-shrink: 0; white-space: nowrap; }
+.bif-chip.outcome-flip { background: #56B4E9; color: #14130f; }
+.bif-chip.outcome-same { background: var(--secondary); color: var(--muted-foreground);
+  border: 1px solid var(--border-soft); }
+.bif-text { font-size: 10px; color: var(--muted-foreground); white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis; flex: 1; min-width: 0; }
+.bif-note { font-size: 10px; color: var(--faint); padding: 6px 2px 2px; }
 .batch-header {
   padding: 6px 16px 4px 24px; font-size: 10px; color: var(--brand);
   border-bottom: 1px solid var(--border-soft); background: rgba(255,240,82,.05);
@@ -450,7 +504,6 @@ body.metrics-open #metrics-panel { display: grid; }
   <button id="theme-btn" class="hdr-btn" onclick="toggleTheme()" title="Turn the lights on/off">💡</button>
   <a href="dashboard.html" class="hdr-btn" style="text-decoration:none">Dashboard</a>
   <a href="probe_editor.html" class="hdr-btn" style="text-decoration:none">Probes</a>
-  <a href="https://github.com/karpovilia/mafiascope" class="hdr-btn" style="text-decoration:none" target="_blank" rel="noopener" title="Source code on GitHub">GitHub ↗</a>
   <span id="parse-badge"></span>
   <div id="impersonate-badge" onclick="exitImpersonate()"></div>
   <div id="step-info"></div>
@@ -459,6 +512,8 @@ body.metrics-open #metrics-panel { display: grid; }
 <div id="timeline">
   <div id="timeline-label">-</div>
   <div id="timeline-bar"></div>
+  <span id="bif-legend"></span>
+  <button id="bif-badge" onclick="openBifPanelCurrent()"></button>
   <button id="branch-btn" class="hdr-btn" onclick="openForkDialog()" title="Counterfactual replay: fork the game from the selected step">⑂ Branch</button>
 </div>
 <div id="main-grid"></div>
@@ -501,6 +556,14 @@ body.metrics-open #metrics-panel { display: grid; }
   </div>
 </div>
 <div id="fork-toast"></div>
+<div id="bif-overlay" onclick="if(event.target===this)closeBifPanel()">
+  <div id="bif-modal">
+    <h2 id="bif-title"></h2>
+    <div id="bif-summary"></div>
+    <div id="bif-variants"></div>
+    <div class="bif-note" id="bif-note"></div>
+  </div>
+</div>
 <div id="tooltip"></div>
 
 <script>
@@ -566,6 +629,19 @@ const STRINGS = {
   impersonateBadge: name => `${name} — Esc to exit`,
   tickTitle: (label, phase) => `${label} ${phase}`,
   tickBranches: n => ` — ⑂ ${n} branch(es)`,
+  tickBif: (quad, voter) => ` — ◆ bifurcation: ${quad} (${voter})`,
+  bifBadge: (quad, voter, tgt) => `◆ ${quad} · ${voter} → ${tgt}`,
+  bifBadgeTitle: 'Bifurcation point — click to open the fork fan',
+  bifTitle: (voter, tgt, r, seq) => `${voter} voted ${tgt} — R${r}.${seq}`,
+  bifLockIn: (n, total, tgt, pct) => `Lock-in: <b>${n}/${total}</b> samples repeat the modal target <b>${tgt}</b> (${pct}%)`,
+  bifFlipShare: (flips, total, pct) => `Flip share: <b>${flips}/${total}</b> forks flip the outcome to a Villagers win (${pct}%)`,
+  bifNoVote: 'no vote',
+  bifFactualTag: 'factual',
+  bifOutcome: (w, r) => `${w} · ${r}R`,
+  bifFlipChip: r => `FLIP · Villagers · ${r}R`,
+  bifNoOutcome: 'n/a',
+  bifForkMissing: ' — full replay not included in the static demo',
+  bifNote: '20 forks per point: the factual reply plus alternatives ordered by dissimilarity (farthest-point on e5 embeddings, vote-target coverage first). Click a row to replay that fork.',
   eliminated: 'ELIMINATED',
   noDataYet: 'No data yet',
   noDataShort: 'No data',
@@ -634,6 +710,9 @@ async function loadData() {
   if(location.hash.includes('calib')) openCalibration();
   const stepM = location.hash.match(/step=(\d+)/);
   if(stepM) setStep(+stepM[1]);
+  // #bif=<point_id> seeks to the bifurcation step and opens the fork-fan panel
+  const bifM = location.hash.match(/bif=([\w.-]+)/);
+  if(bifM) openBifPanelById(bifM[1]);
   const impM = location.hash.match(/imp=([A-Za-z]+)/);
   if(impM && DATA.players.some(p=>p.name===impM[1])) enterImpersonate(impM[1]);
   if(location.hash.includes('fork')) openForkDialog();
@@ -681,6 +760,28 @@ function populateModelFilter(){
   [...models].sort().forEach(m => sel.add(new Option(m, m)));
 }
 
+// Branch grouping key: replay batches use fork_batch_id; injected-message forks
+// (bifurcation experiment) have none — group them per experiment/point/agent.
+function branchBatchKey(d){
+  if (d.fork_batch_id) return d.fork_batch_id;
+  const iv = d.intervention;
+  if (iv && iv.experiment)
+    return `${d.forked_from}|${iv.experiment}@${(d.fork_point||[]).join('.')}:${iv.player||''}`;
+  return d.game_id;
+}
+// Run label inside a batch: replica_idx for replays, variant idx for injected forks
+function runLabel(d){
+  if (d.replica_idx !== undefined && d.replica_idx !== null) return d.replica_idx;
+  const iv = d.intervention;
+  if (iv && iv.variant_idx !== undefined && iv.variant_idx !== null) return `v${iv.variant_idx}`;
+  return '?';
+}
+function runOrder(d){
+  if (d.replica_idx !== undefined && d.replica_idx !== null) return d.replica_idx;
+  const iv = d.intervention;
+  return (iv && iv.variant_idx) || 0;
+}
+
 function mkGameCard(d, isBranch) {
   const card = document.createElement('div');
   card.className = 'game-card' + (isBranch ? ' branch' : '');
@@ -691,7 +792,7 @@ function mkGameCard(d, isBranch) {
     day: '2-digit', month: '2-digit', year: 'numeric',
     hour: '2-digit', minute: '2-digit'
   }) : '??';
-  const title = isBranch ? `run#${d.replica_idx ?? '?'} · ${d.game_id.slice(0,8)}` : dateStr;
+  const title = isBranch ? `run#${runLabel(d)} · ${d.game_id.slice(0,8)}` : dateStr;
 
   const rounds = d.steps.length > 0 ? d.steps[d.steps.length - 1].round : '?';
   const isPending = d.winner === 'Pending';
@@ -740,11 +841,11 @@ function populateGameSelect() {
     list.appendChild(mkGameCard(root, false));
     const batches = {};
     (byParent[root.game_id] || []).forEach(k => {
-      const key = k.fork_batch_id || k.game_id;
+      const key = branchBatchKey(k);
       (batches[key] = batches[key] || []).push(k);
     });
     Object.values(batches).forEach(runs => {
-      runs.sort((a,b)=>(a.replica_idx||0)-(b.replica_idx||0));
+      runs.sort((a,b)=>runOrder(a)-runOrder(b));
       const fp = runs[0].fork_point || ['?','?'];
       const wins = {};
       runs.forEach(r => { wins[r.winner] = (wins[r.winner]||0)+1; });
@@ -795,6 +896,7 @@ document.addEventListener('keydown', e=>{
     e.target.blur();
   }
   if(e.key==='Escape'&&document.getElementById('sidebar').classList.contains('open')){closeSidebar();return;}
+  if(e.key==='Escape'&&document.getElementById('bif-overlay').classList.contains('open')){closeBifPanel();return;}
   if(e.key==='Escape'&&document.getElementById('fork-overlay').classList.contains('open')){closeForkDialog();return;}
   if(e.key==='Escape'&&document.getElementById('calib-overlay').classList.contains('open')){closeCalibration();return;}
   if(e.key==='Escape'&&impersonating){exitImpersonate();return;}
@@ -821,17 +923,99 @@ function buildTimeline(){
     const t=document.createElement('div');t.className=`step-tick ${s.phase}`;
     t.title=STRINGS.tickTitle(s.label, s.phase);
     if(forkSteps.has(i)){t.classList.add('has-branch');t.title+=STRINGS.tickBranches(forkSteps.get(i));}
-    t.addEventListener('click',()=>setStep(i));bar.appendChild(t);
+    const bp=bifAt(s);
+    if(bp){
+      t.classList.add('bif');
+      t.style.setProperty('--bif-c', BIF_COLORS[bp.quadrant]||CHROME.brand);
+      t.title+=STRINGS.tickBif(BIF_LABELS[bp.quadrant]||bp.quadrant, bp.voter);
+    }
+    t.addEventListener('click',()=>{setStep(i);if(bp)openBifPanel(bp);});
+    bar.appendChild(t);
   });
+  // quadrant legend appears only for games that carry bifurcation points
+  const leg=document.getElementById('bif-legend');
+  if(bifPoints().length){
+    leg.style.display='flex';
+    leg.innerHTML=Object.keys(BIF_LABELS).map(q=>
+      `<span title="${BIF_TITLES[q]}"><span class="bif-swatch" style="background:${BIF_COLORS[q]}"></span>${BIF_LABELS[q]}</span>`).join('');
+  } else leg.style.display='none';
   updateOutcomeStrip();
+}
+
+// ── Bifurcation points (idea 06: 500 samples → 20 diverse forks) ──
+// Quadrant colors from the Okabe-Ito palette (not used for roles on the timeline):
+// policy gap = blue (beliefs right, move bad), perception gap = orange (board misread).
+const BIF_COLORS={policy_gap:'#0072B2',perception_gap:'#E69F00'};
+const BIF_LABELS={policy_gap:'policy gap',perception_gap:'perception gap'};
+const BIF_TITLES={
+  policy_gap:'Policy gap: the agent read the board correctly but made a bad move',
+  perception_gap:'Perception gap: the agent misread the board (S1 wrong)',
+};
+function bifPoints(){return (DATA&&DATA.bifurcation_points)||[];}
+function bifAt(step){return bifPoints().find(p=>p.round===step.round&&p.msg_seq===step.msg_seq)||null;}
+function openBifPanelCurrent(){const p=bifAt(DATA.steps[currentStep]);if(p)openBifPanel(p);}
+function openBifPanelById(pid){
+  const p=bifPoints().find(x=>x.point_id===pid);if(!p)return;
+  const i=DATA.steps.findIndex(s=>s.round===p.round&&s.msg_seq===p.msg_seq);
+  if(i>=0)setStep(i);
+  openBifPanel(p);
+}
+function openBifPanel(p){renderBifPanel(p);document.getElementById('bif-overlay').classList.add('open');}
+function closeBifPanel(){document.getElementById('bif-overlay').classList.remove('open');}
+function bifJump(gid){if(gid&&ALL_GAMES[gid]){closeBifPanel();switchGame(gid);}}
+
+function bifTargetChip(tgt){
+  if(!tgt||tgt==='None')return `<span class="role-badge role-Unknown">${STRINGS.bifNoVote}</span>`;
+  const role=(DATA.truth[tgt]&&DATA.truth[tgt].role)||'Unknown';
+  return `<span class="role-badge role-${role}" title="${esc(tgt)} — ${role}">→ ${esc(tgt)}</span>`;
+}
+
+function renderBifPanel(p){
+  const quad=BIF_LABELS[p.quadrant]||p.quadrant, qc=BIF_COLORS[p.quadrant]||CHROME.brand;
+  document.getElementById('bif-title').innerHTML=
+    `<span class="bif-quad-chip" style="background:${qc}" title="${BIF_TITLES[p.quadrant]||''}">◆ ${quad}</span>`+
+    `<span>${STRINGS.bifTitle(esc(p.voter), esc(p.factual_target||'?'), p.round, p.msg_seq)}</span>`+
+    `${bifTargetChip(p.factual_target)}`;
+  const li=p.lock_in||{}, nS=li.n_samples||0, nM=li.modal_count||0;
+  const pctL=nS?Math.round(100*nM/nS):0;
+  const nF=p.n_forks||0, nFl=p.n_flips||0, pctF=nF?Math.round(100*nFl/nF):0;
+  document.getElementById('bif-summary').innerHTML=
+    `<div>${STRINGS.bifLockIn(nM, nS, esc(li.modal_target||'?'), pctL)}${li.factual_is_modal?'':' — the factual vote is NOT the modal one'}</div>`+
+    `<div class="bif-bar"><span style="width:${pctL}%;background:${qc}" title="lock-in ${pctL}%"></span></div>`+
+    `<div>${STRINGS.bifFlipShare(nFl, nF, pctF)}</div>`+
+    `<div class="bif-bar"><span style="width:${pctF}%;background:#56B4E9" title="flip share ${pctF}%"></span></div>`;
+  const list=document.getElementById('bif-variants');list.innerHTML='';
+  const variants=[...(p.variants||[])].sort((a,b)=>a.variant_idx-b.variant_idx);
+  variants.forEach(v=>{
+    const row=document.createElement('div');
+    row.className='bif-variant'+(v.flip?' flip':'');
+    const loaded=v.fork_game_id&&ALL_GAMES[v.fork_game_id];
+    const rank=v.source==='factual'?STRINGS.bifFactualTag:`#${v.variant_idx}`;
+    const outcome=!v.winner?`<span class="bif-chip outcome-same">${STRINGS.bifNoOutcome}</span>`
+      : v.flip?`<span class="bif-chip outcome-flip">${STRINGS.bifFlipChip(v.rounds)}</span>`
+      : `<span class="bif-chip outcome-same">${STRINGS.bifOutcome(esc(v.winner), v.rounds)}</span>`;
+    row.innerHTML=`<span class="bif-rank">${rank}</span>${bifTargetChip(v.vote_target)}${outcome}`+
+      `<span class="bif-text">${esc(v.text_short||'')}</span>`;
+    if(loaded){
+      row.title=v.text_short||'';
+      row.addEventListener('click',()=>bifJump(v.fork_game_id));
+    } else {
+      // static build without this fork's full replay: dim, non-clickable
+      row.style.opacity='.55'; row.style.cursor='default';
+      row.title=(v.text_short||'')+STRINGS.bifForkMissing;
+    }
+    list.appendChild(row);
+  });
+  document.getElementById('bif-note').textContent=STRINGS.bifNote;
 }
 
 // ── Counterfactual replay UI ────────────────
 function updateOutcomeStrip(){
   const el=document.getElementById('outcome-strip');
-  if(!DATA||!DATA.fork_batch_id){el.style.display='none';document.body.classList.remove('strip-open');return;}
+  if(!DATA||!(DATA.fork_batch_id||DATA.forked_from)){el.style.display='none';document.body.classList.remove('strip-open');return;}
   document.body.classList.add('strip-open');
-  const runs=Object.values(ALL_GAMES).filter(d=>d.fork_batch_id===DATA.fork_batch_id);
+  const myKey=branchBatchKey(DATA);
+  const runs=Object.values(ALL_GAMES).filter(d=>d.forked_from&&branchBatchKey(d)===myKey);
   const wins={};runs.forEach(r=>{wins[r.winner]=(wins[r.winner]||0)+1;});
   const fp=DATA.fork_point||['?','?'];
   const colors={Mafia:'#D55E00',Villagers:'#56B4E9',Pending:CHROME.brand};
@@ -841,7 +1025,7 @@ function updateOutcomeStrip(){
   const parentLink=DATA.forked_from&&ALL_GAMES[DATA.forked_from]
     ? `<a href="#" onclick="switchGame('${DATA.forked_from}');return false" style="color:${CHROME.brand}">${DATA.forked_from.slice(0,8)}</a>`
     : (DATA.forked_from||'?').slice(0,8);
-  el.innerHTML=`<span>${STRINGS.branchOf(parentLink, fp[0], fp[1], DATA.replica_idx??'?')}</span>`+
+  el.innerHTML=`<span>${STRINGS.branchOf(parentLink, fp[0], fp[1], runLabel(DATA))}</span>`+
     `<span class="strip-bar">${bars}</span>`+
     `<span>${Object.entries(wins).map(([w,c])=>`${w} ${c}/${total}`).join(' · ')}</span>`+
     (DATA.intervention?`<span style="color:${CHROME.brand}">${STRINGS.intervention(esc(JSON.stringify(DATA.intervention)))}</span>`:'');
@@ -907,6 +1091,14 @@ function updateTimeline(idx){
   const s=DATA.steps[idx];document.getElementById('timeline-label').textContent=s.label;
   const imp=impersonating?` [${impersonating}]`:'';
   document.getElementById('step-info').textContent=STRINGS.stepInfo(idx+1, DATA.total_steps, s.phase.replace(/_/g,' '), s.speaker||'—', DATA.winner)+imp;
+  // bifurcation badge for the current step
+  const bb=document.getElementById('bif-badge'), bp=bifAt(s);
+  if(bp){
+    bb.style.display='inline-block';
+    bb.style.background=BIF_COLORS[bp.quadrant]||CHROME.brand;
+    bb.textContent=STRINGS.bifBadge(BIF_LABELS[bp.quadrant]||bp.quadrant, bp.voter, bp.factual_target||'?');
+    bb.title=STRINGS.bifBadgeTitle+(BIF_TITLES[bp.quadrant]?`\n${BIF_TITLES[bp.quadrant]}`:'');
+  } else bb.style.display='none';
 }
 
 // ── Layout ─────────────────────────────────
