@@ -14,7 +14,7 @@ Pinned 32-game corpus (corpus32): of 20,199 probe calls, 13,815 returned parsed 
 - The loss is orthogonal to role (cluster permutation p=0.72) and to answer content,
   concentrating in early rounds of a subset of runs.
 - JSON repair keeps only the complete prefix of a truncated answer and writes nothing
-  itself. On corpus32 it recovers zero answers. On the 30-game old-instrument batch it recovers
+  itself. On corpus32 it recovers zero answers. On the 30-game batch (main30) it recovers
   4,118 answers (4,234 when the 2 pilot games are included; the paper reports the
   30-game figure).
 - Low-loss stratum robustness: the 10 games with near-zero probe loss reproduce every
@@ -29,7 +29,7 @@ Pinned 32-game corpus (corpus32): of 20,199 probe calls, 13,815 returned parsed 
   delivered answers (1.5%) are refusals, of which 299 sit on a single probe,
   `personality_profile`; game-relevant probes (role_assessment, suspicion_ranking,
   social_map) parse at ~100% of delivered answers.
-- Probe-call volume per game: 631 (corpus32), 784 (old instrument), 814 (gpt-4o-mini, full
+- Probe-call volume per game: 631 (corpus32), 784 (main30), 814 (gpt-4o-mini, full
   100-game corpus); the probe-to-game-call multiplier is ~24x on all three corpora.
 
 ## S2. Full calibration tables (formerly Appendix C, F2)
@@ -51,7 +51,7 @@ corpus32 bins (fresh role-assessment guesses):
   (gap -30.6 pp).
 - Language arms: ECE 0.150 (CI [0.109, 0.184]) in the 21 English games, 0.189
   (CI [0.119, 0.256]) in the 11 Russian ones; both miscalibrated in the same direction.
-- Old-instrument 30-game batch (main30): ECE 0.222 (CI [0.171, 0.279]), Brier 0.290; top-bin (80-99,
+- 30-game batch (main30): ECE 0.222 (CI [0.171, 0.279]), Brier 0.290; top-bin (80-99,
   n=5,977) accuracy 62.5% at mean confidence 87.7 (gap -25.2 pp).
 - gpt-4o-mini, full 100-game corpus (registry key `gpt4omini100`): ECE 0.285
   (CI [0.241, 0.327]), Brier 0.343 (CI [0.317, 0.369]), n=22,595. The pinned 28-game
@@ -61,7 +61,7 @@ corpus32 bins (fresh role-assessment guesses):
 
 ## S3. F3 second-order details (formerly Appendix C)
 
-Wording ablation. The old social-map template contained a suggestive sentence, "if
+Wording ablation. The main30 social-map template contained a suggestive sentence, "if
 you suspect someone, they may sense it", so the probe could have implanted the very
 belief it measures. Two matched Russian batches of 5 games differing only in that
 sentence: the over-prediction appears under both wordings, 1.58 (CI [1.46, 1.77]) with
@@ -75,12 +75,12 @@ Replication of the over-prediction ratio (overall / innocents / Mafia):
 | Corpus | overall | innocents | Mafia |
 |---|---|---|---|
 | corpus32 | 1.53 [1.44, 1.64] (n=15,638 pairs) | 1.84 [1.67, 2.04] | 1.08 [0.94, 1.25] |
-| old instrument (main30) | 1.63 [1.53, 1.74] (n=26,664) | 2.38 [2.07, 2.88] | 1.04 [0.95, 1.14] |
+| main30 | 1.63 [1.53, 1.74] (n=26,664) | 2.38 [2.07, 2.88] | 1.04 [0.95, 1.14] |
 | gpt-4o-mini (28, pinned) | 1.93 [1.76, 2.17] (n=19,870) | 2.27 [1.84, 3.03] | 1.45 [1.19, 1.84] |
 | gpt-4o-mini (100) | 1.74 [1.64, 1.84] (n=84,996) | 2.02 [1.80, 2.32] | 1.36 [1.17, 1.59] |
 
 Agreement vs. trivial majority baseline: corpus32 +10.1 pp (CI [5.7, 12.4]);
-old instrument -4.4 pp (CI [-8.2, -0.1], significantly below); gpt-4o-mini (100 games)
+main30 -4.4 pp (CI [-8.2, -0.1], significantly below); gpt-4o-mini (100 games)
 -2.9 pp (60.5% vs. 63.4%, CI [-4.4, -1.4], significantly below; on the pinned 28
 alone -1.7 pp with CI [-6.2, +2.4] crossing zero).
 The +10.1 pp advantage over majority is corpus-specific; the ratio and its role split
@@ -109,14 +109,14 @@ others. CIs from the released code (2026-07-18 alignment).
   (157/227; CI [63.7, 74.4]) vs. chance 26.5% on the full 100-game corpus (83.7%,
   41/49, on the pinned 28).
 - Transcript baselines: most-accused 58.8% (47/80) on corpus32; probe increment not
-  separable from zero there (McNemar p=0.66 at n=68 shared votes). Old-instrument batch: probe
+  separable from zero there (McNemar p=0.66 at n=68 shared votes). main30: probe
   85.6% vs. strongest heuristic 78.1% (n=201, p=0.024). gpt-4o-mini: top-1 79.4%
   (n=214, chance 27.1%) on the pinned 28 games, 83.2% (607/730; CI [80.9, 85.2];
   chance 25.0%) on the full 100-game corpus, with Mafia voters at 69.3% (210/303;
   CI [64.8, 73.6]); increment over the strongest transcript heuristic +3.5 pp on the
   full corpus (84.7 vs. 81.2, n=714, McNemar p=4.6e-6; on the pinned 28: +3.4 pp,
   82.0 vs. 78.5, n=205, p=0.016). Mafia
-  voters show no increment on any corpus (p=0.69/1.0 corpus32; 0.078/0.13 old instrument;
+  voters show no increment on any corpus (p=0.69/1.0 corpus32; 0.078/0.13 main30;
   0.15/0.51 gpt-4o-mini 100).
 
 ## S5. Test-retest and belief-dynamics details (formerly Appendix B)
@@ -131,12 +131,12 @@ others. CIs from the released code (2026-07-18 alignment).
 - Round structure: floor 0.65 in round 0 (near-uniform suspicion makes the top pick
   arbitrary), 0.21 in round 1; observed mid-game flip rates 0.46-0.48, so real
   movement concentrates in mid-game.
-- The old-instrument batch's Mafia-instability asymmetry does not replicate on corpus32
+- The main30 batch's Mafia-instability asymmetry does not replicate on corpus32
   (0.312 vs. 0.294 volatility, overlapping CIs).
 
 ## S6. F1 replication details (f1_f5 replication audit, 2026-07-18)
 
-- Old-instrument batch (main30): the shape replicates fully. Unknown in round 0: 81.8%
+- main30 (30-game batch): the shape replicates fully. Unknown in round 0: 81.8%
   [78.4, 85.4]; recall of the true Mafia 4.3% -> 44.6% -> 61.6% by round 2 (above
   chance 33.3 from round 1); committed accuracy rises monotonically 46.0 -> 63.4.
 - gpt-4o-mini (100 games): the no-opinion start replicates even more strongly (94.8%
