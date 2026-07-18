@@ -25,8 +25,14 @@ Every completed game ships in this repository as a directory
 | `en_demo` | `configs/config_en_demo.yaml` | revised | EN | 5 | 3,208 | 5 / 0 | yes |
 | `ablation_demand` | `configs/config_ablation_demand.yaml` | revised chaining + **old** demand `social_map` wording | RU | 5 | 7,547 | 2 / 3 | yes |
 | `ru_clean` | `configs/config_deepseek.yaml` (post-fix) | revised | RU | 5 | 4,377 | 4 / 1 | yes |
-| corpus-v2 | `configs/config_deepseek.yaml` | revised | RU | ~250 *(forthcoming — generation in progress)* | — | — | yes |
+| `corpus_v2` | scaled deepseek EN generation (2026-07-11/12) | revised, transcript-only (no probe battery) | EN | 147 | — | — | omitted (~300 MB) |
 | replay forks | parent configs | revised | EN/RU | 32 | 3,043 | 28 / 4 | yes |
+
+This table lists the founding batches. The canonical, machine-readable registry of
+every released corpus (including `corpus32`, `gpt4omini28` / `gpt4omini100`, the
+randomized A/B invasiveness arms `ab_probed_2026_07_18` / `ab_unprobed_2026_07_18`,
+the bifurcation fork corpora and the game-family showcase) is
+[`docs/corpora.json`](corpora.json).
 
 Notes:
 
@@ -46,8 +52,9 @@ Notes:
   + 30 full-run forks, see [replay_experiment.md](replay_experiment.md)).
   Their `setup` records carry `forked_from` metadata and
   `metrics_lib.select_corpus` **excludes them from every corpus**.
-- **corpus-v2** (~250 RU games, revised instrument) is being generated at
-  the time of this snapshot and will be added in a follow-up release.
+- **corpus_v2**: 147 completed EN transcript-only games (no probe battery),
+  frozen 2026-07-12; transcripts (`game.jsonl`) are committed, per-step
+  `state.jsonl` snapshots (~300 MB) are omitted from the repo.
 - Large-file exception: `logs/f2510502…/state.jsonl` (a 15-round
   `ablation_demand` game) is 151 MB and exceeds GitHub's 100 MB limit, so
   it is omitted from the public repository; the game's `game.jsonl` and

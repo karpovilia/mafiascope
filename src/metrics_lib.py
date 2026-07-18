@@ -208,10 +208,12 @@ def select_corpus(games: Sequence[Game], corpus: str) -> list[Game]:
       ``docs/corpora.json``.
     * ``"gpt4omini28"`` — the 28-game full-gpt-4o-mini cross-model corpus,
       also resolved from the manifest.
+    * ``"gpt4omini100"`` — the full 100-game gpt-4o-mini corpus (superset of
+      ``gpt4omini28``), resolved from the manifest.
     """
     # replay forks (counterfactual branches) are never corpus games
     with_probes = [g for g in games if g.probes and g.forked_from is None]
-    if corpus in ("corpus32", "gpt4omini28"):
+    if corpus in ("corpus32", "gpt4omini28", "gpt4omini100"):
         ids = set(registry_game_ids(corpus))
         return [g for g in with_probes if g.game_id in ids]
     if corpus == "paper32":

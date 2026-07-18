@@ -5,7 +5,39 @@
   "instrument_version": "pre-revision",
   "language": "ru",
   "selector": "setup_ts == 1774562457 (metrics_lib.MAIN_BATCH_TS); use metrics_lib.select_corpus(games, 'main30')",
-  "notes": "Legacy 30-game main batch behind the originally published numbers. Old demand-characteristic social_map wording, no probe chaining, no state.jsonl snapshots. The historical 'paper32' selector adds two pilot runs (one aborted)."
+  "notes": "The 30-game main batch behind the originally published numbers; recorded with the earlier social_map wording, no probe chaining, no state.jsonl snapshots. The historical 'paper32' selector adds two pilot runs (one aborted).",
+  "game_ids": [
+   "050b6221-42db-4c45-8e1b-b656c5560541",
+   "0dc71656-2b83-4ce8-ada2-e8fddd804187",
+   "0f6e5062-bb72-45b0-9123-1989f7d5ae21",
+   "1dc37fe1-e2f9-461d-b29a-58ddcd1bd7b0",
+   "283ec6b2-72e3-4bf1-b87f-9b4c63b5811b",
+   "2c41e937-9750-447b-9901-7e4ebdfe1a8b",
+   "2e25d44b-44d6-45ac-b055-166b96a043a1",
+   "362894cb-273a-4813-ba53-a0d4413be148",
+   "38fd2418-1691-437b-9a70-e3d06d38d430",
+   "43c45741-decd-4ec5-8c56-fc63644c3908",
+   "4a4023b0-9b91-44a8-ba49-373b48c7499a",
+   "4c344f40-41c3-4167-8b37-5a012a80941b",
+   "4d77cad6-3310-4719-a4f0-72d5f0c8d67c",
+   "525c6dd9-da67-4d60-9d94-bae000dd336a",
+   "5524639a-10d1-4f49-a158-82cb591c48bf",
+   "7289a3ee-1fb0-4cda-9738-051464fef549",
+   "73921402-79c0-42b8-a021-aebbb7ef363d",
+   "7eb5acf4-ebae-4396-9e7a-2953a30ab72c",
+   "7fc3f39e-905c-4075-b02e-2a5f937ab6e9",
+   "9809e8fe-e65f-4771-9322-8c21ab4dfe40",
+   "a69662f5-b0bc-4517-a157-f9dc6d2d8f9b",
+   "aaa40ba7-a271-4b62-b521-406f0afe0bdb",
+   "ac583841-eca0-4e25-b02e-70b5a8684524",
+   "b82d14c5-7364-4307-a7a7-1d7c5d31d7d0",
+   "b9fa2a28-84b2-46eb-9fce-210476e6f7ce",
+   "c041caa0-315c-4ee8-9536-194fd3075a15",
+   "c777b5d9-011f-4db1-b06b-6e336b89d8e1",
+   "e76f9cdc-3e35-4cf0-ada6-2c25067a7db7",
+   "ec87d979-f2d0-4389-98d0-52f6bf8b6f85",
+   "f9858baf-fca7-4ec0-a4aa-120618bf43de"
+  ]
  },
  "en_demo": {
   "config": "configs/config_en_demo.yaml",
@@ -198,7 +230,7 @@
    "f091f7ba-7c52-41dd-ab99-03a679216807",
    "044be756-fa9a-459f-ab2d-86a58511ea56"
   ],
-  "notes": "147 completed EN transcript-only games (no probe battery), scaled deepseek generation 2026-07-11/12, frozen 2026-07-12; transport-error (ConnectionReset) turns present and dropped by analysis pipelines. Transcripts (game.jsonl) are committed in logs/; per-step state.jsonl snapshots (~300 MB) are omitted from the repo. Canonical provenance in the experiments repo (mafia2/docs/corpora.json); the earlier forthcoming-RU note was stale and wrong (corrected 2026-07-15)."
+  "notes": "147 completed EN transcript-only games (no probe battery), scaled deepseek generation 2026-07-11/12, frozen 2026-07-12; transport-error (ConnectionReset) turns present and dropped by analysis pipelines. Transcripts (game.jsonl) are committed in logs/; per-step state.jsonl snapshots (~300 MB) are omitted from the repo. Canonical provenance in this registry; the earlier forthcoming-RU note was stale and wrong (corrected 2026-07-15)."
  },
  "replay_forks": {
   "config": "parent game's config (configs/config_en_demo.yaml for the 36594b66 experiment)",
@@ -250,13 +282,13 @@
   "config": "configs/config_deepseek.yaml (language=en; forks: introspection off, snapshots off)",
   "instrument_version": "revised",
   "language": "en (16 EN corpus32 parents)",
-  "generation": "local replay, 2026-07-16, mafia2/src/bifurcation/run_forks.py; injected-utterance forks on innocent day-vote bifurcation points (idea 06)",
+  "generation": "local replay, 2026-07-16, src/bifurcation/run_forks.py; injected-utterance forks on innocent day-vote bifurcation points (idea 06)",
   "purpose": "Idea 06 (bifurcation points): per point 500 independent T=1.2 variants of the agent's own reply from the frozen pre-action context, 20 maximally dissimilar selected (factual + e5 maxmin with vote-target coverage), 1 continuation per variant",
   "metric": "outcome spread over 20 forks per point; flip share vs parent winner; policy_gap vs perception_gap (3B quadrants)",
   "n_points": 16,
   "n_forks": 320,
   "selector": "game.jsonl setup has forked_from != null AND intervention.type=='inject_message' AND intervention.experiment=='bifurcation_2026_07_16'; excluded from every observational corpus by metrics_lib.select_corpus",
-  "analysis": "mafia2/analysis/bifurcation_2026_07_16.{md,json}; points registry mafia2/data/bifurcation/points.json",
+  "analysis": "analysis/experiments/bifurcation_2026_07_16.{md,json}; points registry analysis/experiments/bifurcation_data/guided/points.json",
   "game_ids": [
    "007ed3d0-ff15-45c4-b4a1-98cdcf9449b7",
    "02de8e0e-08ae-459a-9f2b-5a24eef87d36",
@@ -584,13 +616,13 @@
   "config": "configs/config_deepseek.yaml (language=en; forks: introspection off, snapshots off)",
   "instrument_version": "revised",
   "language": "en (8 EN corpus32 parents)",
-  "generation": "local replay, 2026-07-18, mafia2/src/bifurcation/run_forks.py (BIF_DATA_DIR=data/bifurcation_random, BIF_EXPERIMENT=bifurcation_random_2026_07_18); injected-utterance forks on RANDOM-baseline innocent day-vote points (idea 06 control)",
+  "generation": "local replay, 2026-07-18, src/bifurcation/run_forks.py (BIF_DATA_DIR=data/bifurcation_random, BIF_EXPERIMENT=bifurcation_random_2026_07_18); injected-utterance forks on RANDOM-baseline innocent day-vote points (idea 06 control)",
   "purpose": "Idea 06 control: random-baseline point selection (uniform draw seed 20260719 from the same innocent EN corpus32 day-vote population, NO quadrant filter, NO probe signals, 16 probe-guided points excluded); per point 500 independent T=1.2 variants from the frozen pre-action context, 20 maximally dissimilar selected (factual + e5 maxmin with vote-target coverage), 1 continuation per variant",
   "metric": "flip harvest of random points vs probe-guided bifurcation_forks_2026_07_16 (fork-level and point-level flip share, flip structure, lock-in)",
   "n_points": 8,
   "n_forks": 160,
   "selector": "game.jsonl setup has forked_from != null AND intervention.type=='inject_message' AND intervention.experiment=='bifurcation_random_2026_07_18'; excluded from every observational corpus by metrics_lib.select_corpus",
-  "analysis": "mafia2/analysis/bifurcation_random_2026_07_18.{md,json}; points registry mafia2/data/bifurcation_random/points.json",
+  "analysis": "analysis/experiments/bifurcation_random_2026_07_18.{md,json}; points registry analysis/experiments/bifurcation_data/random/points.json",
   "game_ids": [
    "0377e4d8-455c-4177-b331-8e7eacdd8245",
    "03bb7183-cbee-45f7-b513-3631a015fdb9",
@@ -788,7 +820,7 @@
    "f8f90382-2027-4c94-9225-abb88ee188d1",
    "ff94d67b-6929-4301-b9e9-f78528bbf55f"
   ],
-  "notes": "All 28 completed non-fork games with a full gpt-4o-mini lineup; 26 carry the standard 5-probe battery, 2 (72bad9fc, 97568cc9) a role_beliefs variant without social_map. Cross-model comparison corpus of the F3/F4 analyses (mafia2/analysis/coupling_baselines_2026_07_15.md)."
+  "notes": "All 28 completed non-fork games with a full gpt-4o-mini lineup; 26 carry the standard 5-probe battery, 2 (72bad9fc, 97568cc9) a role_beliefs variant without social_map. Cross-model comparison corpus of the F3/F4 analyses (analysis/experiments/coupling_baselines_2026_07_15.md)."
  },
  "gpt4omini100": {
   "config": "configs/config_chatgpt_corpus.yaml",
@@ -907,7 +939,7 @@
    "07c3255e-2370-4427-a812-6a00088a76bf",
    "4a9a8dc9-0ea4-4469-bb47-426a2226e79e"
   ],
-  "notes": "Showcase traces of the game-family engine: Werewolf skin (10a9ec09), Werewolf+Seer (07c3255e), Resistance-lite (4a9a8dc9). Deepseek EN smoke validation games (mafia2/analysis/multigame_qwen_2026_07_15.md); full Qwen corpora are generating on the shared seed grid and will be registered separately."
+  "notes": "Showcase traces of the game-family engine: Werewolf skin (10a9ec09), Werewolf+Seer (07c3255e), Resistance-lite (4a9a8dc9). Deepseek EN smoke validation games (analysis/experiments/multigame_qwen_2026_07_15.md); full Qwen corpora are generating on the shared seed grid and will be registered separately."
  },
  "ab_probed_2026_07_18": {
   "config": "configs/ab_probed.yaml",
@@ -1035,7 +1067,7 @@
    "34ed465a-8413-4e60-96a8-85b5a7b7199b",
    "eaf14d69-ca1b-4003-8bc9-8b2f467f845a"
   ],
-  "notes": "Arm A (probed) of the randomized probe-invasiveness A/B (2026-07-18, single interleaved run, shuffle seed 20260718, per-slot game seeds 7180000+slot; driver mafia2/src/ab_invasiveness/run_ab.py; report mafia2/analysis/ab_invasiveness_2026_07_18.md). Full en_demo chained battery, snapshots off. Mafia won 84/120. game.jsonl committed; introspection.jsonl (354.8 MB total) kept in the working tree only, NOT committed (over the ~200 MB repo budget); no state.jsonl by design."
+  "notes": "Arm A (probed) of the randomized probe-invasiveness A/B (2026-07-18, single interleaved run, shuffle seed 20260718, per-slot game seeds 7180000+slot; driver src/ab_invasiveness/run_ab.py; report analysis/experiments/ab_invasiveness_2026_07_18.md). Full en_demo chained battery, snapshots off. Mafia won 84/120. game.jsonl committed; introspection.jsonl (354.8 MB total) kept in the working tree only, NOT committed (over the ~200 MB repo budget); no state.jsonl by design."
  },
  "ab_unprobed_2026_07_18": {
   "config": "configs/ab_unprobed.yaml",
@@ -1163,6 +1195,6 @@
    "2adf40ef-d6ea-462c-bfc5-d4647d6cdc6d",
    "1b75aa6e-02b0-48e7-862c-6b71fb37e3b5"
   ],
-  "notes": "Arm B (unprobed) of the randomized probe-invasiveness A/B (2026-07-18) — identical to ab_probed_2026_07_18 except introspection.enabled: false, probes: []. Mafia won 89/120. game.jsonl committed; no introspection.jsonl/state.jsonl by design. Fisher p=0.565 vs arm A; see mafia2/analysis/ab_invasiveness_2026_07_18.md."
+  "notes": "Arm B (unprobed) of the randomized probe-invasiveness A/B (2026-07-18) — identical to ab_probed_2026_07_18 except introspection.enabled: false, probes: []. Mafia won 89/120. game.jsonl committed; no introspection.jsonl/state.jsonl by design. Fisher p=0.565 vs arm A; see analysis/experiments/ab_invasiveness_2026_07_18.md."
  }
 }

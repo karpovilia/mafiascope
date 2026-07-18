@@ -1,0 +1,35 @@
+{
+  "date": "2026-07-15",
+  "engine_branch": "worktree-agent-af2ac9c53e4fa748c",
+  "status": "engine+configs+smokes complete; qwen batches staged for HPC A100 (not generated)",
+  "commits": [
+    "0df60e2 engine: skin-from-config (Werewolf reskin) + game_type + per-game seed grid",
+    "27c5c93 engine: Resistance/Avalon-lite as a self-contained module",
+    "4ad64dc configs: ww_skin / ww_seer / resistance (qwen) + deepseek smokes",
+    "1d6b7d2 main: optional python-dotenv",
+    "1af9cd9 backend: opt-in enable_thinking knob",
+    "e2a06cb hpc: A100 array + test smoke sbatch; --max-rounds; hpc model path"
+  ],
+  "smokes": {
+    "backend": "deepseek-chat (EN)",
+    "mafia_base": {"result": "PASS", "winner": "Mafia", "rounds": 2, "note": "trace structurally identical to legacy engine; setup game_type=mafia skin=mafia"},
+    "ww_skin": {"result": "PASS", "note": "werewolf lexicon (wolves/village/lynch); mechanics identical"},
+    "ww_seer": {"result": "PASS", "winner": "Mafia", "rounds": 3, "seer_privacy": "CHECK RESULT only in Seer private context; 0 occurrences in public game.jsonl; canonical result in event log; skin lexicon rendered"},
+    "resistance": {"result": "PASS", "winner": "Spy", "wins": {"Resistance": 2, "Spy": 3}, "leak_audit": "13 mission_card records all private; only aggregate mission_result public"},
+    "cli_flags": {"--max-rounds": "verified (1-round game 24s)", "--no-introspection": "verified (no introspection.jsonl)"}
+  },
+  "hypotheses": {
+    "H1": "skin-invariance: config_mafia_qwen vs ww_skin_qwen, paired by seed (McNemar) on win rate + 16-event profile",
+    "H2": "mechanics>skin: ww_skin_qwen vs ww_seer_qwen; expect lower NO_INFO/flip, higher village win with Seer",
+    "H3": "vocabulary transfer: OTHER fraction <5% per game_type; watch CLAIM/COUNTER_CLAIM clusters in Seer games"
+  },
+  "seed_grid": "9000..9049 per setup (per-game seed 9000+i); shared with multilingual + base arms",
+  "corpora_registered": ["ww_skin_qwen", "ww_seer_qwen", "resistance_qwen"],
+  "hardware_note": "A6000 box abandoned for A100: root disk 100% full (ran from /dev/shm, validated) but probe battery is blocking-sequential and Qwen3 thinking makes 50 games/arm a multi-GPU-day job; moved to HPC A100 by decision",
+  "hpc": {
+    "weights": "/home/iakarpov/hf_mirror/qwen_Qwen3-8B",
+    "env": "conda mafia_llm, HF_HUB_OFFLINE=1",
+    "test_smoke": "sbatch src/run_hpc_test_smoke.sbatch <config> (partition test, 25m, probes off, 2 rounds)",
+    "production": "sbatch --array=0-14%5 src/run_hpc_a100_array.sbatch (rocky/type_e, 3 setups x 5 tasks x 10 games = 50/setup)"
+  }
+}
