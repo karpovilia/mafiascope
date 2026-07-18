@@ -243,7 +243,20 @@ function rootMatches(root){
 
 async function load(){
   let games=[];
-  try{ const r=await fetch('all_games.json'); if(r.ok) games=await r.json(); }catch(e){}
+  // all_games.json is either the games array (legacy) or a sharded manifest
+  // {chunks:[{file},...]} — the corpus outgrew GitHub's 100 MB per-file cap.
+  try{
+    const r=await fetch('all_games.json');
+    if(r.ok) games=await r.json();
+    if(!Array.isArray(games)&&games&&Array.isArray(games.chunks)){
+      const parts=await Promise.all(games.chunks.map(async c=>{
+        const rr=await fetch(typeof c==='string'?c:c.file);
+        return rr.ok?rr.json():[];
+      }));
+      games=parts.flat();
+    }
+    if(!Array.isArray(games)) games=[];
+  }catch(e){}
   if(!games.length){ document.getElementById('summary').innerHTML=`<div class="tile"><div class="v">${STRINGS.noData}</div><div class="l">${STRINGS.noDataSub}</div></div>`; return; }
   ALL_GAMES = games;
   const allRoots = games.filter(g=>!g.forked_from);
