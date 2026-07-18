@@ -91,8 +91,8 @@ Threshold grid (ratio): 1.32 [1.21, 1.41] at threshold 30, 1.53 at 50, 3.05
 compressed-denominator artefact. Input control: on pairs with a confident own
 assessment (70+, matching Mafia's knowing input) innocents over-predict at 1.95
 [1.73, 2.21] vs Mafia 1.24 [1.08, 1.48]; the confident Mafia ratio edges above 1.
-The agreement grid itself (thresholds 30/50/70: 48.2/54.7/70.3 vs. majority
-47.5/44.7/78.1) remains in the paper (Table 3).
+The agreement grid (thresholds 30/50/70: 48.2/54.7/70.3 vs. majority
+47.5/44.7/78.1) is recorded here; the paper reports the canonical threshold only.
 
 ## S4. F4 vote-coupling details (formerly Appendix C)
 
