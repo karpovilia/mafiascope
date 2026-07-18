@@ -1,0 +1,1433 @@
+{
+ "_meta": {
+  "date": "2026-07-18",
+  "task": "replication audit of F1-F5 (MafiaScope demo paper) on corpus32 / main30 / gpt4omini28",
+  "method": "src/metrics_lib.py, mode=repaired (F4: raw answer_parse_ok, published rule), cluster bootstrap B=1000 seed=0; corpora = docs/corpora.json manifests (farms verified against registry 2026-07-18); F2/F3/F4 via rerun of coupling run_all.py (numbers byte-identical to the 2026-07-15 run), F1/F5 via f1_f5.py (this session)",
+  "corpora": {
+   "corpus32": {
+    "n_games": 32,
+    "mafia_wins": 31,
+    "probes": 20199,
+    "lang": "21 EN + 11 RU",
+    "model": "deepseek-chat"
+   },
+   "main30": {
+    "n_games": 30,
+    "mafia_wins": 17,
+    "probes": 23520,
+    "lang": "RU",
+    "model": "deepseek-chat (legacy instrument, 400-token cap)"
+   },
+   "gpt4omini28": {
+    "n_games": 28,
+    "mafia_wins": 18,
+    "probes": 24587,
+    "lang": "EN",
+    "model": "gpt-4o-mini"
+   }
+  }
+ },
+ "f1_trajectories": {
+  "corpus32": {
+   "0": {
+    "committed_acc": 0.47584033613445376,
+    "acc_n": 952,
+    "acc_ci95": [
+     0.405189620758483,
+     0.554
+    ],
+    "acc_chance": 0.41334033613445376,
+    "unknown": 0.7494077388786523,
+    "unk_n": 3799,
+    "unk_ci95": [
+     0.7106413994169096,
+     0.7887359836901121
+    ],
+    "mafia_recall": 0.05367008681925809,
+    "recall_n": 1267,
+    "recall_ci95": [
+     0.03501945525291829,
+     0.07858546168958742
+    ],
+    "recall_chance": 0.3333333333333332
+   },
+   "1": {
+    "committed_acc": 0.4243275792854275,
+    "acc_n": 4982,
+    "acc_ci95": [
+     0.3887442419387142,
+     0.4634570765661253
+    ],
+    "acc_chance": 0.4298775592131675,
+    "unknown": 0.23057915057915057,
+    "unk_n": 6475,
+    "unk_ci95": [
+     0.19424836601307188,
+     0.2691297208538588
+    ],
+    "mafia_recall": 0.265852697912564,
+    "recall_n": 2539,
+    "recall_ci95": [
+     0.22285714285714286,
+     0.30714285714285716
+    ],
+    "recall_chance": 0.39506367336221565
+   },
+   "2": {
+    "committed_acc": 0.5839506172839506,
+    "acc_n": 810,
+    "acc_ci95": [
+     0.5304659498207885,
+     0.6342780026990553
+    ],
+    "acc_chance": 0.45065843621399215,
+    "unknown": 0.006134969325153374,
+    "unk_n": 815,
+    "unk_ci95": [
+     0.0,
+     0.031914893617021274
+    ],
+    "mafia_recall": 0.6085526315789473,
+    "recall_n": 304,
+    "recall_ci95": [
+     0.44047619047619047,
+     0.75
+    ],
+    "recall_chance": 0.3940241228070172
+   },
+   "3": {
+    "committed_acc": 0.7536764705882353,
+    "acc_n": 272,
+    "acc_ci95": [
+     0.5,
+     0.7611111111111111
+    ],
+    "acc_chance": 0.4344362745098039,
+    "unknown": 0.0,
+    "unk_n": 272,
+    "unk_ci95": [
+     0.0,
+     0.0
+    ],
+    "mafia_recall": 0.935064935064935,
+    "recall_n": 77,
+    "recall_ci95": [
+     0.5,
+     1.0
+    ],
+    "recall_chance": 0.29329004329004327
+   }
+  },
+  "main30": {
+   "0": {
+    "committed_acc": 0.45982575024201355,
+    "acc_n": 1033,
+    "acc_ci95": [
+     0.38229571984435795,
+     0.5440097799511002
+    ],
+    "acc_chance": 0.41819941916747333,
+    "unknown": 0.8180056377730797,
+    "unk_n": 5676,
+    "unk_ci95": [
+     0.7835860838537021,
+     0.8535186794092093
+    ],
+    "mafia_recall": 0.04331348132106118,
+    "recall_n": 1847,
+    "recall_ci95": [
+     0.02303894679100384,
+     0.06812933025404157
+    ],
+    "recall_chance": 0.3333333333333333
+   },
+   "1": {
+    "committed_acc": 0.557506443298969,
+    "acc_n": 6208,
+    "acc_ci95": [
+     0.4941196817710135,
+     0.6254558083000521
+    ],
+    "acc_chance": 0.41884933419243975,
+    "unknown": 0.181542518127884,
+    "unk_n": 7585,
+    "unk_ci95": [
+     0.16370379843969818,
+     0.20225603357817418
+    ],
+    "mafia_recall": 0.4456803856136448,
+    "recall_n": 2697,
+    "recall_ci95": [
+     0.38147865853658536,
+     0.5109126984126984
+    ],
+    "recall_chance": 0.3781547398343834
+   },
+   "2": {
+    "committed_acc": 0.6342991386061081,
+    "acc_n": 2554,
+    "acc_ci95": [
+     0.5507964601769911,
+     0.7216174183514774
+    ],
+    "acc_chance": 0.46973375097885656,
+    "unknown": 0.00506427736657577,
+    "unk_n": 2567,
+    "unk_ci95": [
+     0.000368052999631947,
+     0.016019417475728156
+    ],
+    "mafia_recall": 0.6162227602905569,
+    "recall_n": 826,
+    "recall_ci95": [
+     0.4651851851851852,
+     0.7611580217129071
+    ],
+    "recall_chance": 0.3331719128329297
+   },
+   "3": {
+    "committed_acc": 0.6371191135734072,
+    "acc_n": 361,
+    "acc_ci95": [
+     0.42036553524804177,
+     0.8134920634920635
+    ],
+    "acc_chance": 0.4956140350877192,
+    "unknown": 0.0,
+    "unk_n": 361,
+    "unk_ci95": [
+     0.0,
+     0.0
+    ],
+    "mafia_recall": 0.5496688741721855,
+    "recall_n": 151,
+    "recall_ci95": [
+     0.34355828220858897,
+     0.8245614035087719
+    ],
+    "recall_chance": 0.4210816777041943
+   }
+  },
+  "gpt4omini": {
+   "0": {
+    "committed_acc": 0.481981981981982,
+    "acc_n": 666,
+    "acc_ci95": [
+     0.35269709543568467,
+     0.6157989228007181
+    ],
+    "acc_chance": 0.43793793793793795,
+    "unknown": 0.8466850828729282,
+    "unk_n": 4344,
+    "unk_ci95": [
+     0.8130026809651475,
+     0.8764902241297091
+    ],
+    "mafia_recall": 0.03038674033149171,
+    "recall_n": 1448,
+    "recall_ci95": [
+     0.011564625850340135,
+     0.05021216407355021
+    ],
+    "recall_chance": 0.3333333333333334
+   },
+   "1": {
+    "committed_acc": 0.5784032165422172,
+    "acc_n": 3482,
+    "acc_ci95": [
+     0.5007052186177715,
+     0.6457362215519605
+    ],
+    "acc_chance": 0.43983342906375633,
+    "unknown": 0.5011461318051575,
+    "unk_n": 6980,
+    "unk_ci95": [
+     0.4499498782758127,
+     0.5583930239800685
+    ],
+    "mafia_recall": 0.22968197879858657,
+    "recall_n": 2547,
+    "recall_ci95": [
+     0.17444620253164558,
+     0.28160919540229884
+    ],
+    "recall_chance": 0.370920036644418
+   },
+   "2": {
+    "committed_acc": 0.5560681334279631,
+    "acc_n": 2818,
+    "acc_ci95": [
+     0.46621888581588306,
+     0.650767987065481
+    ],
+    "acc_chance": 0.492471019635675,
+    "unknown": 0.2710812209001552,
+    "unk_n": 3866,
+    "unk_ci95": [
+     0.2082638502871966,
+     0.34798704303563166
+    ],
+    "mafia_recall": 0.25936329588014984,
+    "recall_n": 1068,
+    "recall_ci95": [
+     0.15052732502396932,
+     0.38109756097560976
+    ],
+    "recall_chance": 0.304073033707865
+   },
+   "3": {
+    "committed_acc": 0.5019417475728155,
+    "acc_n": 1030,
+    "acc_ci95": [
+     0.3507214206437292,
+     0.6689342403628118
+    ],
+    "acc_chance": 0.4483009708737865,
+    "unknown": 0.16666666666666666,
+    "unk_n": 1236,
+    "unk_ci95": [
+     0.09035087719298246,
+     0.2358490566037736
+    ],
+    "mafia_recall": 0.24338624338624337,
+    "recall_n": 378,
+    "recall_ci95": [
+     0.04864864864864865,
+     0.494949494949495
+    ],
+    "recall_chance": 0.328042328042328
+   },
+   "4": {
+    "committed_acc": 0.34191176470588236,
+    "acc_n": 272,
+    "acc_ci95": [
+     0.1902439024390244,
+     0.7018633540372671
+    ],
+    "acc_chance": 0.4479166666666665,
+    "unknown": 0.07482993197278912,
+    "unk_n": 294,
+    "unk_ci95": [
+     0.03409090909090909,
+     0.1348314606741573
+    ],
+    "mafia_recall": 0.19327731092436976,
+    "recall_n": 119,
+    "recall_ci95": [
+     0.0,
+     0.576271186440678
+    ],
+    "recall_chance": 0.42156862745098034
+   },
+   "5": {
+    "committed_acc": 0.21666666666666667,
+    "acc_n": 60,
+    "acc_ci95": [
+     0.16666666666666666,
+     0.26666666666666666
+    ],
+    "acc_chance": 0.5,
+    "unknown": 0.0,
+    "unk_n": 60,
+    "unk_ci95": [
+     0.0,
+     0.0
+    ],
+    "mafia_recall": 0.0,
+    "recall_n": 30,
+    "recall_ci95": [
+     0.0,
+     0.0
+    ],
+    "recall_chance": 0.5
+   }
+  }
+ },
+ "f2_calibration": {
+  "corpus32": {
+   "n": 7016,
+   "ece": 0.1684207525655644,
+   "brier": 0.2833799315849487,
+   "ece_ci95": [
+    0.12969661610268382,
+    0.2034150394682177
+   ],
+   "brier_ci95": [
+    0.26701460469946775,
+    0.29975966633954854
+   ],
+   "bins": {
+    "0-19": {
+     "n": 4,
+     "acc": 0.5,
+     "mean_conf": 13.75
+    },
+    "20-39": {
+     "n": 360,
+     "acc": 0.4638888888888889,
+     "mean_conf": 30.77777777777778
+    },
+    "40-59": {
+     "n": 2320,
+     "acc": 0.42974137931034484,
+     "mean_conf": 49.383620689655174
+    },
+    "60-79": {
+     "n": 3338,
+     "acc": 0.4601557819053325,
+     "mean_conf": 66.11923307369682
+    },
+    "80-99": {
+     "n": 994,
+     "acc": 0.5462776659959758,
+     "mean_conf": 85.2344064386318
+    }
+   }
+  },
+  "main30": {
+   "n": 10156,
+   "ece": 0.2224862150452934,
+   "brier": 0.2902270874359984,
+   "ece_ci95": [
+    0.171240159393527,
+    0.27909756812188696
+   ],
+   "brier_ci95": [
+    0.25440948578106737,
+    0.3293517835427643
+   ],
+   "bins": {
+    "20-39": {
+     "n": 47,
+     "acc": 0.44680851063829785,
+     "mean_conf": 31.382978723404257
+    },
+    "40-59": {
+     "n": 538,
+     "acc": 0.5185873605947955,
+     "mean_conf": 50.88289962825279
+    },
+    "60-79": {
+     "n": 3594,
+     "acc": 0.48720089037284364,
+     "mean_conf": 69.26488592097941
+    },
+    "80-99": {
+     "n": 5977,
+     "acc": 0.6248954324912164,
+     "mean_conf": 87.74786682282081
+    }
+   }
+  },
+  "gpt4omini": {
+   "n": 8328,
+   "ece": 0.23889889529298744,
+   "brier": 0.31699897934678195,
+   "ece_ci95": [
+    0.15540961709706141,
+    0.3269029421003036
+   ],
+   "brier_ci95": [
+    0.2714333411433928,
+    0.367338777660695
+   ],
+   "bins": {
+    "0-19": {
+     "n": 1,
+     "acc": 1.0,
+     "mean_conf": 0.0
+    },
+    "40-59": {
+     "n": 28,
+     "acc": 0.6428571428571429,
+     "mean_conf": 53.035714285714285
+    },
+    "60-79": {
+     "n": 3851,
+     "acc": 0.5564788366658011,
+     "mean_conf": 69.93638016099715
+    },
+    "80-99": {
+     "n": 4448,
+     "acc": 0.53125,
+     "mean_conf": 85.39006294964028
+    }
+   }
+  }
+ },
+ "f2_extra": {
+  "corpus32_en_ece": {
+   "ece": 0.15,
+   "ci95": [
+    0.109,
+    0.184
+   ],
+   "n": 3742,
+   "n_games": 21
+  },
+  "corpus32_ru_ece": {
+   "ece": 0.189,
+   "ci95": [
+    0.119,
+    0.256
+   ],
+   "n": 3274,
+   "n_games": 11
+  },
+  "top_bin_gap_pp": {
+   "corpus32": 30.6,
+   "main30": 25.2,
+   "gpt4omini": 32.3
+  }
+ },
+ "f3_spotlight": {
+  "corpus32": {
+   "overall": {
+    "n": 15638,
+    "accuracy": 0.5471287888476787,
+    "majority_baseline": 0.4465404783220361,
+    "acc_ci95": [
+     0.5278224994968806,
+     0.5689632107023411
+    ],
+    "diff_ci95": [
+     0.05659344954271872,
+     0.12444807849550282
+    ],
+    "suspects_ratio": 1.5310464611376466,
+    "ratio_ci95": [
+     1.435110393107162,
+     1.643888354186718
+    ],
+    "pred_suspects": 3526,
+    "actual_suspects": 2303
+   },
+   "innocent_predictors": {
+    "n": 11222,
+    "accuracy": 0.5403671359828908,
+    "majority_baseline": 0.4455533772945999,
+    "acc_ci95": [
+     0.5170633531676584,
+     0.5655601199067392
+    ],
+    "diff_ci95": [
+     0.04720996826870988,
+     0.1086799927966865
+    ],
+    "suspects_ratio": 1.838095238095238,
+    "ratio_ci95": [
+     1.6738987508218277,
+     2.0448328267477205
+    ],
+    "pred_suspects": 2509,
+    "actual_suspects": 1365
+   },
+   "mafia_predictors": {
+    "n": 4416,
+    "accuracy": 0.5643115942028986,
+    "majority_baseline": 0.44904891304347827,
+    "acc_ci95": [
+     0.5309689025957337,
+     0.6017720895889737
+    ],
+    "diff_ci95": [
+     0.060207991242474,
+     0.1655243317340644
+    ],
+    "suspects_ratio": 1.084221748400853,
+    "ratio_ci95": [
+     0.9374407582938389,
+     1.2515337423312884
+    ],
+    "pred_suspects": 1017,
+    "actual_suspects": 938
+   }
+  },
+  "main30": {
+   "overall": {
+    "n": 26664,
+    "accuracy": 0.44805730573057306,
+    "majority_baseline": 0.4915241524152415,
+    "acc_ci95": [
+     0.42678060533052253,
+     0.4715010103320752
+    ],
+    "diff_ci95": [
+     -0.08165583839244506,
+     -0.0014171554540802211
+    ],
+    "suspects_ratio": 1.626703685007572,
+    "ratio_ci95": [
+     1.5254394079555966,
+     1.7443778110944528
+    ],
+    "pred_suspects": 6445,
+    "actual_suspects": 3962
+   },
+   "innocent_predictors": {
+    "n": 19437,
+    "accuracy": 0.3948140145084118,
+    "majority_baseline": 0.57570612748881,
+    "acc_ci95": [
+     0.3730728133109449,
+     0.4187506539709114
+    ],
+    "diff_ci95": [
+     -0.22276926200385744,
+     -0.13776372458158426
+    ],
+    "suspects_ratio": 2.380787037037037,
+    "ratio_ci95": [
+     2.068313953488372,
+     2.882559774964838
+    ],
+    "pred_suspects": 4114,
+    "actual_suspects": 1728
+   },
+   "mafia_predictors": {
+    "n": 7227,
+    "accuracy": 0.5912550159125501,
+    "majority_baseline": 0.42576449425764495,
+    "acc_ci95": [
+     0.5489871847871021,
+     0.634820143884892
+    ],
+    "diff_ci95": [
+     0.12147863130410885,
+     0.20790137293359484
+    ],
+    "suspects_ratio": 1.0434198746642793,
+    "ratio_ci95": [
+     0.9546621043627032,
+     1.140401146131805
+    ],
+    "pred_suspects": 2331,
+    "actual_suspects": 2234
+   }
+  },
+  "gpt4omini": {
+   "overall": {
+    "n": 19870,
+    "accuracy": 0.4772018117765476,
+    "majority_baseline": 0.49446401610468044,
+    "acc_ci95": [
+     0.4564365915223257,
+     0.4987965983847676
+    ],
+    "diff_ci95": [
+     -0.06209214949574843,
+     0.023803416611091144
+    ],
+    "suspects_ratio": 1.925814536340852,
+    "ratio_ci95": [
+     1.7599633531836922,
+     2.173941798941799
+    ],
+    "pred_suspects": 3842,
+    "actual_suspects": 1995
+   },
+   "innocent_predictors": {
+    "n": 14775,
+    "accuracy": 0.4868358714043993,
+    "majority_baseline": 0.5043654822335025,
+    "acc_ci95": [
+     0.4589939463822427,
+     0.5155612074158357
+    ],
+    "diff_ci95": [
+     -0.07208748698110395,
+     0.024691358024691357
+    ],
+    "suspects_ratio": 2.271391529818496,
+    "ratio_ci95": [
+     1.8406881077038144,
+     3.027972027972028
+    ],
+    "pred_suspects": 2628,
+    "actual_suspects": 1157
+   },
+   "mafia_predictors": {
+    "n": 5095,
+    "accuracy": 0.4492639842983317,
+    "majority_baseline": 0.46575073601570166,
+    "acc_ci95": [
+     0.41133100504462555,
+     0.48472634705133644
+    ],
+    "diff_ci95": [
+     -0.07697563197449325,
+     0.030018083182640154
+    ],
+    "suspects_ratio": 1.4486873508353222,
+    "ratio_ci95": [
+     1.1873727087576376,
+     1.8369565217391304
+    ],
+    "pred_suspects": 1214,
+    "actual_suspects": 838
+   }
+  }
+ },
+ "f3_threshold_sensitivity_corpus32": {
+  "thr30": {
+   "ratio": 1.32,
+   "ratio_ci95": [
+    1.21,
+    1.41
+   ],
+   "acc": 0.482,
+   "majority": 0.475,
+   "majority_class": "trusts",
+   "diff_pp": 0.7,
+   "n": 15638
+  },
+  "thr50": {
+   "ratio": 1.53,
+   "ratio_ci95": [
+    1.44,
+    1.64
+   ],
+   "acc": 0.547,
+   "majority": 0.447,
+   "majority_class": "neutral",
+   "diff_pp": 10.1,
+   "n": 15638
+  },
+  "thr70": {
+   "ratio": 3.05,
+   "ratio_ci95": [
+    2.59,
+    3.82
+   ],
+   "acc": 0.703,
+   "majority": 0.781,
+   "majority_class": "neutral",
+   "diff_pp": -7.8,
+   "n": 15638
+  }
+ },
+ "f4_coupling": {
+  "corpus32": {
+   "coupling": {
+    "innocent": {
+     "n_votes": 86,
+     "sr_top1": {
+      "k": 48,
+      "n": 74,
+      "rate": 0.6486486486486487,
+      "ci95": [
+       0.5471698113207547,
+       0.7666666666666667
+      ],
+      "chance": 0.27297297297297296
+     },
+     "ra_set": {
+      "k": 57,
+      "n": 80,
+      "rate": 0.7125,
+      "ci95": [
+       0.625,
+       0.7910447761194029
+      ],
+      "chance": 0.41708333333333336
+     },
+     "sr_tally_top1": {
+      "k": 77,
+      "n": 81,
+      "rate": 0.9506172839506173,
+      "ci95": [
+       0.9076923076923077,
+       0.9885057471264368
+      ],
+      "chance": 0.26872427983539093
+     },
+     "transcript_mention_pred": {
+      "k": 53,
+      "n": 85,
+      "rate": 0.6235294117647059,
+      "ci95": [
+       0.5176470588235295,
+       0.735632183908046
+      ],
+      "chance": 0.26823529411764707
+     },
+     "transcript_accuse_pred": {
+      "k": 47,
+      "n": 80,
+      "rate": 0.5875,
+      "ci95": [
+       0.4880952380952381,
+       0.7
+      ],
+      "chance": 0.26416666666666666
+     },
+     "transcript_prev_pred": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "ci95": null,
+      "chance": null
+     }
+    },
+    "mafia": {
+     "n_votes": 35,
+     "sr_top1": {
+      "k": 21,
+      "n": 30,
+      "rate": 0.7,
+      "ci95": [
+       0.5,
+       0.88
+      ],
+      "chance": 0.2711111111111111
+     },
+     "ra_set": {
+      "k": 8,
+      "n": 27,
+      "rate": 0.2962962962962963,
+      "ci95": [
+       0.14285714285714285,
+       0.46153846153846156
+      ],
+      "chance": 0.2518518518518518
+     },
+     "sr_tally_top1": {
+      "k": 28,
+      "n": 33,
+      "rate": 0.8484848484848485,
+      "ci95": [
+       0.7419354838709677,
+       0.9583333333333334
+      ],
+      "chance": 0.2636363636363636
+     },
+     "transcript_mention_pred": {
+      "k": 27,
+      "n": 35,
+      "rate": 0.7714285714285715,
+      "ci95": [
+       0.6666666666666666,
+       0.8823529411764706
+      ],
+      "chance": 0.26142857142857145
+     },
+     "transcript_accuse_pred": {
+      "k": 25,
+      "n": 34,
+      "rate": 0.7352941176470589,
+      "ci95": [
+       0.5945945945945946,
+       0.8611111111111112
+      ],
+      "chance": 0.25931372549019605
+     },
+     "transcript_prev_pred": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "ci95": null,
+      "chance": null
+     }
+    }
+   },
+   "head_to_head": {
+    "innocent": {
+     "mention_pred": {
+      "n": 73,
+      "probe_acc": 0.6575342465753424,
+      "transcript_acc": 0.6027397260273972,
+      "both_right": 35,
+      "both_wrong": 16,
+      "probe_only_right": 13,
+      "transcript_only_right": 9,
+      "mcnemar_p": 0.5234670639038086,
+      "predictor_agreement": 0.6438356164383562
+     },
+     "accuse_pred": {
+      "n": 68,
+      "probe_acc": 0.6470588235294118,
+      "transcript_acc": 0.6029411764705882,
+      "both_right": 32,
+      "both_wrong": 15,
+      "probe_only_right": 12,
+      "transcript_only_right": 9,
+      "mcnemar_p": 0.6636238098144531,
+      "predictor_agreement": 0.6470588235294118
+     },
+     "prev_pred": {
+      "n": 0
+     }
+    },
+    "mafia": {
+     "mention_pred": {
+      "n": 30,
+      "probe_acc": 0.7,
+      "transcript_acc": 0.7666666666666667,
+      "both_right": 19,
+      "both_wrong": 5,
+      "probe_only_right": 2,
+      "transcript_only_right": 4,
+      "mcnemar_p": 0.6875,
+      "predictor_agreement": 0.7333333333333333
+     },
+     "accuse_pred": {
+      "n": 29,
+      "probe_acc": 0.6896551724137931,
+      "transcript_acc": 0.6896551724137931,
+      "both_right": 16,
+      "both_wrong": 5,
+      "probe_only_right": 4,
+      "transcript_only_right": 4,
+      "mcnemar_p": 1.0,
+      "predictor_agreement": 0.6551724137931034
+     },
+     "prev_pred": {
+      "n": 0
+     }
+    }
+   }
+  },
+  "main30": {
+   "coupling": {
+    "innocent": {
+     "n_votes": 201,
+     "sr_top1": {
+      "k": 172,
+      "n": 201,
+      "rate": 0.8557213930348259,
+      "ci95": [
+       0.7807486631016043,
+       0.9186602870813397
+      ],
+      "chance": 0.24734660033167497
+     },
+     "ra_set": {
+      "k": 63,
+      "n": 96,
+      "rate": 0.65625,
+      "ci95": [
+       0.5436893203883495,
+       0.75
+      ],
+      "chance": 0.3746527777777778
+     },
+     "sr_tally_top1": {
+      "k": 185,
+      "n": 201,
+      "rate": 0.9203980099502488,
+      "ci95": [
+       0.8795811518324608,
+       0.9571428571428572
+      ],
+      "chance": 0.24734660033167497
+     },
+     "transcript_mention_pred": {
+      "k": 142,
+      "n": 201,
+      "rate": 0.7064676616915423,
+      "ci95": [
+       0.6166666666666667,
+       0.7942583732057417
+      ],
+      "chance": 0.24734660033167497
+     },
+     "transcript_accuse_pred": {
+      "k": 157,
+      "n": 201,
+      "rate": 0.7810945273631841,
+      "ci95": [
+       0.7074468085106383,
+       0.8585858585858586
+      ],
+      "chance": 0.24734660033167497
+     },
+     "transcript_prev_pred": {
+      "k": 2,
+      "n": 4,
+      "rate": 0.5,
+      "ci95": [
+       0.5,
+       0.5
+      ],
+      "chance": 0.5
+     }
+    },
+    "mafia": {
+     "n_votes": 88,
+     "sr_top1": {
+      "k": 71,
+      "n": 88,
+      "rate": 0.8068181818181818,
+      "ci95": [
+       0.7078651685393258,
+       0.8888888888888888
+      ],
+      "chance": 0.24829545454545457
+     },
+     "ra_set": {
+      "k": 15,
+      "n": 58,
+      "rate": 0.25862068965517243,
+      "ci95": [
+       0.1694915254237288,
+       0.3508771929824561
+      ],
+      "chance": 0.21839080459770116
+     },
+     "sr_tally_top1": {
+      "k": 73,
+      "n": 88,
+      "rate": 0.8295454545454546,
+      "ci95": [
+       0.7439024390243902,
+       0.9069767441860465
+      ],
+      "chance": 0.24829545454545457
+     },
+     "transcript_mention_pred": {
+      "k": 62,
+      "n": 88,
+      "rate": 0.7045454545454546,
+      "ci95": [
+       0.6125,
+       0.7954545454545454
+      ],
+      "chance": 0.24829545454545457
+     },
+     "transcript_accuse_pred": {
+      "k": 63,
+      "n": 88,
+      "rate": 0.7159090909090909,
+      "ci95": [
+       0.6222222222222222,
+       0.8085106382978723
+      ],
+      "chance": 0.24829545454545457
+     },
+     "transcript_prev_pred": {
+      "k": 1,
+      "n": 2,
+      "rate": 0.5,
+      "ci95": [
+       0.0,
+       1.0
+      ],
+      "chance": 0.5
+     }
+    }
+   },
+   "head_to_head": {
+    "innocent": {
+     "mention_pred": {
+      "n": 201,
+      "probe_acc": 0.8557213930348259,
+      "transcript_acc": 0.7064676616915423,
+      "both_right": 134,
+      "both_wrong": 21,
+      "probe_only_right": 38,
+      "transcript_only_right": 8,
+      "mcnemar_p": 9.24769992138863e-06,
+      "predictor_agreement": 0.7412935323383084
+     },
+     "accuse_pred": {
+      "n": 201,
+      "probe_acc": 0.8557213930348259,
+      "transcript_acc": 0.7810945273631841,
+      "both_right": 145,
+      "both_wrong": 17,
+      "probe_only_right": 27,
+      "transcript_only_right": 12,
+      "mcnemar_p": 0.023702702470473014,
+      "predictor_agreement": 0.7860696517412935
+     },
+     "prev_pred": {
+      "n": 4,
+      "probe_acc": 1.0,
+      "transcript_acc": 0.5,
+      "both_right": 2,
+      "both_wrong": 0,
+      "probe_only_right": 2,
+      "transcript_only_right": 0,
+      "mcnemar_p": 0.5,
+      "predictor_agreement": 0.5
+     }
+    },
+    "mafia": {
+     "mention_pred": {
+      "n": 88,
+      "probe_acc": 0.8068181818181818,
+      "transcript_acc": 0.7045454545454546,
+      "both_right": 56,
+      "both_wrong": 11,
+      "probe_only_right": 15,
+      "transcript_only_right": 6,
+      "mcnemar_p": 0.0783538818359375,
+      "predictor_agreement": 0.6931818181818182
+     },
+     "accuse_pred": {
+      "n": 88,
+      "probe_acc": 0.8068181818181818,
+      "transcript_acc": 0.7159090909090909,
+      "both_right": 56,
+      "both_wrong": 10,
+      "probe_only_right": 15,
+      "transcript_only_right": 7,
+      "mcnemar_p": 0.13380050659179688,
+      "predictor_agreement": 0.7045454545454546
+     },
+     "prev_pred": {
+      "n": 2,
+      "probe_acc": 1.0,
+      "transcript_acc": 0.5,
+      "both_right": 1,
+      "both_wrong": 0,
+      "probe_only_right": 1,
+      "transcript_only_right": 0,
+      "mcnemar_p": 1.0,
+      "predictor_agreement": 0.5
+     }
+    }
+   }
+  },
+  "gpt4omini": {
+   "coupling": {
+    "innocent": {
+     "n_votes": 214,
+     "sr_top1": {
+      "k": 170,
+      "n": 214,
+      "rate": 0.794392523364486,
+      "ci95": [
+       0.7486338797814208,
+       0.8418367346938775
+      ],
+      "chance": 0.2709501557632399
+     },
+     "ra_set": {
+      "k": 154,
+      "n": 176,
+      "rate": 0.875,
+      "ci95": [
+       0.8188405797101449,
+       0.9177215189873418
+      ],
+      "chance": 0.2896780303030303
+     },
+     "sr_tally_top1": {
+      "k": 175,
+      "n": 214,
+      "rate": 0.8177570093457944,
+      "ci95": [
+       0.7815533980582524,
+       0.8542713567839196
+      ],
+      "chance": 0.2709501557632399
+     },
+     "transcript_mention_pred": {
+      "k": 160,
+      "n": 214,
+      "rate": 0.7476635514018691,
+      "ci95": [
+       0.678391959798995,
+       0.8111111111111111
+      ],
+      "chance": 0.2709501557632399
+     },
+     "transcript_accuse_pred": {
+      "k": 161,
+      "n": 205,
+      "rate": 0.7853658536585366,
+      "ci95": [
+       0.7235023041474654,
+       0.8436018957345972
+      ],
+      "chance": 0.2680487804878049
+     },
+     "transcript_prev_pred": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "ci95": null,
+      "chance": null
+     }
+    },
+    "mafia": {
+     "n_votes": 86,
+     "sr_top1": {
+      "k": 58,
+      "n": 86,
+      "rate": 0.6744186046511628,
+      "ci95": [
+       0.6021505376344086,
+       0.75
+      ],
+      "chance": 0.27674418604651163
+     },
+     "ra_set": {
+      "k": 41,
+      "n": 49,
+      "rate": 0.8367346938775511,
+      "ci95": [
+       0.7058823529411765,
+       0.9411764705882353
+      ],
+      "chance": 0.2789115646258503
+     },
+     "sr_tally_top1": {
+      "k": 60,
+      "n": 86,
+      "rate": 0.6976744186046512,
+      "ci95": [
+       0.6125,
+       0.7767857142857143
+      ],
+      "chance": 0.27674418604651163
+     },
+     "transcript_mention_pred": {
+      "k": 55,
+      "n": 86,
+      "rate": 0.6395348837209303,
+      "ci95": [
+       0.5540540540540541,
+       0.735632183908046
+      ],
+      "chance": 0.27674418604651163
+     },
+     "transcript_accuse_pred": {
+      "k": 57,
+      "n": 84,
+      "rate": 0.6785714285714286,
+      "ci95": [
+       0.5955056179775281,
+       0.7647058823529411
+      ],
+      "chance": 0.2753968253968254
+     },
+     "transcript_prev_pred": {
+      "k": 0,
+      "n": 0,
+      "rate": null,
+      "ci95": null,
+      "chance": null
+     }
+    }
+   },
+   "head_to_head": {
+    "innocent": {
+     "mention_pred": {
+      "n": 214,
+      "probe_acc": 0.794392523364486,
+      "transcript_acc": 0.7476635514018691,
+      "both_right": 159,
+      "both_wrong": 43,
+      "probe_only_right": 11,
+      "transcript_only_right": 1,
+      "mcnemar_p": 0.00634765625,
+      "predictor_agreement": 0.8691588785046729
+     },
+     "accuse_pred": {
+      "n": 205,
+      "probe_acc": 0.8195121951219512,
+      "transcript_acc": 0.7853658536585366,
+      "both_right": 161,
+      "both_wrong": 37,
+      "probe_only_right": 7,
+      "transcript_only_right": 0,
+      "mcnemar_p": 0.015625,
+      "predictor_agreement": 0.8975609756097561
+     },
+     "prev_pred": {
+      "n": 0
+     }
+    },
+    "mafia": {
+     "mention_pred": {
+      "n": 86,
+      "probe_acc": 0.6744186046511628,
+      "transcript_acc": 0.6395348837209303,
+      "both_right": 54,
+      "both_wrong": 27,
+      "probe_only_right": 4,
+      "transcript_only_right": 1,
+      "mcnemar_p": 0.375,
+      "predictor_agreement": 0.8023255813953488
+     },
+     "accuse_pred": {
+      "n": 84,
+      "probe_acc": 0.6904761904761905,
+      "transcript_acc": 0.6785714285714286,
+      "both_right": 56,
+      "both_wrong": 25,
+      "probe_only_right": 2,
+      "transcript_only_right": 1,
+      "mcnemar_p": 1.0,
+      "predictor_agreement": 0.8452380952380952
+     },
+     "prev_pred": {
+      "n": 0
+     }
+    }
+   }
+  }
+ },
+ "f5_cost_parse": {
+  "corpus32": {
+   "n_games": 32,
+   "n_probes": 20199,
+   "probes_per_game": 631.2,
+   "game_llm_calls_per_game": 26.8,
+   "call_multiplier": 24.5,
+   "est_tokens_per_probe": 540,
+   "parsed_raw": 13815,
+   "parse_rate_raw": 0.6839,
+   "parsed_repaired": 13815,
+   "parse_rate_repaired": 0.6839,
+   "repair_recovered": 0,
+   "failures_raw": 6384,
+   "failures_repaired": 6384,
+   "transport_errors": 6277,
+   "transport_share_of_repaired_failures": 0.9832,
+   "transport_share_of_all_probes": 0.3108,
+   "content_level_failures": 107,
+   "content_parse_rate_of_delivered": 0.9923,
+   "role_assessment": {
+    "total": 4835,
+    "raw_parsed": 3289,
+    "raw_parse_rate": 0.6802,
+    "delivered_but_raw_unparsed": 24,
+    "trunc_share": 0.005
+   }
+  },
+  "main30": {
+   "n_games": 30,
+   "n_probes": 23520,
+   "probes_per_game": 784.0,
+   "game_llm_calls_per_game": 33.6,
+   "call_multiplier": 24.3,
+   "est_tokens_per_probe": 756,
+   "parsed_raw": 19398,
+   "parse_rate_raw": 0.8247,
+   "parsed_repaired": 23520,
+   "parse_rate_repaired": 1.0,
+   "repair_recovered": 4122,
+   "failures_raw": 4122,
+   "failures_repaired": 0,
+   "transport_errors": 0,
+   "transport_share_of_repaired_failures": null,
+   "transport_share_of_all_probes": 0.0,
+   "content_level_failures": 0,
+   "content_parse_rate_of_delivered": 1.0,
+   "role_assessment": {
+    "total": 5628,
+    "raw_parsed": 1510,
+    "raw_parse_rate": 0.2683,
+    "delivered_but_raw_unparsed": 4118,
+    "trunc_share": 0.7317
+   }
+  },
+  "gpt4omini": {
+   "n_games": 28,
+   "n_probes": 24587,
+   "probes_per_game": 878.1,
+   "game_llm_calls_per_game": 38.9,
+   "call_multiplier": 23.6,
+   "est_tokens_per_probe": 493,
+   "parsed_raw": 19930,
+   "parse_rate_raw": 0.8106,
+   "parsed_repaired": 19930,
+   "parse_rate_repaired": 0.8106,
+   "repair_recovered": 0,
+   "failures_raw": 4657,
+   "failures_repaired": 4657,
+   "transport_errors": 4354,
+   "transport_share_of_repaired_failures": 0.9349,
+   "transport_share_of_all_probes": 0.1771,
+   "content_level_failures": 303,
+   "content_parse_rate_of_delivered": 0.985,
+   "role_assessment": {
+    "total": 6000,
+    "raw_parsed": 4929,
+    "raw_parse_rate": 0.8215,
+    "delivered_but_raw_unparsed": 4,
+    "trunc_share": 0.0007
+   }
+  }
+ },
+ "f5_extra": {
+  "gpt_transport_breakdown": {
+   "connection_reset": 3610,
+   "proxy_max_retries": 701,
+   "read_timeout": 43,
+   "games_affected": "26 of 28",
+   "host": "api.openai.com"
+  },
+  "gpt_content_failures_by_probe": {
+   "personality_profile": 299,
+   "role_assessment": 4,
+   "with_refusal_markers": 296,
+   "note": "gpt content-level failures are explicit refusals ('I'm sorry, but I can't...'), 299 of 303 on personality_profile"
+  },
+  "corpus32_content_failures_by_probe": {
+   "suspicion_ranking": 38,
+   "role_assessment": 24,
+   "personality_profile": 21,
+   "social_map": 21,
+   "planned_action": 3
+  },
+  "repair_recovered_role_assessment": {
+   "main30": 4118,
+   "paper32_incl_2_pilots": 4234,
+   "corpus32": 0,
+   "gpt4omini": 0,
+   "note": "paper F5 cites 4,234 = paper32 count (30 legacy + 2 pilots); the 30-game legacy batch alone gives 4,118"
+  }
+ },
+ "verdicts": {
+  "F1": {
+   "replicates_main30": true,
+   "replicates_gpt": "partially: agnostic start yes; convergence on Mafia NO (recall plateaus at ~26%, below alive-Mafia chance share)",
+   "recommendation": "add replication sentence (b)"
+  },
+  "F2": {
+   "replicates": true,
+   "all_paper_numbers_verified": true,
+   "recommendation": "text correct as is (a)"
+  },
+  "F3": {
+   "ratio_replicates_all3": true,
+   "agreement_vs_majority": "corpus32 +10.1 [5.7,12.4]; main30 -4.4 [-8.2,-0.1] (significantly below); gpt -1.7 [-6.2,+2.4] (NOT separable from zero)",
+   "recommendation": "soften gpt 'falls below the majority baseline' to 'no longer beats'; optionally add main30 ratio 1.63 (b)"
+  },
+  "F4": {
+   "replicates": true,
+   "minor_ci_fixes": {
+    "innocent_committed_set_ci": {
+     "paper": [
+      62.7,
+      79.2
+     ],
+     "released_code": [
+      62.5,
+      79.1
+     ]
+    },
+    "mafia_committed_set_ci": {
+     "paper": [
+      14.3,
+      46.7
+     ],
+     "released_code": [
+      14.3,
+      46.2
+     ]
+    }
+   },
+   "recommendation": "text correct (a); optionally align two CIs to released code (c, cosmetic)"
+  },
+  "F5": {
+   "corpus32_numbers_verified": true,
+   "gpt_transport_not_negligible": "17.7% of gpt calls are transport failures (93.5% of its losses), 26/28 games affected",
+   "recommendation": "scope the 4,234 number (main30 alone: 4,118) and optionally add gpt transport/refusal sentence (b/c)"
+  }
+ }
+}

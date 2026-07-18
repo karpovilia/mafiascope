@@ -1,0 +1,2973 @@
+{
+  "title": "Idea 3B: move quality given situation understanding",
+  "date": "2026_07_15",
+  "level1_observational": {
+    "corpus32": {
+      "n_games": 32,
+      "n_innocent_votes": 86,
+      "n_mafia_kills": 64,
+      "S1_innocent_vote_basic": {
+        "cells_correct_wrong_x_good_bad": {
+          "(1, 1)": 23,
+          "(1, 0)": 23,
+          "(0, 1)": 1,
+          "(0, 0)": 33
+        },
+        "cond": {
+          "p_move_given_correct": 0.5,
+          "n_correct": 46,
+          "p_move_given_wrong": 0.029411764705882353,
+          "n_wrong": 34,
+          "diff": 0.47058823529411764
+        },
+        "boot": {
+          "ci_p1": [
+            0.2571,
+            0.6735
+          ],
+          "ci_p0": [
+            0.0,
+            0.0789
+          ],
+          "ci_diff": [
+            0.2424,
+            0.6373
+          ]
+        },
+        "quadrants": {
+          "counts": {
+            "correct_good": 23,
+            "policy_gap_correct_bad": 23,
+            "perception_gap_wrong_bad": 33,
+            "luck_wrong_good": 1
+          },
+          "shares": {
+            "correct_good": 0.2875,
+            "policy_gap_correct_bad": 0.2875,
+            "perception_gap_wrong_bad": 0.4125,
+            "luck_wrong_good": 0.0125
+          },
+          "n": 80,
+          "lost_games_counts": {
+            "correct_good": 19,
+            "policy_gap_correct_bad": 22,
+            "perception_gap_wrong_bad": 30,
+            "luck_wrong_good": 1
+          },
+          "lost_games_shares": {
+            "correct_good": 0.2638888888888889,
+            "policy_gap_correct_bad": 0.3055555555555556,
+            "perception_gap_wrong_bad": 0.4166666666666667,
+            "luck_wrong_good": 0.013888888888888888
+          },
+          "n_lost": 72
+        }
+      },
+      "S1_tautology_guard_mixed_sets": {
+        "n_genuine_choice_decisions": 29,
+        "p_voted_mafioso_when_set_mixed": 0.5172413793103449,
+        "note": "set contains BOTH a mafioso and an innocent; pure policy signal"
+      },
+      "S1_policy_among_correct": {
+        "n": 46,
+        "p_move_good": 0.5
+      },
+      "S3_map_quality_innocent_vote": {
+        "median_map_acc": 0.6,
+        "cells": {
+          "(1, 1)": 1,
+          "(1, 0)": 2,
+          "(0, 1)": 24,
+          "(0, 0)": 59
+        },
+        "cond": {
+          "p_move_given_correct": 0.3333333333333333,
+          "n_correct": 3,
+          "p_move_given_wrong": 0.2891566265060241,
+          "n_wrong": 83,
+          "diff": 0.04417670682730923
+        },
+        "boot": {
+          "ci_p1": [
+            0.0,
+            1.0
+          ],
+          "ci_p0": [
+            0.1364,
+            0.4245
+          ],
+          "ci_diff": [
+            -0.382,
+            0.7556
+          ]
+        },
+        "quadrants": {
+          "counts": {
+            "correct_good": 1,
+            "policy_gap_correct_bad": 2,
+            "perception_gap_wrong_bad": 59,
+            "luck_wrong_good": 24
+          },
+          "shares": {
+            "correct_good": 0.011627906976744186,
+            "policy_gap_correct_bad": 0.023255813953488372,
+            "perception_gap_wrong_bad": 0.686046511627907,
+            "luck_wrong_good": 0.27906976744186046
+          },
+          "n": 86,
+          "lost_games_counts": {
+            "correct_good": 1,
+            "policy_gap_correct_bad": 2,
+            "perception_gap_wrong_bad": 55,
+            "luck_wrong_good": 20
+          },
+          "lost_games_shares": {
+            "correct_good": 0.01282051282051282,
+            "policy_gap_correct_bad": 0.02564102564102564,
+            "perception_gap_wrong_bad": 0.7051282051282052,
+            "luck_wrong_good": 0.2564102564102564
+          },
+          "n_lost": 78
+        }
+      },
+      "S2_mafia_kill": {
+        "n_with_defined_topthreat": 51,
+        "p_killed_topthreat": 0.3137254901960784,
+        "note": "move==S2 by construction (kill removed top-threat); reported as base rate, not a 2x2 (no independent situation axis for a single kill)"
+      }
+    },
+    "main30": {
+      "n_games": 30,
+      "n_innocent_votes": 201,
+      "n_mafia_kills": 56,
+      "S1_innocent_vote_basic": {
+        "cells_correct_wrong_x_good_bad": {
+          "(1, 1)": 48,
+          "(1, 0)": 15,
+          "(0, 1)": 13,
+          "(0, 0)": 20
+        },
+        "cond": {
+          "p_move_given_correct": 0.7619047619047619,
+          "n_correct": 63,
+          "p_move_given_wrong": 0.3939393939393939,
+          "n_wrong": 33,
+          "diff": 0.36796536796536794
+        },
+        "boot": {
+          "ci_p1": [
+            0.62,
+            0.8814
+          ],
+          "ci_p0": [
+            0.175,
+            0.6571
+          ],
+          "ci_diff": [
+            0.1329,
+            0.5623
+          ]
+        },
+        "quadrants": {
+          "counts": {
+            "correct_good": 48,
+            "policy_gap_correct_bad": 15,
+            "perception_gap_wrong_bad": 20,
+            "luck_wrong_good": 13
+          },
+          "shares": {
+            "correct_good": 0.5,
+            "policy_gap_correct_bad": 0.15625,
+            "perception_gap_wrong_bad": 0.20833333333333334,
+            "luck_wrong_good": 0.13541666666666666
+          },
+          "n": 96,
+          "lost_games_counts": {
+            "correct_good": 10,
+            "policy_gap_correct_bad": 13,
+            "perception_gap_wrong_bad": 19,
+            "luck_wrong_good": 0
+          },
+          "lost_games_shares": {
+            "correct_good": 0.23809523809523808,
+            "policy_gap_correct_bad": 0.30952380952380953,
+            "perception_gap_wrong_bad": 0.4523809523809524,
+            "luck_wrong_good": 0.0
+          },
+          "n_lost": 42
+        }
+      },
+      "S1_tautology_guard_mixed_sets": {
+        "n_genuine_choice_decisions": 19,
+        "p_voted_mafioso_when_set_mixed": 0.631578947368421,
+        "note": "set contains BOTH a mafioso and an innocent; pure policy signal"
+      },
+      "S1_policy_among_correct": {
+        "n": 63,
+        "p_move_good": 0.7619047619047619
+      },
+      "S3_map_quality_innocent_vote": {
+        "median_map_acc": 0.4666666666666667,
+        "cells": {
+          "(1, 1)": 17,
+          "(1, 0)": 11,
+          "(0, 1)": 108,
+          "(0, 0)": 65
+        },
+        "cond": {
+          "p_move_given_correct": 0.6071428571428571,
+          "n_correct": 28,
+          "p_move_given_wrong": 0.6242774566473989,
+          "n_wrong": 173,
+          "diff": -0.01713459950454177
+        },
+        "boot": {
+          "ci_p1": [
+            0.4545,
+            0.7692
+          ],
+          "ci_p0": [
+            0.4969,
+            0.7458
+          ],
+          "ci_diff": [
+            -0.1555,
+            0.1192
+          ]
+        },
+        "quadrants": {
+          "counts": {
+            "correct_good": 17,
+            "policy_gap_correct_bad": 11,
+            "perception_gap_wrong_bad": 65,
+            "luck_wrong_good": 108
+          },
+          "shares": {
+            "correct_good": 0.0845771144278607,
+            "policy_gap_correct_bad": 0.05472636815920398,
+            "perception_gap_wrong_bad": 0.32338308457711445,
+            "luck_wrong_good": 0.5373134328358209
+          },
+          "n": 201,
+          "lost_games_counts": {
+            "correct_good": 5,
+            "policy_gap_correct_bad": 8,
+            "perception_gap_wrong_bad": 57,
+            "luck_wrong_good": 28
+          },
+          "lost_games_shares": {
+            "correct_good": 0.05102040816326531,
+            "policy_gap_correct_bad": 0.08163265306122448,
+            "perception_gap_wrong_bad": 0.5816326530612245,
+            "luck_wrong_good": 0.2857142857142857
+          },
+          "n_lost": 98
+        }
+      },
+      "S2_mafia_kill": {
+        "n_with_defined_topthreat": 54,
+        "p_killed_topthreat": 0.37037037037037035,
+        "note": "move==S2 by construction (kill removed top-threat); reported as base rate, not a 2x2 (no independent situation axis for a single kill)"
+      }
+    },
+    "gpt4omini": {
+      "n_games": 28,
+      "n_innocent_votes": 214,
+      "n_mafia_kills": 46,
+      "S1_innocent_vote_basic": {
+        "cells_correct_wrong_x_good_bad": {
+          "(1, 1)": 79,
+          "(1, 0)": 10,
+          "(0, 1)": 3,
+          "(0, 0)": 84
+        },
+        "cond": {
+          "p_move_given_correct": 0.8876404494382022,
+          "n_correct": 89,
+          "p_move_given_wrong": 0.034482758620689655,
+          "n_wrong": 87,
+          "diff": 0.8531576908175126
+        },
+        "boot": {
+          "ci_p1": [
+            0.7895,
+            0.9663
+          ],
+          "ci_p0": [
+            0.0,
+            0.0741
+          ],
+          "ci_diff": [
+            0.7309,
+            0.9538
+          ]
+        },
+        "quadrants": {
+          "counts": {
+            "correct_good": 79,
+            "policy_gap_correct_bad": 10,
+            "perception_gap_wrong_bad": 84,
+            "luck_wrong_good": 3
+          },
+          "shares": {
+            "correct_good": 0.44886363636363635,
+            "policy_gap_correct_bad": 0.056818181818181816,
+            "perception_gap_wrong_bad": 0.4772727272727273,
+            "luck_wrong_good": 0.017045454545454544
+          },
+          "n": 176,
+          "lost_games_counts": {
+            "correct_good": 19,
+            "policy_gap_correct_bad": 5,
+            "perception_gap_wrong_bad": 63,
+            "luck_wrong_good": 2
+          },
+          "lost_games_shares": {
+            "correct_good": 0.21348314606741572,
+            "policy_gap_correct_bad": 0.056179775280898875,
+            "perception_gap_wrong_bad": 0.7078651685393258,
+            "luck_wrong_good": 0.02247191011235955
+          },
+          "n_lost": 89
+        }
+      },
+      "S1_tautology_guard_mixed_sets": {
+        "n_genuine_choice_decisions": 10,
+        "p_voted_mafioso_when_set_mixed": 0.7,
+        "note": "set contains BOTH a mafioso and an innocent; pure policy signal"
+      },
+      "S1_policy_among_correct": {
+        "n": 89,
+        "p_move_good": 0.8876404494382022
+      },
+      "S3_map_quality_innocent_vote": {
+        "median_map_acc": 0.48214285714285715,
+        "cells": {
+          "(1, 1)": 37,
+          "(1, 0)": 47,
+          "(0, 1)": 41,
+          "(0, 0)": 67
+        },
+        "cond": {
+          "p_move_given_correct": 0.44047619047619047,
+          "n_correct": 84,
+          "p_move_given_wrong": 0.37962962962962965,
+          "n_wrong": 108,
+          "diff": 0.060846560846560815
+        },
+        "boot": {
+          "ci_p1": [
+            0.2619,
+            0.6087
+          ],
+          "ci_p0": [
+            0.2584,
+            0.5169
+          ],
+          "ci_diff": [
+            -0.0969,
+            0.2208
+          ]
+        },
+        "quadrants": {
+          "counts": {
+            "correct_good": 37,
+            "policy_gap_correct_bad": 47,
+            "perception_gap_wrong_bad": 67,
+            "luck_wrong_good": 41
+          },
+          "shares": {
+            "correct_good": 0.19270833333333334,
+            "policy_gap_correct_bad": 0.24479166666666666,
+            "perception_gap_wrong_bad": 0.3489583333333333,
+            "luck_wrong_good": 0.21354166666666666
+          },
+          "n": 192,
+          "lost_games_counts": {
+            "correct_good": 8,
+            "policy_gap_correct_bad": 37,
+            "perception_gap_wrong_bad": 57,
+            "luck_wrong_good": 15
+          },
+          "lost_games_shares": {
+            "correct_good": 0.06837606837606838,
+            "policy_gap_correct_bad": 0.3162393162393162,
+            "perception_gap_wrong_bad": 0.48717948717948717,
+            "luck_wrong_good": 0.1282051282051282
+          },
+          "n_lost": 117
+        }
+      },
+      "S2_mafia_kill": {
+        "n_with_defined_topthreat": 20,
+        "p_killed_topthreat": 0.15,
+        "note": "move==S2 by construction (kill removed top-threat); reported as base rate, not a 2x2 (no independent situation axis for a single kill)"
+      }
+    }
+  },
+  "level2_replay": {
+    "by_quadrant": {
+      "correct_good": {
+        "n_decisions": 10,
+        "mean_p_villagers_factual": 0.6599999999999999,
+        "mean_p_villagers_oracle": 0.5,
+        "mean_p_villagers_random": 0.52,
+        "mean_regret_oracle_minus_factual": -0.15999999999999998,
+        "regret_ci_decision_bootstrap": [
+          -0.32,
+          0.0
+        ],
+        "mean_uplift_factual_minus_random": 0.13999999999999999,
+        "uplift_ci_decision_bootstrap": [
+          -0.0,
+          0.3
+        ]
+      },
+      "policy_gap": {
+        "n_decisions": 10,
+        "mean_p_villagers_factual": 0.32,
+        "mean_p_villagers_oracle": 0.4,
+        "mean_p_villagers_random": 0.26,
+        "mean_regret_oracle_minus_factual": 0.08000000000000002,
+        "regret_ci_decision_bootstrap": [
+          -0.08,
+          0.24
+        ],
+        "mean_uplift_factual_minus_random": 0.059999999999999984,
+        "uplift_ci_decision_bootstrap": [
+          -0.1,
+          0.24
+        ]
+      },
+      "perception_gap": {
+        "n_decisions": 10,
+        "mean_p_villagers_factual": 0.22000000000000003,
+        "mean_p_villagers_oracle": 0.26,
+        "mean_p_villagers_random": 0.3,
+        "mean_regret_oracle_minus_factual": 0.04,
+        "regret_ci_decision_bootstrap": [
+          -0.06,
+          0.18
+        ],
+        "mean_uplift_factual_minus_random": -0.08,
+        "uplift_ci_decision_bootstrap": [
+          -0.18,
+          0.0
+        ]
+      },
+      "luck": {
+        "n_decisions": 1,
+        "mean_p_villagers_factual": 0.4,
+        "mean_p_villagers_oracle": 0.4,
+        "mean_p_villagers_random": 0.2,
+        "mean_regret_oracle_minus_factual": 0.0,
+        "regret_ci_decision_bootstrap": [
+          0.0,
+          0.0
+        ],
+        "mean_uplift_factual_minus_random": 0.2,
+        "uplift_ci_decision_bootstrap": [
+          0.2,
+          0.2
+        ]
+      },
+      "_overall": {
+        "n_decisions": 31,
+        "mean_regret": -0.012903225806451604,
+        "mean_uplift": 0.045161290322580636,
+        "regret_ci": [
+          -0.11,
+          0.077
+        ],
+        "uplift_ci": [
+          -0.039,
+          0.135
+        ],
+        "n_forks_total": 465
+      }
+    },
+    "raw_decisions": [
+      {
+        "game_id": "7b600523-7ea0-4f89-8b5a-948240a4d8fe",
+        "round": 3,
+        "voter": "Jordan",
+        "factual_target": "Bailey",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          3,
+          8
+        ],
+        "arms": {
+          "factual": "Bailey",
+          "oracle": "Bailey",
+          "random": "Logan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "7ddceac3-95ab-41b9-97c1-684f5706d454",
+              "50ef70df-1f71-49bd-818c-3c1e349703bc",
+              "5e6516ae-a9f1-4fa3-b841-4336d6c8d13c",
+              "f081f7fb-5dc4-42e7-abc7-57cab090a557",
+              "da52aa76-e6f3-41d8-b20e-7616bab7a517"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "a5ccf54a-95f1-4958-bd90-4a9f3c8a7a1a",
+              "46923f1c-8fda-4822-9bae-edc94a25b1c9",
+              "d11854e0-606c-42fe-91b9-e0a8f394fd8e",
+              "aa1d04e7-120d-4787-8644-539683ce7553",
+              "75d6546a-f4b1-42ff-97c9-be136200096b"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "c7810e91-3a0a-49bb-8e5d-fcb919e46e8d",
+              "cc85281d-ab93-49af-9f86-09891e64a335",
+              "f43ce2bc-a12b-4111-837b-7d43abffbfc5",
+              "57f9795c-e4d7-41e9-92d4-5e8b496d1a27",
+              "a8d9ed31-b1d4-4608-b092-1d703ba96014"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "4a48b59c-8559-4247-9573-0580d24fe36c",
+        "round": 1,
+        "voter": "Logan",
+        "factual_target": "Alex",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          1,
+          16
+        ],
+        "arms": {
+          "factual": "Alex",
+          "oracle": "Dana",
+          "random": "Kennedy"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.6,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "3c15c5f2-6d58-4d35-afc8-10334ef5f780",
+              "6f4b541b-8119-4b5d-8da8-a4633344021b",
+              "3427a18a-0079-4000-8018-f0e7cc46acd2",
+              "ed82d0fe-0b02-4e1b-b0f2-d68b068e6172",
+              "8dc58c87-962b-4751-86cc-cd69e886caeb"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "6f1f9709-35da-4cff-bf6f-3555ce61c4d0",
+              "f6892df3-3e0c-4d8f-90ec-b0f4c45bbd9e",
+              "074072e7-3ca4-4a79-bbfe-8cc18f31677e",
+              "646fd7f8-a507-47dc-ad74-f08a47fd0b9f",
+              "512dce70-9521-420c-92a2-78f1074e0325"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "2c612ee3-03ff-427f-8fc4-41fbecf74bdb",
+              "463e4d92-6dd9-4ff5-93fe-fa0222742895",
+              "08586781-8d05-45fe-ae97-26b741859c90",
+              "bc74b777-2619-4540-bc9f-b6fee260a6d5",
+              "cc594bf9-575f-4236-bd6e-a18f5f93d4ab"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.6,
+        "uplift_factual_minus_random": 0.39999999999999997
+      },
+      {
+        "game_id": "7b600523-7ea0-4f89-8b5a-948240a4d8fe",
+        "round": 3,
+        "voter": "Kennedy",
+        "factual_target": "Bailey",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          3,
+          12
+        ],
+        "arms": {
+          "factual": "Bailey",
+          "oracle": "Bailey",
+          "random": "Logan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "0c3f0f07-0e0a-43a4-b09a-901229bdf46b",
+              "c7b1f596-4ddf-4c4f-8793-f03d3f83449e",
+              "caaa0c2c-42a4-42d7-9682-8e28654bf316",
+              "88dd1e6c-5e02-4453-a0e3-3e6c2f086bd6",
+              "b76c2e46-88f7-48a6-939c-7701fef74230"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "b1ab2daa-3466-46fc-9fcf-30cdce03be41",
+              "f29e05fd-28d9-40a2-9dc6-806603576c20",
+              "7cfb86a0-e778-40f9-917b-6f2d6e6566cb",
+              "a381b8f4-379d-468b-b5d1-39d873ed27ef",
+              "4079cd8e-ef4f-4bed-8d8c-e5a9aee7efef"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "9b346f63-db54-4a4d-a2f0-95eecf62a9f9",
+              "d2d24ca2-1a2d-4e4a-801e-e6b35127deb7",
+              "954c70dc-c957-42e5-bc86-736f6d52048a",
+              "6b97fdf8-4158-4f3b-9cf3-e8f9b67102c9",
+              "d8592614-b380-4701-ab3a-d41d6c6c5bc5"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.19999999999999996
+      },
+      {
+        "game_id": "7b600523-7ea0-4f89-8b5a-948240a4d8fe",
+        "round": 1,
+        "voter": "Jordan",
+        "factual_target": "Ellis",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          1,
+          13
+        ],
+        "arms": {
+          "factual": "Ellis",
+          "oracle": "Bailey",
+          "random": "Bailey"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "cea9f394-dca0-4850-afeb-6fe024bc3fed",
+              "76dc2b43-d953-4a54-8994-65900dc0c49f",
+              "c36af23b-5790-4a19-952c-d6bfb51324ca",
+              "1243e14d-1e78-490c-9b50-f0e9ffa84c59",
+              "37e2db69-9843-44e3-95ec-03976f85d8db"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.6,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "4de41259-caf1-4ba1-ac85-72c45d4c0330",
+              "e3710b01-7ebc-4b01-8b95-465ad72643ca",
+              "ff054e8b-0393-4ab2-b0a4-afdff403cc70",
+              "c9115701-e46a-486c-acad-ed12f5ffc5f9",
+              "2a5e9bf5-c6f8-40eb-901a-0e517a4325c5"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "2f57d921-f5da-4ea0-a6cc-e96adfb2eec7",
+              "2802e060-c166-4fa5-b3cf-f7740b4f9a93",
+              "1ca7c8a7-d26d-4741-a295-57fc05d01c4d",
+              "1495cb42-e9e2-4662-b81b-ac220a330eb6",
+              "59a02511-2c5a-4b66-934e-5db196ae4163"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.4,
+        "uplift_factual_minus_random": 0.6
+      },
+      {
+        "game_id": "0da78714-88e0-4445-b161-f2eaf029184c",
+        "round": 2,
+        "voter": "Jordan",
+        "factual_target": "Bailey",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          2,
+          9
+        ],
+        "arms": {
+          "factual": "Bailey",
+          "oracle": "Bailey",
+          "random": "Bailey"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.6,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "cda1a810-7976-43be-9dfc-218ed33993b0",
+              "05edfad7-53a3-4c56-b894-f97745a93bb2",
+              "b65992f3-088a-4dd7-b8fc-f7d124cc9670",
+              "d6628098-fdbe-44a3-bc62-f759b586eaac",
+              "3eb4ebfa-1602-4227-87f9-427927dd30a4"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "473f5e08-a4bf-49b1-a62c-e954d3a50b71",
+              "fef9c6d8-f671-4000-9e19-9c2424edcc70",
+              "d162aeb7-a1a1-4e2b-8188-c88187d297da",
+              "adff7cc9-09c3-4c4b-bf76-d0d78de176c7",
+              "03e899aa-44a7-4798-b5d7-a3c0cb987b75"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "84e51f18-9ba5-4b51-a309-804f447a14a3",
+              "e2232a09-8acb-4d76-b295-d43f12da946e",
+              "3e3e763e-4028-4abb-8191-d8a526cfa12e",
+              "e55c5a89-d788-4481-aad8-1873c8a87289",
+              "7607ef01-12fc-447e-8b55-e9e9f4f2a5bf"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.39999999999999997,
+        "uplift_factual_minus_random": -0.20000000000000007
+      },
+      {
+        "game_id": "0da78714-88e0-4445-b161-f2eaf029184c",
+        "round": 1,
+        "voter": "Ellis",
+        "factual_target": "Harper",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          1,
+          11
+        ],
+        "arms": {
+          "factual": "Harper",
+          "oracle": "Bailey",
+          "random": "Bailey"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.6,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "2ccfc99a-7c78-4189-9a51-564b1d0cfa0b",
+              "0dac9dd3-46f2-437c-bd4b-a30c5c1cd3aa",
+              "d617abab-5a09-4af5-a419-1b97fa6c39ae",
+              "2382bc2a-0a80-4be8-8f0f-8208461fa21c",
+              "6e0b0b33-0252-4dd2-97af-ade560db9df8"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "f8b1e827-a1c0-483d-a834-84de468ad70f",
+              "d95c4abc-6f57-497d-80ff-6b2f644814f2",
+              "c7639a58-90ed-45b5-a126-88676fe53ea1",
+              "d42eead0-d9c2-435b-b135-ff06f60cbdf4",
+              "f52ffd86-edfe-4f8e-9fa8-f9e2033d36b5"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "21ab1b57-dd7f-4b83-9144-2859f12f58e4",
+              "f298e4bc-4185-4a42-b153-81f827b018ca",
+              "4413f7d4-a6ea-44ed-8897-eab68be9f9a0",
+              "17af8c6d-039e-43ae-9622-b52b28613d97",
+              "12919ea8-1af8-49f7-a8b6-def9607bd38c"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.39999999999999997,
+        "uplift_factual_minus_random": 0.39999999999999997
+      },
+      {
+        "game_id": "e6fbee66-7f0a-42c3-9af7-ad582f8153e5",
+        "round": 1,
+        "voter": "Alex",
+        "factual_target": "Casey",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          1,
+          11
+        ],
+        "arms": {
+          "factual": "Casey",
+          "oracle": "Harper",
+          "random": "Jordan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "290e5455-f801-431b-b314-3365dee9e8fe",
+              "84219403-a82a-400a-9b0e-85fe378c56e9",
+              "caef0cf1-20c6-4f70-9ad8-c665254984e8",
+              "0737bbb8-09ca-48ff-a3ab-5658cc87937e",
+              "e114313a-3975-46cd-b6ec-dd2fbe5d673c"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "c2fb8a65-0343-49d4-9d73-cd4c745a1ff3",
+              "1cb9db10-7174-4b09-b330-7d5dd258c738",
+              "c1a47377-75c0-4d84-8f28-311cd2d67b6f",
+              "8d072b9b-d26d-491b-8127-dfa88fd2ce62",
+              "6743cd7c-2f1e-431b-981f-302eaff1daf1"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "b57e3c0a-4dd5-4d6a-a777-464cec25ee99",
+              "9262a127-3ceb-4578-8e2c-de8bad065eeb",
+              "386e34c6-6aaf-4e5d-a924-9ed46f254caf",
+              "1094c734-d65e-4163-8492-8d5fcd6fa6f2",
+              "3d3a42fe-3161-4c0e-9835-f6c99f6a2444"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.2,
+        "uplift_factual_minus_random": 0.2
+      },
+      {
+        "game_id": "7b600523-7ea0-4f89-8b5a-948240a4d8fe",
+        "round": 1,
+        "voter": "Casey",
+        "factual_target": "Ellis",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          1,
+          11
+        ],
+        "arms": {
+          "factual": "Ellis",
+          "oracle": "Bailey",
+          "random": "Kennedy"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "6509c941-323c-4d29-ac24-c566a842c84f",
+              "cc535f7a-a410-41f6-9469-1efaed04907a",
+              "04b11e98-65f6-46bd-a8ce-03b32c56a6ec",
+              "22e1b6b4-f6ca-42a3-af30-0c89dd8850be",
+              "89abaf91-5c50-413f-8cc3-1f3dac8c0628"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "c6725f0f-98d3-4217-96de-48c9477d0c2d",
+              "4c72a7a4-5064-4f9e-9a66-b22be039419b",
+              "a6601f51-239d-4bc1-92d7-dbe07c078971",
+              "ac175725-2418-4278-8725-33fbef20e927",
+              "2fdcfcc3-3995-4df3-a213-7914c84fb9c9"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "f200c143-826b-46d4-be62-903062dc6798",
+              "a2bda64a-75f8-44cd-bbbf-a69300259675",
+              "40945406-376e-4827-8c1f-e0e52804efce",
+              "202b9139-0bc5-46ee-8f31-200e16438a07",
+              "872bc888-47e4-42ff-9be6-c199fbcfff07"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "3845221c-d963-4e1b-b34c-6c857979a1f0",
+        "round": 1,
+        "voter": "Finley",
+        "factual_target": "Harper",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          1,
+          12
+        ],
+        "arms": {
+          "factual": "Harper",
+          "oracle": "Logan",
+          "random": "Alex"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "a892bcd1-2019-4efd-969c-8f1d9e0da139",
+              "b03ac676-7d7a-4491-adc9-b2f103a3c734",
+              "3ac00dfd-8a7c-42d4-999a-2c949717d47d",
+              "b1367434-d941-4780-9e8d-b2f7ad0f9636",
+              "aee8f7e8-78e0-430a-80ab-2826d571cc11"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "976f329b-836c-4505-8750-ca8263390904",
+              "2ecbaa98-fe80-4ad6-bae3-796cebd90fc2",
+              "9d241461-0885-4586-b0a6-c746d0395489",
+              "545e5a44-5340-4f30-825a-38ce7a28544a",
+              "89009cc7-f45d-49a9-b57c-92680cb9872b"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "b3bb48dc-6f2b-4660-8687-14ca96bbbb5e",
+              "71a37241-b3f7-428d-94ab-56ff603e9e6b",
+              "2012e5d5-1508-4846-b251-15aa07b985c4",
+              "1c24e830-3973-4b50-b4a6-e0a1f0180613",
+              "755761ff-9938-489c-9653-e72c0f423a22"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.2,
+        "uplift_factual_minus_random": -0.2
+      },
+      {
+        "game_id": "e6fbee66-7f0a-42c3-9af7-ad582f8153e5",
+        "round": 1,
+        "voter": "Finley",
+        "factual_target": "Casey",
+        "quadrant": "correct_good",
+        "s1": true,
+        "move_good": 1,
+        "fork": [
+          1,
+          13
+        ],
+        "arms": {
+          "factual": "Casey",
+          "oracle": "Harper",
+          "random": "Kennedy"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "53e085e7-270d-412c-85aa-8f09ec231c1c",
+              "2af87a1e-9e56-4010-bf7a-0b0d73b6a9fc",
+              "fb22d1e0-ab95-46cb-9db8-5ddd86279af0",
+              "b040d499-765f-4df7-999a-5b564ab5593a",
+              "d889b8ae-2cae-4edc-a595-d0d7bce53e66"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "86346dc3-009d-489b-877b-e8f4570f421f",
+              "5cc51068-5acd-42dd-9efa-ac7eb9f65ddd",
+              "0c8a28a9-9424-4477-8dad-246e53ada86f",
+              "4c6467b8-562c-4319-b83e-077843c9106d",
+              "ecb5786c-f43a-49ec-8fa8-d63a38018b63"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "182943a3-b87e-4c51-a3fc-5bac8bb51dd5",
+              "3ab76c16-6451-429b-88b3-fabd4003497a",
+              "209c8741-cf37-46e5-a0bf-80a1b75acfcb",
+              "e566e906-31a9-4a04-854e-475560d67481",
+              "94b4498d-d3db-4cb8-bdbe-cc27ac71f6e2"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.2,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "444a8c24-5471-4d33-a065-b8eb46ede8f9",
+        "round": 1,
+        "voter": "Harper",
+        "factual_target": "Indigo",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          14
+        ],
+        "arms": {
+          "factual": "Indigo",
+          "oracle": "Alex",
+          "random": "Indigo"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.6,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "ad93aee4-a3ea-4425-9077-cccbffb3f4bf",
+              "299ccf02-5beb-4949-bc5f-ec71455a7621",
+              "87fc8f31-da54-471b-84cf-1352ecd4999b",
+              "0870c775-06ba-43a4-ba3c-256de265fc89",
+              "22091a22-027c-4278-9b20-3155ea634f49"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "9f4647bc-c03c-4fac-ac32-df4a7b0db5a7",
+              "cc507274-e03f-4c9c-9141-22dfc7837b4e",
+              "39a40a32-bf0f-4b75-8b32-2e3c4364300b",
+              "52c098a3-c3c2-4464-b3a0-dc571cc4f653",
+              "1e5e3843-bded-4475-bd38-df39ed20ac26"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "ad33169b-e9fa-4409-9656-f0576f74ce48",
+              "c0bd7dcc-93b9-4dd2-94c5-6ba8af7a9c27",
+              "8107bf88-6784-47f7-b670-b8e657e0f015",
+              "e8dc5ef7-0509-4dd2-8b07-4ec79ca9a96c",
+              "9780eaf1-c438-4fd0-a96c-f65415cc3019"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.20000000000000007,
+        "uplift_factual_minus_random": 0.39999999999999997
+      },
+      {
+        "game_id": "444a8c24-5471-4d33-a065-b8eb46ede8f9",
+        "round": 1,
+        "voter": "Kennedy",
+        "factual_target": "Indigo",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          15
+        ],
+        "arms": {
+          "factual": "Indigo",
+          "oracle": "Alex",
+          "random": "Logan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "886d2925-18a1-488b-811a-f4fae14c463b",
+              "5f55c537-f4cc-43bd-8f01-5a2227b93f50",
+              "867dbfcb-ba2f-44df-bad4-702359e37d50",
+              "9efc37f4-ab36-4367-a1b6-957cbbfd7b03",
+              "0d520d38-be68-4628-9e1c-b2adae0b51a5"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "2f6829b0-1b44-464b-9f0c-ddc909495b3f",
+              "0d8d8b83-4fe5-4709-8fd1-8359fecfbbe2",
+              "68188fd5-8381-474b-acff-f37152e3b3c9",
+              "7e436c2f-38cc-41e1-8a48-39f288c8fb19",
+              "dc30e6dd-7e3e-40c0-ac3c-97a519482ac5"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "5b6cdc89-2779-4590-9b23-32fd32d36340",
+              "701b8c60-d87a-4a7f-af4e-0c41af494b5f",
+              "f95e50fc-27a0-4d58-83bd-de0ac04cf949",
+              "b4acdf07-e6ab-4708-bf46-3112745d7053",
+              "e5879458-e03e-4ef8-8c19-d4f338c31719"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.6,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "532d5f19-00c2-4723-8462-4c9bdcbc1ef9",
+        "round": 1,
+        "voter": "Indigo",
+        "factual_target": "Finley",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          12
+        ],
+        "arms": {
+          "factual": "Finley",
+          "oracle": "Casey",
+          "random": "Ellis"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "02774b27-a16f-45de-871f-d32c756d2ff8",
+              "5b74afe1-914e-4190-9fc3-296562debe00",
+              "8f3651dc-5208-4ec3-880a-3deadeaef7d2",
+              "e15522a7-ca32-46b2-b467-45b51308b5cf",
+              "338b74c0-4e97-456c-9504-4f45110f68a4"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "fcb40193-388a-4b6d-bebd-b95232eb3ec1",
+              "e27fcbf4-b7c5-4b34-84d9-be59694bdd31",
+              "0a712f51-fc03-485b-a0bb-b457f77a8b91",
+              "4dc155de-0ad8-4cfc-b3c0-f50e137eb479",
+              "fdc298c7-acab-434d-96ad-f685aba19555"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "dc14a4f8-b2d0-47b0-af19-ba4a2fdd82be",
+              "a66b589b-ad18-4897-b952-b73b461a8a22",
+              "85770039-f0da-4661-b498-7e8332694346",
+              "95ed3856-069e-4c3e-9347-a166b1edb184",
+              "ebcee52c-3e3f-4019-acdf-1ded9dfe4322"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": -0.2
+      },
+      {
+        "game_id": "7b600523-7ea0-4f89-8b5a-948240a4d8fe",
+        "round": 1,
+        "voter": "Alex",
+        "factual_target": "Casey",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          15
+        ],
+        "arms": {
+          "factual": "Casey",
+          "oracle": "Bailey",
+          "random": "Bailey"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "72c1abd8-05bf-4c49-bccf-a6c48b003b88",
+              "4dd27af2-e1e6-4c8a-8d43-968c3983577a",
+              "72a1e6f6-7daf-48f6-8a62-51fe30a7f408",
+              "c6be2d7c-0680-4c48-a67f-9f97c1086191",
+              "71cce818-8a48-4b58-a4f5-881a61a9094d"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "ef607238-872b-42a8-8327-8feca584eb93",
+              "a55851b8-3c6f-4d90-8662-1ace9f3e7249",
+              "92d2b147-3e3a-4522-8447-7954c70ce1a9",
+              "f9dc329c-6b32-4941-8781-dda84a2cf85b",
+              "c04cc1b3-3816-4a2d-ba3f-a668fe137737"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "193d5059-68ba-4f19-abfb-4b7b302a415e",
+              "8bf30415-eb15-4819-b906-37c49c90556b",
+              "a7623548-525f-4ea8-99a4-128d095824f5",
+              "3ee59619-bce0-41d2-9cc3-44d9e9d88aa1",
+              "8411245d-cd38-48ef-843a-a43618f60d4c"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.19999999999999996,
+        "uplift_factual_minus_random": 0.19999999999999996
+      },
+      {
+        "game_id": "1fd04804-e77b-4650-b764-50f348cef0bd",
+        "round": 1,
+        "voter": "Finley",
+        "factual_target": "Casey",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          13
+        ],
+        "arms": {
+          "factual": "Casey",
+          "oracle": "Alex",
+          "random": "Jordan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "d8ba137f-59cf-43a5-a61e-c97bbe826447",
+              "2cf9a42b-9919-4879-86d6-b439f592e976",
+              "a48cf4ad-b313-4ad8-b7e7-660afdf9f41d",
+              "ec500b1b-3182-40a5-a5f4-630ce71ff6ef",
+              "259aad93-81b8-48fc-a2e9-fb07fc850c0b"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "8cf22a33-f601-483a-8574-6e6432d2715f",
+              "0fd24a49-5cf2-4acd-81f0-b6f94bb73d1b",
+              "41bd95e7-d171-461d-b374-f4705210070e",
+              "decc8d82-8570-4065-8baf-442d5576eab8",
+              "fc948fda-61ce-48e3-bf68-2a813ef92421"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "794de8cb-a241-4951-a499-b296e51f7d29",
+              "df0a1036-bf28-48c0-aa9e-b0b1d523d5f4",
+              "1a53d573-6264-4b79-a1bb-ec918ff31a21",
+              "206c4a26-c21e-4ef3-8ff3-9860d80db936",
+              "e5ba4619-9bab-475b-906d-57996baab9a3"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.2,
+        "uplift_factual_minus_random": 0.2
+      },
+      {
+        "game_id": "532d5f19-00c2-4723-8462-4c9bdcbc1ef9",
+        "round": 1,
+        "voter": "Ellis",
+        "factual_target": "Indigo",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          10
+        ],
+        "arms": {
+          "factual": "Indigo",
+          "oracle": "Casey",
+          "random": "Kennedy"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "f48244e3-f1df-4c9f-9deb-eebac6786b23",
+              "533a647a-aa40-4a89-a8c6-5db64d74041e",
+              "d26df7d6-fa49-41a9-8fda-d7b639c52b96",
+              "f4ee804e-d712-427c-8421-ae5089fe3a47",
+              "536c4a17-a658-4c16-9961-909702cef426"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "e16e35a9-531e-4afd-ad24-87aefeefced3",
+              "2363d196-e2ba-472d-b9d4-327eb2ca7457",
+              "a3fa2d97-7679-4271-a687-85d1291b8979",
+              "27afbd60-95d6-460f-99e9-75b224703744",
+              "f96affc7-0916-47b1-9820-6818e981c55d"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "9d0a606a-4fad-478a-bee6-45a540e00593",
+              "b32c8f56-ae32-4267-88ce-4e0b75e3f8b1",
+              "5f3089a9-0eea-4afd-8447-159c6bb53052",
+              "755519a9-ddbf-430d-ad9e-32fb89065487",
+              "c27fd610-ad2e-4d15-b425-5a855566f84d"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.2,
+        "uplift_factual_minus_random": -0.2
+      },
+      {
+        "game_id": "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+        "round": 1,
+        "voter": "Dana",
+        "factual_target": "Casey",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          11
+        ],
+        "arms": {
+          "factual": "Casey",
+          "oracle": "Ellis",
+          "random": "Ellis"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.6,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "9d7da3c2-3d7d-4d80-a132-bf0eaaef405a",
+              "bade81a9-11d3-4ae1-8dd8-d50463938e0a",
+              "f3bdab65-5595-4fe5-85f4-263f66950bfb",
+              "4da09e8b-657a-4292-83d9-5a29cbf03935",
+              "c114bfc8-0672-40ca-9958-b307756ccf7e"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "87fbb89d-c557-4e51-a42e-9a8bba969855",
+              "92925d7a-c9c0-4dcc-9d1d-9d3254f3079c",
+              "e8beec49-75c0-4505-bec2-c90093f4bd69",
+              "d6f2490e-5028-48cb-8013-f6c678e02246",
+              "a40e1f23-de44-4d3d-9e17-e4a062e616cb"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "5526ca52-2771-40f0-9d2c-a0f0ebe23b1e",
+              "8db725d8-f218-452c-8d1f-1209b800292c",
+              "cc3c6f79-40da-4b0c-bfe4-703296cb4084",
+              "a81d48bb-0f50-4de7-ad16-eda41d253145",
+              "025e0cec-5dcc-493e-84e8-bdda8eb0d631"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.19999999999999996,
+        "uplift_factual_minus_random": 0.6
+      },
+      {
+        "game_id": "b5aad820-3189-443a-a5ec-d0b7944540f2",
+        "round": 1,
+        "voter": "Bailey",
+        "factual_target": "Harper",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          12
+        ],
+        "arms": {
+          "factual": "Harper",
+          "oracle": "Alex",
+          "random": "Logan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "056b2ff8-687d-471c-9af0-4648674ddb9e",
+              "1df17b42-0762-4b5f-917d-d8f496dd35cc",
+              "40529622-96f8-415a-b3a5-59aa314860d3",
+              "93e9a020-70e1-4927-8dda-59766573205d",
+              "af0798ea-7ca9-4d83-b4c9-8238a65c9ddc"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "aa3006e0-c5f4-43c1-8f1e-b90565941ed8",
+              "cc1de161-8a58-48de-ac91-f2cc1a0ed3f5",
+              "0f6fd8f4-724a-4405-9571-6d355cd37d46",
+              "037d3b25-407b-4575-a9bc-22a250882d32",
+              "20bb9658-167e-4658-a23e-9641914117e0"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "88a9b07f-e075-43f9-8a09-5183fc8c48f9",
+              "2efe9c14-19a8-4c76-a154-1a431252faf3",
+              "4ef5fdde-bc90-4100-ac41-3ac02e7d16e9",
+              "bb6266d4-1c7a-424d-8023-e8c7a7139cd7",
+              "9a4bb237-f47b-448c-b426-39f3f66ddb64"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "96c880d7-aa7f-41e3-a386-e505d759cab4",
+        "round": 1,
+        "voter": "Dana",
+        "factual_target": "Indigo",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          12
+        ],
+        "arms": {
+          "factual": "Indigo",
+          "oracle": "Ellis",
+          "random": "Gray"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "da7181f2-43b7-46c5-9c5b-855357386cea",
+              "a3dd42c7-c627-468c-adc7-38976e907541",
+              "36ed60ad-0ef5-459d-93eb-5567b33fed99",
+              "f94d5dd8-ae34-48c2-8fc7-2e8394a814c0",
+              "d223154d-4356-4200-8475-03acba34d9ce"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "ffe5f061-c3dc-4228-88c2-163120b92cfc",
+              "b9cca8b1-e568-4966-830d-2e46e2221119",
+              "43628181-cc5e-48ff-a871-25b0c62f479d",
+              "a34d2038-2d11-4ba9-b6c4-66ff4297312b",
+              "8f1e9c9f-8b40-447f-9fd1-1a182028186a"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "ff0c6fb1-4f1c-41c4-9942-552453a48d33",
+              "7e6d11fd-aa1b-4b2e-8c3f-a7ab2f55d1e5",
+              "6b32b20c-df39-4e1d-b2e9-b1b0dbdcf4af",
+              "4ef2a5c8-fa22-4149-bc8f-904b96bd8167",
+              "6476e7ef-3648-4846-bf65-cb167947f94a"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "0da78714-88e0-4445-b161-f2eaf029184c",
+        "round": 2,
+        "voter": "Finley",
+        "factual_target": "Dana",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          2,
+          6
+        ],
+        "arms": {
+          "factual": "Dana",
+          "oracle": "Bailey",
+          "random": "Jordan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "08d98bfd-b922-491c-a200-9c19474fe3ce",
+              "9f045098-90ad-4b51-8aef-47103727c7b0",
+              "24b677bf-b80c-432f-ab81-252a35a31c81",
+              "f478eb75-6722-458b-9a08-dbe8a35c8762",
+              "31cca016-2012-415f-a8a2-fc308cd155f6"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "dc4e1e1d-9ca4-4f79-a13e-51629ffc9c23",
+              "2ae63aa8-9842-48dc-bfb5-24e0db54687c",
+              "8bd1f0d2-5758-4666-95eb-29852c8ea4e5",
+              "a56999a5-8bba-4caf-9cfa-a3498b99bcf4",
+              "3e225941-f95c-4a85-aa25-90574f553c28"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "f932387f-7257-4989-aadb-142053c21c99",
+              "5ca24c1f-3b1a-4ab1-9786-7f77297befaf",
+              "e95fa7ad-1909-4f75-86cb-48e898b6f8bd",
+              "f3a98408-2c8c-4ced-9aa2-0b5c48a23e55",
+              "a35c6335-8f29-4a1a-94d0-ac7d59965178"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "7b600523-7ea0-4f89-8b5a-948240a4d8fe",
+        "round": 1,
+        "voter": "Kennedy",
+        "factual_target": "Casey",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          17
+        ],
+        "arms": {
+          "factual": "Casey",
+          "oracle": "Bailey",
+          "random": "Ellis"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "4059d9d8-03f9-4d62-8bdf-5a35b5db3602",
+              "054125a5-5b6e-45ac-bdf0-5022b3102ae1",
+              "e904cfb1-1ddb-4848-81f7-6473fb137891",
+              "02e5160d-804c-4b7b-9ab3-6313f7000e5b",
+              "e290133e-b3e1-4524-9092-b320e41ff846"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "74c97563-e0e5-44f5-9ef6-567e6de91bfb",
+              "1a0d7395-30c2-4859-b70f-ae8c86e455a2",
+              "26e29cd8-5b0d-4d1e-bdd4-2973d4cfdd0a",
+              "1c90980b-d335-4a34-a15d-2cf5c665cdda",
+              "29429891-8377-4d09-8d43-e7c63e041f56"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "3378933e-162e-4f7a-b9a4-0e41c0ea3055",
+              "3b0f3742-e7d2-454d-b5ac-460c4bae09fd",
+              "c5f880bf-a311-4661-a98d-9f8bb7ff3776",
+              "385ca50c-8524-4070-b8ae-d18603ce209e",
+              "095799f4-805b-4007-8165-c142437d3635"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": -0.19999999999999996,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "1fd04804-e77b-4650-b764-50f348cef0bd",
+        "round": 1,
+        "voter": "Ellis",
+        "factual_target": "Jordan",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          12
+        ],
+        "arms": {
+          "factual": "Jordan",
+          "oracle": "Alex",
+          "random": "Finley"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "d2dabe47-c79a-48e2-9dbe-bc404ba76224",
+              "8bf87582-35e2-406e-9834-25523da2f829",
+              "4fdd306c-4a65-40d2-b3b4-b81250477b1b",
+              "3abc7fb2-c0d1-47d7-8df4-9fb4869beb83",
+              "a7bfa64f-dc7d-4dd1-bd1d-157c61785a2b"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "b6b3dd8e-d23b-4038-b8e5-d57561c6b474",
+              "57882d8a-767a-4da7-815f-16a7618aee36",
+              "8054df59-9376-4dc1-864f-69f8f177b83d",
+              "12317b60-d3ac-46ea-be2d-eef137e2fa63",
+              "ff9f156f-8c74-4392-9448-b10daacfdee8"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "ab768eb7-41d2-4761-b90c-4cde1e7ba455",
+              "49adae45-8173-48aa-8050-0b187f842504",
+              "a716f814-b43d-4fa7-af7f-593d4cc6cbcb",
+              "9f8a33ad-855f-45d3-a4f4-128876693505",
+              "31ef5f4b-80fb-4f4b-b2a5-536ccd25417b"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "36594b66-05d1-434c-be65-13360eafca9e",
+        "round": 1,
+        "voter": "Alex",
+        "factual_target": "Gray",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          10
+        ],
+        "arms": {
+          "factual": "Gray",
+          "oracle": "Finley",
+          "random": "Logan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "b39d3d89-b451-46f7-8d62-36f73607a7ec",
+              "1c09363c-cee7-484e-91b5-cce2da2d68f8",
+              "705e5d0a-a9c7-4660-8a21-9902a6ac3c1a",
+              "0e92d569-cf25-4613-8726-11f6221c8fcb",
+              "bdb2dc91-aca4-4aae-830a-270ffc4b1b79"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 1.0,
+            "winners": [
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "66ba301e-084c-4042-a1d5-c05e3af65fef",
+              "1664b9d1-a0e9-45e3-8426-4552ae519f4e",
+              "fc780820-9b63-44ed-997c-ca76994b14fe",
+              "f10b6110-86a1-4541-8f5b-976fd92157f0",
+              "737b3415-6de6-4f90-b13f-609ee516e11d"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "2dc30d98-d971-4a74-8e5e-d3950ccda72d",
+              "3e9b99d3-5668-4558-9253-df97289a5451",
+              "487844de-a9b9-4fbf-b46d-b0107ed78f72",
+              "6acc5be6-7d66-4398-9106-9019aa612aba",
+              "945e4454-ced0-4f6f-a053-b35762c0467d"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.6,
+        "uplift_factual_minus_random": -0.4
+      },
+      {
+        "game_id": "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+        "round": 1,
+        "voter": "Jordan",
+        "factual_target": "Dana",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          14
+        ],
+        "arms": {
+          "factual": "Dana",
+          "oracle": "Ellis",
+          "random": "Logan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "92dc56a9-870b-4833-83b0-a6c24de92301",
+              "b7d331bc-84cf-413d-a257-c1babfd83a54",
+              "cd01ff4e-abc7-4dc9-b84b-0e8b90598d2c",
+              "d63162eb-3d23-4cd0-9834-d4ab79cc0e74",
+              "a1beb50f-aee6-4cbb-b9dc-cbf8353bd187"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "bd5d2d66-db8a-4320-8dd1-44caa545e4a5",
+              "966377ef-985f-42f2-bde5-b1ca1c8b34d0",
+              "985b092e-8147-479a-b1cb-80e4510db9fc",
+              "8b13e330-84ae-4a9d-862b-02a5865d6edc",
+              "b8db57a5-e5fc-4db7-9e2f-b607d76d768d"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "913c7332-ae12-47c9-a41a-6555aafa2f10",
+              "aae0014c-cf56-49d3-b635-c6d308c27da8",
+              "42215fde-8728-4ceb-9fe9-541b60fc50d8",
+              "b487091a-0b16-4c67-af63-164767d33df1",
+              "4364100d-4efd-4185-81fe-bf136050d1dd"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "8619db8c-f526-4307-a2c4-f1da69db376a",
+        "round": 1,
+        "voter": "Bailey",
+        "factual_target": "Harper",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          14
+        ],
+        "arms": {
+          "factual": "Harper",
+          "oracle": "Alex",
+          "random": "Ellis"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "362dab40-5e11-4c21-8a7f-81b65ba6d33a",
+              "d1c0a1f3-d43c-4437-986c-07cfc8af3f1f",
+              "46213100-1471-47c6-92d8-f1280b22ea55",
+              "fefaa753-be98-4a9c-9487-36c4ecc9ed0c",
+              "dea1fdac-a9b8-4013-9000-561b791bb622"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "6cce9b6b-b3d8-455c-b13e-f1334eb96bf0",
+              "a60b9f50-f491-464b-b25e-3d4857366402",
+              "fab41835-34f2-472a-96d3-a8eeae921820",
+              "4449bb2a-b618-4feb-a136-3772a254c75e",
+              "84124ff9-ecbd-406f-88a1-6082d00a7ce2"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "a2f3460f-ec21-40fe-97b6-e842bc850173",
+              "a74f76d9-1f90-42cc-9d40-b804a921c41b",
+              "6d3be5d6-e1d2-4f5d-b7a7-616718a6875a",
+              "f0c1cf5a-335a-43f9-8429-a01411c2e00d",
+              "28b39811-774c-4a03-bc3f-bc5e7e075a6b"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": -0.2
+      },
+      {
+        "game_id": "36594b66-05d1-434c-be65-13360eafca9e",
+        "round": 1,
+        "voter": "Casey",
+        "factual_target": "Gray",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          14
+        ],
+        "arms": {
+          "factual": "Gray",
+          "oracle": "Finley",
+          "random": "Gray"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "473e4bd4-2260-46eb-bd29-4585dddf60f4",
+              "9ef09912-f226-428e-8cb1-56baa767c9a3",
+              "30bfed23-8b51-4bdf-b986-3dca09872286",
+              "ccfe63e4-1ab0-4893-974c-ac217664a17d",
+              "0ef5d948-f470-4416-9850-35146e7c5e34"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "b44ce68d-15f6-4df5-8965-ff2e65394f9d",
+              "eed5a9ca-f059-4338-b8a5-c47e1a35ffd9",
+              "1022d959-1213-41bc-b4cd-9c07572c44e6",
+              "5ce43cc4-122c-4799-a2b8-cc06a4d644da",
+              "75df46fd-be2d-4bdb-8878-108ff302877e"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "06f418d3-d5d3-4be9-b3d0-86a2caf28d22",
+              "4ee479b8-6da2-45a4-b8e2-61f5c815396a",
+              "9fee7cf7-7157-455a-95da-cad5a78bbb11",
+              "e33c8698-b54c-4dd7-be87-a09807964638",
+              "bbf31b58-dc1c-46b6-adf9-367d17b2b9fd"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "af0d9149-a53a-4b59-b220-8688e0551acf",
+        "round": 1,
+        "voter": "Bailey",
+        "factual_target": "Harper",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          13
+        ],
+        "arms": {
+          "factual": "Harper",
+          "oracle": "Dana",
+          "random": "Casey"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "e10c3ed5-13a9-477d-9556-ae1331db2e5f",
+              "55b8ce7e-3b03-4a26-bbc1-ea59113f92dc",
+              "823392c3-c6fe-4e7d-82b6-76dbf094c695",
+              "a1aa58ac-aa60-45f7-bca5-cce7fd1c6570",
+              "0e4180c5-b7ee-4e74-bb65-aaaa5116a609"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "03837b19-89b4-45dc-86b2-72bc9834b2b2",
+              "9074496d-f8b6-49a1-bf0d-d15eafbc9c23",
+              "e5fed8b2-1a87-40f0-8803-d88d8bd1975c",
+              "b0e3c78d-fe63-41cf-a370-358b49c63434",
+              "3c483b3d-f741-4706-a21f-8c6b829fd40d"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "72c5fcbc-8925-4273-9c6d-871d9f082633",
+              "c53de78b-5cf2-4a24-b10d-3712ec6566ff",
+              "8f5cd786-89ec-427e-a54c-7935c21dd347",
+              "99a2e450-27ae-476b-85aa-f93593cd8d19",
+              "cc3a0602-7573-4b02-850b-8dbcc96f97f8"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      },
+      {
+        "game_id": "96c880d7-aa7f-41e3-a386-e505d759cab4",
+        "round": 1,
+        "voter": "Bailey",
+        "factual_target": "Indigo",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          11
+        ],
+        "arms": {
+          "factual": "Indigo",
+          "oracle": "Ellis",
+          "random": "Dana"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "a3926787-3f69-4b64-9f3c-ed227eb539d2",
+              "c3dd1b31-52ff-4534-8f77-c96cf3f017fe",
+              "c2d72169-e25f-4b7e-8cfc-3300d615d431",
+              "e525c070-06de-4a9f-b00b-d22d0465f70d",
+              "1aeac567-54a6-476b-a66e-9f8995e6f926"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "f5894759-d998-4b89-9fee-b216bb824ab4",
+              "20eaeef6-0c4d-4e61-8418-b1424f8ade86",
+              "711cdbdb-7815-437c-8846-5431c173b600",
+              "27fe52a5-e00c-4659-b8a4-78cd656368c0",
+              "86e79f1b-febc-4e64-ac7f-a09471e70e7b"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "ab420f3e-a57e-4377-9425-bfc5123336b8",
+              "d63f73cf-c74e-4981-a4cb-cefec5f816b2",
+              "4ed70962-b7f5-4392-9176-638a8170102b",
+              "fee43328-8505-412f-8be3-bb8aa03e162e",
+              "face7364-ff1e-48c4-93a5-5d203743f704"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": -0.2
+      },
+      {
+        "game_id": "186742a9-6eca-4eed-bb2e-890ba6897020",
+        "round": 1,
+        "voter": "Indigo",
+        "factual_target": "Bailey",
+        "quadrant": "luck",
+        "s1": false,
+        "move_good": 1,
+        "fork": [
+          1,
+          12
+        ],
+        "arms": {
+          "factual": "Bailey",
+          "oracle": "Gray",
+          "random": "Bailey"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "2a7e0a04-6fa9-43f2-bf84-fffbdb213d94",
+              "b4c273ae-61e9-49de-b93d-a5f86356e261",
+              "106348b8-c121-4de9-85e1-f3a9ee471c63",
+              "e18f30f0-ce84-4364-ba0b-f01df4a8f5e2",
+              "741c0532-7882-4b54-a48a-c5a851c03677"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Villagers",
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "fdca9f8d-123a-4caa-9f87-fac7e52c02a8",
+              "24d0696a-2d5b-44f0-a1c0-c152715baf0b",
+              "06676625-3130-4099-ae33-7fe099c0a9f3",
+              "e84f3dfa-e71e-4e12-ad0b-74167bb4e8eb",
+              "141d05ef-b271-4c0d-8b5a-90f4364ddbe8"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.2,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "6d2aa3d6-94b7-40d1-9f13-b718ce047187",
+              "857cb575-00b1-45f5-9899-4eeb42d5b442",
+              "fae54c1f-859f-4f5e-86ab-4258f5f4bfcf",
+              "b26964ba-de57-4062-9ad0-7c6751b3d147",
+              "c8cafe22-954b-498d-9c47-59ba39e365c4"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.2
+      },
+      {
+        "game_id": "b2a02ac2-a268-406d-b6d6-1cf8bb4d9a07",
+        "round": 1,
+        "voter": "Bailey",
+        "factual_target": "Kennedy",
+        "quadrant": "policy_gap",
+        "s1": true,
+        "move_good": 0,
+        "fork": [
+          1,
+          12
+        ],
+        "arms": {
+          "factual": "Kennedy",
+          "oracle": "Gray",
+          "random": "Jordan"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.4,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "bb523db1-7c6b-49ae-a8fa-182f257e54ef",
+              "cba9a0a5-c722-4ec1-a82d-c28016b35af6",
+              "251fe4e1-d5ba-422f-8a20-c48b106a75f8",
+              "70a02d24-5089-4cd8-a26c-00dbcb62e31b",
+              "831de7ce-5c23-4c06-96ed-714871f680bd"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "05643d4a-08a9-4ec5-bff7-83c8f68ed1c3",
+              "08534f36-fa31-4835-b644-9f8cf3e463ba",
+              "2cbeb3af-8a7f-4d9b-988f-cfea5eaafe4e",
+              "7f399db0-1c9f-4c6d-940c-19fb6d31048c",
+              "6ccf8c16-5979-4ac3-8ece-0dc678beedea"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.8,
+            "winners": [
+              "Mafia",
+              "Villagers",
+              "Villagers",
+              "Villagers",
+              "Villagers"
+            ],
+            "fork_ids": [
+              "dc193edc-f378-4b1b-a580-b9c56d2242e6",
+              "9aed7b8a-b0fb-4469-9021-bcf3bf73ef4f",
+              "45b794bf-61ae-41d2-9cf2-cb84ad0f29fb",
+              "4bd0e958-e547-46d2-a4e7-afb8f8032178",
+              "6b5cfa2a-0ece-45d9-998b-adb2146cf86c"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.4,
+        "uplift_factual_minus_random": -0.4
+      },
+      {
+        "game_id": "b5aad820-3189-443a-a5ec-d0b7944540f2",
+        "round": 1,
+        "voter": "Jordan",
+        "factual_target": "Bailey",
+        "quadrant": "perception_gap",
+        "s1": false,
+        "move_good": 0,
+        "fork": [
+          1,
+          14
+        ],
+        "arms": {
+          "factual": "Bailey",
+          "oracle": "Alex",
+          "random": "Harper"
+        },
+        "side": "Villagers",
+        "win_by_arm": {
+          "factual": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "4c5d860a-b8a7-45f0-9074-1d25c786d2c6",
+              "e7dd0729-f0fa-4f78-96c8-7d404c191cff",
+              "e2b74f56-389d-4b6d-83da-63ddf09ecbf7",
+              "85950437-a9d2-43d6-87dc-40322ff33c19",
+              "1c894c90-e5d1-4935-b306-cd0b75bf5594"
+            ]
+          },
+          "oracle": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "06214b3e-4a4c-41f2-b26d-a12299d1de44",
+              "c81ce663-fb29-4e5a-b233-a456ab25e862",
+              "7e6af2a8-301f-4f22-9e7d-fa6a0d65e9ef",
+              "b2ce49a9-af8b-486f-8567-6d26fb8d4cff",
+              "9894b86e-0fff-4aad-a0ce-88aeb9861a91"
+            ]
+          },
+          "random": {
+            "n": 5,
+            "errors": 0,
+            "p_villagers_win": 0.0,
+            "winners": [
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia",
+              "Mafia"
+            ],
+            "fork_ids": [
+              "2ab8c325-d4c0-4e40-ad43-36508a85790b",
+              "d2ec295e-dd84-4ef5-a6fb-7e2377c435ae",
+              "2c34a54a-711e-498f-8138-c85dd9d1871d",
+              "50a8ea9c-e4cc-4ada-8d28-bee60c2526bb",
+              "fdcacd4f-4b36-4249-a8a7-34d8f77edf55"
+            ]
+          }
+        },
+        "regret_oracle_minus_factual": 0.0,
+        "uplift_factual_minus_random": 0.0
+      }
+    ],
+    "n_replays_per_arm": 5
+  }
+}

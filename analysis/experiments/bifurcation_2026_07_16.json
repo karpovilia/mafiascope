@@ -1,0 +1,4391 @@
+{
+ "title": "Idea 06: bifurcation points — 500 hi-T samples, 20 maxmin-diverse variants, 1 fork each",
+ "date": "2026-07-16",
+ "sampling": {
+  "model": "deepseek-chat",
+  "temperature": 1.2,
+  "max_tokens": 400,
+  "n_samples": 500,
+  "n_selected": 20
+ },
+ "selection_seed": 20260716,
+ "by_quadrant": {
+  "policy_gap": {
+   "n_points": 8,
+   "mean_p_villagers_win": 0.05625,
+   "mean_flip_share": 0.05625,
+   "controllable_points": 4,
+   "mean_rounds": 2.375,
+   "mean_cos_selected": 0.9289823323488235,
+   "mean_cos_random20": 0.9510917479917407,
+   "modal_target_concentration_mean": 0.68425,
+   "factual_is_modal_points": 4,
+   "p_v_win_vote_mafia_pooled": 0.15217391304347827,
+   "n_vote_mafia_pooled": 46,
+   "p_v_win_vote_other_pooled": 0.017543859649122806,
+   "n_vote_other_pooled": 114,
+   "flipping_variants": [
+    {
+     "point_id": "poli_96c880d7_r1_Dana",
+     "variant_idx": 2,
+     "vote_target": "Ellis",
+     "target_is_mafia": true
+    },
+    {
+     "point_id": "poli_b2a02ac2_r1_Bailey",
+     "variant_idx": 4,
+     "vote_target": null,
+     "target_is_mafia": null
+    },
+    {
+     "point_id": "poli_3845221c_r1_Alex",
+     "variant_idx": 2,
+     "vote_target": "Harper",
+     "target_is_mafia": true
+    },
+    {
+     "point_id": "poli_3845221c_r1_Alex",
+     "variant_idx": 9,
+     "vote_target": "Harper",
+     "target_is_mafia": true
+    },
+    {
+     "point_id": "poli_3845221c_r1_Alex",
+     "variant_idx": 12,
+     "vote_target": "Harper",
+     "target_is_mafia": true
+    },
+    {
+     "point_id": "poli_3845221c_r1_Alex",
+     "variant_idx": 17,
+     "vote_target": "Finley",
+     "target_is_mafia": false
+    },
+    {
+     "point_id": "poli_0da78714_r2_Dana",
+     "variant_idx": 1,
+     "vote_target": "Bailey",
+     "target_is_mafia": true
+    },
+    {
+     "point_id": "poli_0da78714_r2_Dana",
+     "variant_idx": 4,
+     "vote_target": "Bailey",
+     "target_is_mafia": true
+    },
+    {
+     "point_id": "poli_0da78714_r2_Dana",
+     "variant_idx": 9,
+     "vote_target": "Bailey",
+     "target_is_mafia": true
+    }
+   ]
+  },
+  "perception_gap": {
+   "n_points": 8,
+   "mean_p_villagers_win": 0.0625,
+   "mean_flip_share": 0.0625,
+   "controllable_points": 6,
+   "mean_rounds": 2.35625,
+   "mean_cos_selected": 0.9327944740653038,
+   "mean_cos_random20": 0.9574375143647194,
+   "modal_target_concentration_mean": 0.8718156565656565,
+   "factual_is_modal_points": 8,
+   "p_v_win_vote_mafia_pooled": 0.05263157894736842,
+   "n_vote_mafia_pooled": 19,
+   "p_v_win_vote_other_pooled": 0.06382978723404255,
+   "n_vote_other_pooled": 141,
+   "flipping_variants": [
+    {
+     "point_id": "perc_0da78714_r2_Finley",
+     "variant_idx": 3,
+     "vote_target": null,
+     "target_is_mafia": null
+    },
+    {
+     "point_id": "perc_0da78714_r2_Finley",
+     "variant_idx": 7,
+     "vote_target": "Jordan",
+     "target_is_mafia": false
+    },
+    {
+     "point_id": "perc_0da78714_r2_Finley",
+     "variant_idx": 9,
+     "vote_target": null,
+     "target_is_mafia": null
+    },
+    {
+     "point_id": "perc_36594b66_r1_Alex",
+     "variant_idx": 18,
+     "vote_target": "Gray",
+     "target_is_mafia": false
+    },
+    {
+     "point_id": "perc_36594b66_r1_Casey",
+     "variant_idx": 4,
+     "vote_target": "Gray",
+     "target_is_mafia": false
+    },
+    {
+     "point_id": "perc_6a66aa14_r1_Jordan",
+     "variant_idx": 1,
+     "vote_target": "Casey",
+     "target_is_mafia": false
+    },
+    {
+     "point_id": "perc_8619db8c_r1_Bailey",
+     "variant_idx": 1,
+     "vote_target": "Alex",
+     "target_is_mafia": true
+    },
+    {
+     "point_id": "perc_96c880d7_r1_Bailey",
+     "variant_idx": 5,
+     "vote_target": null,
+     "target_is_mafia": null
+    },
+    {
+     "point_id": "perc_96c880d7_r1_Bailey",
+     "variant_idx": 14,
+     "vote_target": "Indigo",
+     "target_is_mafia": false
+    },
+    {
+     "point_id": "perc_96c880d7_r1_Bailey",
+     "variant_idx": 15,
+     "vote_target": "Indigo",
+     "target_is_mafia": false
+    }
+   ]
+  }
+ },
+ "points": [
+  {
+   "point_id": "poli_1fd04804_r1_Finley",
+   "quadrant": "policy_gap",
+   "game_id": "1fd04804-e77b-4650-b764-50f348cef0bd",
+   "round": 1,
+   "voter": "Finley",
+   "factual_target": "Casey",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 20
+   },
+   "p_villagers_win": 0.0,
+   "flip_share": 0.0,
+   "controllable": false,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.05,
+   "rounds_min_max": [
+    2,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 3,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9219815135002136,
+    "mean_pairwise_cos_random20": 0.9416908138990402,
+    "random20_std": 0.0026223879398060298,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Alex": 66,
+    "Bailey": 8,
+    "Casey": 40,
+    "Ellis": 10,
+    "Jordan": 376
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "27ae973c-8b37-412e-a5c9-5a04b318cdbc",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "ab28cab7-9d0a-4473-8634-1148685b1aa7",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e74e42f5-cdea-473c-b7ca-6ec6e0379f60",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Ellis",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "d49954e3-be27-4948-918f-6c546613cbb7",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9ff0b0c0-6d16-4704-b04a-f1447c2c563f",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "c695b62d-5bf8-4fb4-9170-0b3dfdf9141c",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "2e6bce60-f6d1-4d68-8cf8-2bb447bc2307",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "12242497-a45f-4f77-96f3-b9fabee9a9a4",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "88f4c550-1948-4aad-8f8e-06678ff5555f",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "95e9b8db-32e3-4d0f-b90c-9eb48fb3aa12",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "7318c10d-de17-4e70-8ace-4c98102ccc4b",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "1e0ae6ba-5aab-4d0a-bbb2-d9e296809de7",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "bd2b044b-c3ea-4142-94fd-d2a95669d58f",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "3d5a06d3-b9ed-42b5-80fb-fd548d27fce7",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "981d5623-65b6-4994-bdb0-2b5f9596ee33",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f1844ae5-29ed-4cef-9852-a26d4dc4bd0c",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "7d59d099-4b61-4e84-8947-68cd580a43fc",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "7f43673f-e8f6-4af9-94ea-c0b0243af994",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "857ce69d-2be2-4b2b-bf3c-6e5c7269019a",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "1d4bad21-b41d-44ce-9b96-9b018b55b49e",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "poli_6a66aa14_r1_Dana",
+   "quadrant": "policy_gap",
+   "game_id": "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+   "round": 1,
+   "voter": "Dana",
+   "factual_target": "Casey",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 20
+   },
+   "p_villagers_win": 0.0,
+   "flip_share": 0.0,
+   "controllable": false,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.0,
+   "rounds_min_max": [
+    2,
+    2
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 11,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9361839890480042,
+    "mean_pairwise_cos_random20": 0.9525646770000458,
+    "random20_std": 0.0019994907536627715,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Casey": 196,
+    "Ellis": 19,
+    "Finley": 271,
+    "Jordan": 5,
+    "Logan": 8,
+    "None": 1
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "d304bdaf-8842-40d7-8f0b-ca44915dd59b",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Ellis",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "cbdfaa06-0c16-4f46-83d4-3660c9f73310",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "ffed12d2-16eb-46d6-b96f-c85e17b904a6",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "a89658b1-dfa6-4a37-a245-cb9a7e3b29b8",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Logan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9da8258c-c939-4e3f-9595-9acce1ab84ba",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "ee606aca-764c-4d36-8120-65135b5060f9",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "252b0bb3-8720-44a1-89fc-982ef377a1da",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "4048ef3f-f403-44e1-b5a5-a7833a788eed",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e4d1e8e1-5011-4371-8819-67c24e182d2b",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5fa199bd-0ca9-4dbe-a8fa-f21b68800309",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "2313ad44-e8a9-41a1-baa4-c781bb78ac9b",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "844e6891-692f-4ce8-af9b-312ff13ebf48",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "0f695618-6383-44b5-8d2e-d690c12bdaac",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "c57d8513-2da7-4ab4-bed7-a76cf135ed9a",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "4626cae5-7979-4792-aee4-fe4e8ebff02f",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "ac35cb03-a7f7-4f45-b5ea-56b24f77f3cd",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "182ce258-8a1d-4e44-b411-8dc77085099c",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "16644e05-ccf4-4353-a943-c3b35baf721d",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5a86cc83-3109-40da-95ce-a91121d2e38d",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "a26ea1d3-9bc2-4cdb-9fa3-ec7788b875ce",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "poli_96c880d7_r1_Dana",
+   "quadrant": "policy_gap",
+   "game_id": "96c880d7-aa7f-41e3-a386-e505d759cab4",
+   "round": 1,
+   "voter": "Dana",
+   "factual_target": "Indigo",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 19,
+    "Villagers": 1
+   },
+   "p_villagers_win": 0.05,
+   "flip_share": 0.05,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.05,
+   "rounds_min_max": [
+    2,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.5,
+   "n_vote_mafia": 2,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.8967779874801636,
+    "mean_pairwise_cos_random20": 0.9368218228220939,
+    "random20_std": 0.004890816354352219,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Bailey": 71,
+    "Ellis": 36,
+    "Gray": 4,
+    "Harper": 5,
+    "Indigo": 382,
+    "None": 2
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "8c3f87d0-2e48-4481-b791-831ce203eac3",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b1e7d720-278b-47db-a1f4-25fc5ee344a6",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Ellis",
+     "target_is_mafia": true,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "0885729d-4000-4502-a791-cb7bfa0cb81f",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "dad77bba-cac8-4bff-b774-71007260bdb5",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b532ebb3-4517-4aa9-a9af-e9f6d27dd8b8",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "da96229b-981e-45b0-be71-75884ad9e4c7",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "20ffc4f6-9744-4cdc-828f-c85a23bef550",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "31ff4ad8-9e20-422e-8394-d9559381e5ed",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "331d1315-21c6-48fd-8a67-4849668d00be",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "7dfb22da-aa94-4d82-834c-f1570aec8fd0",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "be729ead-3dc1-412d-afad-ac0ba9078525",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "0bb6fdc9-a5b9-4a09-af39-6c2d47e5eac7",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "acf39fed-b2f2-4ae9-9028-53752edce80e",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "c0e14b60-8faa-42db-8175-3f78a2e8b416",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "8be66a16-9736-4657-a096-3a4cd412a356",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "49d1967b-429e-43d3-8873-e23afea1d4a6",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "64f87e9b-ff0d-4a3d-a199-375e23c26997",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "84a489ad-b7bc-4734-9d74-47a9a914944c",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "82ba6174-113b-4882-a1d5-31f5cade62d6",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "c1d99a17-3053-438d-a035-c8208bb8e92d",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "poli_b2a02ac2_r1_Bailey",
+   "quadrant": "policy_gap",
+   "game_id": "b2a02ac2-a268-406d-b6d6-1cf8bb4d9a07",
+   "round": 1,
+   "voter": "Bailey",
+   "factual_target": "Kennedy",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 19,
+    "Villagers": 1
+   },
+   "p_villagers_win": 0.05,
+   "flip_share": 0.05,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.15,
+   "rounds_min_max": [
+    2,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 2,
+   "p_v_win_vote_other": 0.05555555555555555,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9306298494338989,
+    "mean_pairwise_cos_random20": 0.9512945801019669,
+    "random20_std": 0.0026213231158559057,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Gray": 2,
+    "Indigo": 72,
+    "Jordan": 2,
+    "Kennedy": 422,
+    "None": 2
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Kennedy",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "1f061d1d-e861-4196-8083-798a75b064cf",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Gray",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "756b2231-4670-4c4e-8261-9e87d6df1810",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "a052b332-162c-4ab3-81ec-44e1f1cb700c",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Jordan",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "51f3dc99-d611-4ce2-b2e3-b596077fd3b1",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "9f3e5396-1cfc-435b-a7bb-b82f2af9e92f",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b04f108a-8cd0-416c-bbdc-e38e9a3d0ae3",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Kennedy",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "91f5d0d7-df18-41f4-8cea-286e647d4695",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5b96b559-cdf1-4a82-a07d-d769e398ed31",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b0d7ea66-1d46-4611-b2be-73babcad334b",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "457d9149-be04-4e4c-a91d-d726c12b0b58",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "369bd463-9a27-4a9b-bcab-e581e67c18ba",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Kennedy",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "a6ff348f-d5c0-4a5c-80ec-3f9522be207a",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "8be1459a-49c0-4f39-b9c3-74535826aae7",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Kennedy",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "c0d01932-afc2-4b8f-b01b-37ed3d9e4821",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "66ccc827-f6e5-40f1-9551-6202f468c9ea",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "052e895b-09d5-43bc-a8ce-53a921e0b670",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e9611fb2-0d6d-40bb-8200-ec2f46873b25",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Kennedy",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e0905f51-f9ea-4208-9e0d-ea37a56875e3",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Kennedy",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "6ad0a57e-07b4-4473-8bc8-8b19c77b7ecc",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Kennedy",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "7530d133-9979-46fd-b01b-f87aa390375f",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "poli_3845221c_r1_Alex",
+   "quadrant": "policy_gap",
+   "game_id": "3845221c-d963-4e1b-b34c-6c857979a1f0",
+   "round": 1,
+   "voter": "Alex",
+   "factual_target": "Finley",
+   "parent_winner": "Mafia",
+   "in_3b_replay": false,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 16,
+    "Villagers": 4
+   },
+   "p_villagers_win": 0.2,
+   "flip_share": 0.2,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.7,
+   "rounds_min_max": [
+    2,
+    5
+   ],
+   "p_v_win_vote_mafia": 0.3333333333333333,
+   "n_vote_mafia": 9,
+   "p_v_win_vote_other": 0.09090909090909091,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9349841475486755,
+    "mean_pairwise_cos_random20": 0.953341698050499,
+    "random20_std": 0.0026221947000054247,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Bailey": 33,
+    "Finley": 215,
+    "Harper": 232,
+    "Jordan": 3,
+    "Logan": 16,
+    "None": 1
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 5,
+     "fork_game_id": "4cc3d3fa-af80-447c-a03d-54e34df16cde",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "6350b128-b272-4eef-8139-33acacf1a28e",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "eae8e206-c2d3-4e0c-b66c-2a9f9609a1f6",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5a31e04c-332d-432f-9e64-1b72fdb1afa2",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Logan",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9964c1cb-6438-4408-8b53-91414b7def91",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "2ad80016-c349-4cce-9aa2-b623319fd93c",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "0e526310-9b1f-400d-82cd-601000bf3a5d",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "278f6936-d25e-45e4-8290-00946c8fcc9c",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "962f7b4b-eeae-4701-9ad4-9d85de2d3cc5",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "43cc90b2-39f9-4b9e-9e32-6b362f0d381c",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 4,
+     "fork_game_id": "10fcb1ab-a891-45dc-bf6c-0dc6c806c546",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "96fb4d02-358d-485d-888a-eca9c49115ca",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Villagers",
+     "rounds": 2,
+     "fork_game_id": "997f47ce-00df-412a-a136-a73d77b2ca07",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 4,
+     "fork_game_id": "89fb2fc7-7d62-4e00-838d-a21018468a13",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "b3d9d188-e1e4-4fd2-a536-35281093e4bf",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "f054a286-6f70-4a28-b166-ee9101caf4d9",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "293d0213-d9a3-4c54-8db7-196985ea8d10",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "9f1a6f8f-2076-4f65-833a-4231a5cbfdaa",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "77023225-9441-4a01-b80d-10e4c83f18e2",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9e71c4d1-7710-4972-b166-b9af323a66a6",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "poli_0da78714_r2_Dana",
+   "quadrant": "policy_gap",
+   "game_id": "0da78714-88e0-4445-b161-f2eaf029184c",
+   "round": 2,
+   "voter": "Dana",
+   "factual_target": "Finley",
+   "parent_winner": "Mafia",
+   "in_3b_replay": false,
+   "n_alive": 4,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 17,
+    "Villagers": 3
+   },
+   "p_villagers_win": 0.15,
+   "flip_share": 0.15,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 3.05,
+   "rounds_min_max": [
+    3,
+    4
+   ],
+   "p_v_win_vote_mafia": 0.3333333333333333,
+   "n_vote_mafia": 9,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9400455951690674,
+    "mean_pairwise_cos_random20": 0.9577238965034485,
+    "random20_std": 0.0018467444554795263,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Bailey": 146,
+    "Finley": 339,
+    "Jordan": 3,
+    "None": 12
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "4c49014f-ab0f-4183-a429-d58afbd004f9",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "8c994327-9ccb-4937-a111-c4a3b43fed8c",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "18cfbffd-545b-41d8-90a7-64cb4ad72611",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "ce9612f9-d72d-4a22-9417-f5d036fe20af",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "c202e92c-4610-4360-b609-27aff4ec13c2",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "43a7ad57-ea1c-4000-8f4a-64f8c9a420aa",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "04a15ed9-ecc4-433e-b443-cd7f432902ff",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "cc43860a-329a-4e94-9b81-bf5121709ec0",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "037cf30e-890b-4f02-84e9-b66bb55b51b0",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "7353aae7-9f3b-4fb3-927e-f19e52757140",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "74cedc65-7e0c-4765-a71b-a7b56b5691be",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 4,
+     "fork_game_id": "7ceb2735-eeb1-4b1e-98e6-c5fbe5720b81",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "37ef16f5-f764-492a-a4d6-42db3f636b76",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "e031e027-7363-47cf-b6c7-04a3f63beb42",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "df230b75-f465-4aa0-a160-587d4f681227",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "3ced7e4d-bcd1-46c0-ac6d-feeffb3e2c98",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "e288c483-469b-4b8b-9515-5e9d1dcbd282",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "579bbb88-e940-47f4-b3ed-40fbb8c8923c",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "58049b32-9adf-488a-a17c-bc25cc33ffc7",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "f3301d65-cb1f-48e0-9f81-7cd7b62756d1",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "poli_e8dfa6ea_r2_Alex",
+   "quadrant": "policy_gap",
+   "game_id": "e8dfa6ea-6cff-4a4f-8998-baeb52f81e77",
+   "round": 2,
+   "voter": "Alex",
+   "factual_target": "Gray",
+   "parent_winner": "Mafia",
+   "in_3b_replay": false,
+   "n_alive": 4,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 20
+   },
+   "p_villagers_win": 0.0,
+   "flip_share": 0.0,
+   "controllable": false,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 3.0,
+   "rounds_min_max": [
+    3,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 1,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9455244541168213,
+    "mean_pairwise_cos_random20": 0.964324739575386,
+    "random20_std": 0.0017569948968013075,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Finley": 39,
+    "Gray": 461
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "b8a1a58a-fd62-4ee2-8076-2d737449793b",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "6eddde16-d4b1-45f8-b98f-a751a1eb303c",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "0ee9c255-08d2-42ec-ad74-272fb4880d22",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "2e9e9f20-b3e0-4f93-bb93-8b079011f5fb",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "86f66048-879a-4177-ae0c-1dfa9cfa60b1",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "c5c487ac-0087-4f3b-ad00-956057352931",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "4e971aa5-8759-4309-9645-a6de9d2a2b0f",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "ac8885e8-b6ca-461c-acc8-dbde5be11268",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "ae369f38-6c05-4658-9ef0-d93476e303e0",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "704adbaf-1058-4520-999e-eceb28ecadd8",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "631f6009-66d5-426a-b2c4-a6ba95203d77",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "22216250-a9e7-4030-a5ad-b5d1ac90e514",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "e1989e82-735c-4e64-9990-b2010f3f6edc",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "8b9755d8-89b5-4fa4-8874-7882f4b9b32a",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "c4ad0d80-1a22-4604-a913-5674e9462371",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "ce85d9d8-c8cd-4343-a1cd-aeced0d61d4a",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "e10de8e0-7a03-45e2-8083-403d5a351cc1",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "21088011-f50e-4dd5-8e9f-5f7caa927b91",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "b0af16f1-8529-4de1-acf7-406bf7f3124b",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "3ef68744-07d3-4250-a5a2-ae8bd9717527",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "poli_1fd04804_r1_Jordan",
+   "quadrant": "policy_gap",
+   "game_id": "1fd04804-e77b-4650-b764-50f348cef0bd",
+   "round": 1,
+   "voter": "Jordan",
+   "factual_target": "Casey",
+   "parent_winner": "Mafia",
+   "in_3b_replay": false,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 20
+   },
+   "p_villagers_win": 0.0,
+   "flip_share": 0.0,
+   "controllable": false,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.0,
+   "rounds_min_max": [
+    2,
+    2
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 9,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9257311224937439,
+    "mean_pairwise_cos_random20": 0.9509717559814453,
+    "random20_std": 0.0027790522886083527,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Alex": 254,
+    "Bailey": 3,
+    "Casey": 216,
+    "Ellis": 10,
+    "Finley": 16,
+    "None": 1
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b8ae3172-060a-460f-a2d0-f4fdaad1859a",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "faaf114a-f382-4953-92ea-5a1546783131",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b2c7d00c-95b7-4703-a4f6-5dbcb496fda0",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Ellis",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "a95bf2d9-a7f7-48e2-a825-d2b2c7850bcc",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "be6bc4bf-24d5-4808-b4cb-3a93e0c3f728",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "be2e8f77-1ff7-4aa3-a54e-7eb00839336d",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9971d137-0bc8-42ee-978a-76fd651cb36b",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f038c7e0-7241-4096-93bc-a68b00027c88",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "7c06a181-9a76-49ed-bdad-ac1d51f57132",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b6f87c74-e78d-4794-958f-bd1c58763b1f",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "35aa1af8-96b1-45ef-a129-27a7fcbb112c",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "3428fa30-53ba-4634-b911-2de9fd679539",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "d39c2bc5-a055-4cae-8fff-087e8f62c352",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f3cb7b06-741a-4081-bc14-2a1d7128174a",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f2ad1c1b-58b9-4746-b521-66957798c9a2",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9222ebe7-f4ee-49f0-b6c4-7fe50e5c8107",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Finley",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "378b976f-15ff-4727-8103-37be7b35a931",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "d8deac62-2f2b-4315-b18a-1d8e66e8bfe6",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "16c93637-f219-4974-a670-707d596d1a5a",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "da2bf54f-a07f-4be9-a36b-b0aa9aa76398",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "perc_0da78714_r2_Finley",
+   "quadrant": "perception_gap",
+   "game_id": "0da78714-88e0-4445-b161-f2eaf029184c",
+   "round": 2,
+   "voter": "Finley",
+   "factual_target": "Dana",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 4,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 17,
+    "Villagers": 3
+   },
+   "p_villagers_win": 0.15,
+   "flip_share": 0.15,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.9,
+   "rounds_min_max": [
+    2,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 3,
+   "p_v_win_vote_other": 0.17647058823529413,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9543144106864929,
+    "mean_pairwise_cos_random20": 0.9682065239548683,
+    "random20_std": 0.001524663533793744,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Bailey": 50,
+    "Dana": 315,
+    "Jordan": 109,
+    "None": 26
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "1d3ea563-63fd-4779-9802-cf1d846693f5",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "13d0a0d5-9f1a-4c62-a187-68b1b546c018",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "80b08326-21a7-4d14-a3c3-cd95574bc363",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Villagers",
+     "rounds": 2,
+     "fork_game_id": "ec2a8bd3-f887-43de-9718-3ff5cb3d48f3",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "f1438f8d-6f47-4633-94e9-3b11565b875b",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "a3b72bbc-0b94-4f29-a2fd-2ae3974a28ff",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "4420ca22-7624-49e8-8c14-4951b54b99ff",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Villagers",
+     "rounds": 2,
+     "fork_game_id": "54ee5737-192e-41bd-8e24-50a23a4c353b",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "3d0d341d-fdb0-4adc-9003-9b232a2718c5",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "83765e70-c862-437f-bca9-7122f99d449d",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "bb3a761f-4c3e-424c-9f7f-0c88d07eac73",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "4af489ca-0883-4805-b5cb-eaa5d8b8699a",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "035f6d8e-8b31-418a-ad06-eb9443be6bbf",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "9d2e620f-b975-4b8b-b58e-e803602f0597",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "33261d14-cf0e-455f-97d8-46ef3634483c",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "9a4faed2-29e9-4c68-bbcb-91d17bb127e1",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "656d017d-cedb-4dc2-bcb6-0b1aef1c64fd",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "f3405457-9e84-4e79-a617-18b9be15ca01",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "d77185ce-e168-4d2a-9957-6d030c134322",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "d387f569-0c9e-458c-9967-74af9e0f5c66",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "perc_1fd04804_r1_Ellis",
+   "quadrant": "perception_gap",
+   "game_id": "1fd04804-e77b-4650-b764-50f348cef0bd",
+   "round": 1,
+   "voter": "Ellis",
+   "factual_target": "Jordan",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 20
+   },
+   "p_villagers_win": 0.0,
+   "flip_share": 0.0,
+   "controllable": false,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.2,
+   "rounds_min_max": [
+    2,
+    4
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 6,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.8608269691467285,
+    "mean_pairwise_cos_random20": 0.9367588350176811,
+    "random20_std": 0.01050004042423048,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Alex": 119,
+    "Bailey": 2,
+    "Casey": 37,
+    "Jordan": 323,
+    "None": 14
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f6021b09-6d9f-434d-b220-cf77eb96c506",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "623bac7f-9579-4a95-9cf9-7ff1325d17b3",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f12d552a-3935-4f54-8e29-e89d74798193",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "92919bb5-4ca0-42de-805c-8a8725efca9b",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "0b53512e-3db9-4985-9f1b-92a8ca63360a",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "6d92b11d-af5a-431a-8862-1a4448735170",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "fb9e55e9-f378-47e7-bb42-bef6c5b79daf",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "112f4105-1922-469e-b53d-0391e78395b3",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9e6cfba7-443a-401f-a4c0-9e2595844cb0",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "934fab15-4bd3-4508-bc35-1e09b5156d11",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "8bdb5266-860b-49d7-9d48-26e9dfae7399",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "838d36ea-57f6-4c01-b63e-4c16e57b5a41",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5989002a-da04-4876-943c-f43e4bcb2d2b",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "baf15e71-1f13-47e0-b875-ef51ccf42cfa",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9a3df62f-5d44-4f5a-9e68-f6f8071108f2",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b1a7be0c-8c4d-4cb3-8fc8-40635e076c51",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "15053c25-c9a1-4235-b984-23bedba79022",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "695bfb1b-1410-4091-b127-8bb1453042fb",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 4,
+     "fork_game_id": "3865db65-a707-492c-9d0c-b1848c3499f9",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Jordan",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "41bb2afb-2976-45af-80e5-d738495defd4",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "perc_36594b66_r1_Alex",
+   "quadrant": "perception_gap",
+   "game_id": "36594b66-05d1-434c-be65-13360eafca9e",
+   "round": 1,
+   "voter": "Alex",
+   "factual_target": "Gray",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 19,
+    "Villagers": 1
+   },
+   "p_villagers_win": 0.05,
+   "flip_share": 0.05,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.35,
+   "rounds_min_max": [
+    2,
+    7
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 1,
+   "p_v_win_vote_other": 0.05263157894736842,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.939018726348877,
+    "mean_pairwise_cos_random20": 0.9580099353194237,
+    "random20_std": 0.0023790569384181588,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Bailey": 20,
+    "Casey": 6,
+    "Gray": 461,
+    "Logan": 13
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "92540cc1-2f4a-43dd-9a8b-d5a42ba01d7b",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "57fbf95c-f0d3-402e-82ce-32fce4039ab5",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "8c8b3b27-da7b-4839-a67a-ec1367ede3fc",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Logan",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "4eeefffc-8ec5-4df5-a771-1f0a766c45af",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "71243773-6765-4552-ac77-662c7140d315",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f169834d-933c-40bb-a450-456b74467247",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "af584398-5c96-4177-a1d4-c0277a2b2344",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "836244f9-8fed-4418-bf9b-03bb44286a8d",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "7996fc5a-dcfb-4015-92f3-48948b25bd71",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e1d4c5ef-7b1f-4da1-9b1c-afa28c671155",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "36f5361e-87e9-43a1-9b7e-1a97752f8de0",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "6bc27bf5-2dbc-4241-82fb-6a0fbd9bbbcd",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "da333ff2-f7dd-4058-94fa-d6417c8f615d",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "43aa49af-9d5c-4020-b361-07f183d0269d",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "56361107-4f76-4b54-9231-041d609b2d3e",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "2339404b-c383-4dba-8301-8769d3dec7f2",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "0cce4eb9-6069-49ff-925c-78ff22d30274",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 7,
+     "fork_game_id": "2cf14ecc-586a-4a82-9497-3d617a4821ef",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "0f95615a-66ca-4843-bb33-bd6b92d6959f",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Bailey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "372619d0-59fa-4a66-860c-1c8c2e971591",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "perc_36594b66_r1_Casey",
+   "quadrant": "perception_gap",
+   "game_id": "36594b66-05d1-434c-be65-13360eafca9e",
+   "round": 1,
+   "voter": "Casey",
+   "factual_target": "Gray",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 19,
+    "Villagers": 1
+   },
+   "p_villagers_win": 0.05,
+   "flip_share": 0.05,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.1,
+   "rounds_min_max": [
+    2,
+    4
+   ],
+   "p_v_win_vote_mafia": null,
+   "n_vote_mafia": 0,
+   "p_v_win_vote_other": 0.05,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9507078528404236,
+    "mean_pairwise_cos_random20": 0.9671981397271157,
+    "random20_std": 0.0020716536055686153,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Alex": 1,
+    "Bailey": 1,
+    "Gray": 498
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "071a6c67-2561-4eff-8e1a-def8a9708c5d",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Alex",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e5035775-519c-489d-89fa-d46f9b7b2f46",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Bailey",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "2729a754-c732-4d2c-8581-ce1628e5c361",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e859944f-59f1-4f65-941e-44e01870910a",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Villagers",
+     "rounds": 4,
+     "fork_game_id": "59f98f9f-1dcb-4bae-9aff-261d637de752",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5e47ad5e-60ca-436f-b570-0b7e7de741bf",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e3cc7af6-fbf5-411f-93c6-cb0577d34bcf",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "46037f80-8c1e-4409-baf8-c2726ecae0a8",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "8b152aef-fe24-467e-bddd-ac6870686613",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "228a71fd-491e-4ccb-ae8f-1485677be851",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "71aa102b-fff6-4d40-ad45-b6f0b7095a5e",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "10918269-3d77-4cb1-8ddf-57cf33574e48",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5ba4d7d0-7969-4434-be9d-8b707049c258",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "0ba47faa-f057-41d5-9747-5c49cbc47678",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "2db31a21-590d-4442-8cea-b203ff5ce62a",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "e6e2afbd-04e1-4b74-8e61-d371a0952bb5",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "96fb1957-b09e-4663-8039-f99d79cbb729",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "ac987dc4-2b0b-4679-bf26-e9706222c765",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "75b59e0f-f311-4a55-9e2b-45dde92de2c8",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b9d57617-d913-4d7c-ba83-4df392a034c6",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "perc_6a66aa14_r1_Jordan",
+   "quadrant": "perception_gap",
+   "game_id": "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+   "round": 1,
+   "voter": "Jordan",
+   "factual_target": "Dana",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 19,
+    "Villagers": 1
+   },
+   "p_villagers_win": 0.05,
+   "flip_share": 0.05,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.05,
+   "rounds_min_max": [
+    2,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 1,
+   "p_v_win_vote_other": 0.05263157894736842,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9486435651779175,
+    "mean_pairwise_cos_random20": 0.9654136863350868,
+    "random20_std": 0.0015482236393929314,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Casey": 1,
+    "Dana": 497,
+    "Finley": 1,
+    "None": 1
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f440e16d-6cbf-45d6-aac4-bff090565cba",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Casey",
+     "target_is_mafia": false,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "3a4d10b8-93bd-4f7a-9e34-cd79b1d3bbc9",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5b476e2b-a301-4922-8014-cca472c93355",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "602ecfd8-7e5c-4da9-8fd4-a4f4717e3cb8",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "0acc07dc-e729-4d79-99b6-e0d4aafee61c",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "02de8e0e-08ae-459a-9f2b-5a24eef87d36",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "9c6937c3-fe4e-47a9-91a3-f0a74ec7fa45",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "bab80b43-e42a-4e20-8de5-e3932c48cf95",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "61624f12-4604-4e1d-b28f-d3966661ab0c",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "3e12872c-b266-4c20-964d-182731272e86",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "48af38bb-e2e9-4f54-a042-2d829e63331b",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "05c229fc-e739-4ada-886a-cfd46816ed4d",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b36e263e-f1bb-441b-b045-0a355a67bd23",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b2ea3f62-3b26-408f-ac1c-17194b27b734",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "68a89299-deaf-4475-b891-e451afff21ee",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "5808d918-6727-43b6-9cc8-9ff1ef323cf8",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "db97f44b-a929-400a-bd63-8d3894504bf0",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "da1ca898-f21c-4282-a1be-50737ebd1f02",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "d29ce83d-5889-4e6b-9229-92e031847e7d",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "ffbebd2a-4d85-4274-b423-b2c6e96b435b",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "perc_8619db8c_r1_Bailey",
+   "quadrant": "perception_gap",
+   "game_id": "8619db8c-f526-4307-a2c4-f1da69db376a",
+   "round": 1,
+   "voter": "Bailey",
+   "factual_target": "Harper",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 19,
+    "Villagers": 1
+   },
+   "p_villagers_win": 0.05,
+   "flip_share": 0.05,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.1,
+   "rounds_min_max": [
+    2,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.25,
+   "n_vote_mafia": 4,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9433503746986389,
+    "mean_pairwise_cos_random20": 0.9623340177536011,
+    "random20_std": 0.0019626081804225,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Alex": 43,
+    "Ellis": 18,
+    "Harper": 438,
+    "Kennedy": 1
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "03e099a0-a574-4485-a679-0db33a2e0da4",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "bf0a7c51-e9ed-4dee-be24-a1ba6a332222",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Ellis",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "574d4915-933f-485b-b0b5-aa1920d24fe2",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Kennedy",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "f14d2858-5ba2-4557-aafe-cfe75206bb29",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "d021c401-fbef-46b8-98df-56399e3c63a7",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "80446090-ae8d-4fed-b543-d8111c651667",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "fad40179-d359-427d-8abb-705c8d57422b",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b5af9a10-cdeb-4827-bea1-a2ce2d9ccd9c",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "7984fecc-4561-4559-b218-473602f42c74",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "d08eb0e6-5333-4c48-88f6-a8336d9f9cb5",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "a4227441-6106-4f64-888f-c1b237c5e55b",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "57b82e34-8036-44bf-b551-3676edb959ae",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "d1f88ecc-457f-4f0a-8608-61a15b377622",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "3318bc75-dfb2-484d-b0ea-422a13add225",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "c17e6514-a3ac-4515-b9f8-27dfd6e9c2c4",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "6d1ec293-44c3-4e26-87b6-459320ec5674",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Alex",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "bbab56f6-ceb6-4945-8c8b-7b8378cf3ab7",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Ellis",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "007ed3d0-ff15-45c4-b4a1-98cdcf9449b7",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "3572adb3-dc80-4c5f-ae9b-e89ef9c16e22",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Harper",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "40727320-61ed-46dd-b74e-faedc48ba504",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "perc_96c880d7_r1_Bailey",
+   "quadrant": "perception_gap",
+   "game_id": "96c880d7-aa7f-41e3-a386-e505d759cab4",
+   "round": 1,
+   "voter": "Bailey",
+   "factual_target": "Indigo",
+   "parent_winner": "Mafia",
+   "in_3b_replay": true,
+   "n_alive": 6,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 17,
+    "Villagers": 3
+   },
+   "p_villagers_win": 0.15,
+   "flip_share": 0.15,
+   "controllable": true,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 2.15,
+   "rounds_min_max": [
+    2,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 3,
+   "p_v_win_vote_other": 0.17647058823529413,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9162554144859314,
+    "mean_pairwise_cos_random20": 0.9383027255535126,
+    "random20_std": 0.002383179708831493,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Dana": 2,
+    "Ellis": 15,
+    "Gray": 10,
+    "Harper": 1,
+    "Indigo": 461,
+    "None": 11
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "4d3989d0-363a-42f6-82b7-f7fcff54f7eb",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Dana",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "30139a9f-cf84-482d-a318-24e8a4b8b6b8",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Ellis",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "902a34dd-18a4-40ae-a9fb-64c0c397b980",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "b1109051-ba43-4b64-9068-38239885dcd8",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Harper",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "2a5d8e63-6c9e-4b0c-abb4-6821d8fb2cb6",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "2a8c9fbf-c7c8-4797-8493-107f21a36639",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "15b3eb06-766d-4c5e-a042-cf63504bf8b6",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "cf67e22c-7e5a-473d-a0ba-b1a5dab020fd",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "344f9652-2581-4e1f-8211-b34daf4c7af0",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "4b5161f9-edcf-4d9d-96fc-08e9f4388164",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "380d0aa4-8d6a-4594-856c-9ef2b2136348",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "6ddd1213-ede5-4071-807c-ecdd6d6e6b05",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "6fe81461-a107-4a3c-8a11-9c30112dcf6c",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "84171f8b-43a4-4f4a-a828-2beb72fec6a4",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "a4e55315-bb14-4a3f-bc8c-62fa7698cf4f",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Villagers",
+     "rounds": 3,
+     "fork_game_id": "69a888b8-f5f9-468d-a76c-1c42b54ff3ed",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "410e9112-0cbc-48ea-9b2d-535c2135052c",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "260cefc8-59f0-4c5a-b002-9ea13c602065",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Indigo",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "50595cba-57e0-4eec-803f-636b8016d3b1",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Ellis",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 2,
+     "fork_game_id": "89418f98-5f75-45ed-babe-5cee8faa5fe5",
+     "error": null
+    }
+   ]
+  },
+  {
+   "point_id": "perc_e8dfa6ea_r2_Harper",
+   "quadrant": "perception_gap",
+   "game_id": "e8dfa6ea-6cff-4a4f-8998-baeb52f81e77",
+   "round": 2,
+   "voter": "Harper",
+   "factual_target": "Gray",
+   "parent_winner": "Mafia",
+   "in_3b_replay": false,
+   "n_alive": 4,
+   "n_forks_valid": 20,
+   "n_forks_total": 20,
+   "winners": {
+    "Mafia": 20
+   },
+   "p_villagers_win": 0.0,
+   "flip_share": 0.0,
+   "controllable": false,
+   "factual_fork_winner": "Mafia",
+   "rounds_mean": 3.0,
+   "rounds_min_max": [
+    3,
+    3
+   ],
+   "p_v_win_vote_mafia": 0.0,
+   "n_vote_mafia": 1,
+   "p_v_win_vote_other": 0.0,
+   "diversity": {
+    "mean_pairwise_cos_selected": 0.9492384791374207,
+    "mean_pairwise_cos_random20": 0.9632762512564659,
+    "random20_std": 0.0016993899035153003,
+    "n_random_draws": 200,
+    "embed_model": "intfloat/multilingual-e5-small"
+   },
+   "target_dist_samples": {
+    "Finley": 8,
+    "Gray": 491,
+    "None": 1
+   },
+   "variants": [
+    {
+     "variant_idx": 0,
+     "source": "factual",
+     "stage": "factual",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "c7a84bfc-ff03-46d3-81fb-d5d1a05055c1",
+     "error": null
+    },
+    {
+     "variant_idx": 1,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": "Finley",
+     "target_is_mafia": true,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "4aae4113-967e-4a9b-a028-4edbca9cdb17",
+     "error": null
+    },
+    {
+     "variant_idx": 2,
+     "source": "sampled",
+     "stage": "target_coverage",
+     "vote_target": null,
+     "target_is_mafia": null,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "2976e571-fdf4-4a0c-b11a-6d5674efad0a",
+     "error": null
+    },
+    {
+     "variant_idx": 3,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "241159c1-c65e-4939-9824-638f2169dc58",
+     "error": null
+    },
+    {
+     "variant_idx": 4,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "07ec1f82-a47f-4a6e-8043-1ede4ce20227",
+     "error": null
+    },
+    {
+     "variant_idx": 5,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "db475610-eede-41ef-b1c0-1e6d05149375",
+     "error": null
+    },
+    {
+     "variant_idx": 6,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "b9199d38-70fe-4feb-b670-44c73e45d9fc",
+     "error": null
+    },
+    {
+     "variant_idx": 7,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "90f12edc-c466-4154-acce-fcd5976fefb7",
+     "error": null
+    },
+    {
+     "variant_idx": 8,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "51b45c27-9777-4fd9-9489-2260fe01d888",
+     "error": null
+    },
+    {
+     "variant_idx": 9,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "1c405643-a268-4873-8148-8ecaeca2e45d",
+     "error": null
+    },
+    {
+     "variant_idx": 10,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "510feee5-e586-4232-a6de-6c11e20622dd",
+     "error": null
+    },
+    {
+     "variant_idx": 11,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "1c87c957-7348-4c6a-9c95-8dd1f8abfffd",
+     "error": null
+    },
+    {
+     "variant_idx": 12,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "08001bdf-22fe-474b-9c1d-179a19099b0f",
+     "error": null
+    },
+    {
+     "variant_idx": 13,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "67b37097-9353-4e08-9741-c4d660bf6f36",
+     "error": null
+    },
+    {
+     "variant_idx": 14,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "41ffabac-f168-49ef-a3b8-742d147af828",
+     "error": null
+    },
+    {
+     "variant_idx": 15,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "e221e77c-45da-4225-af18-171ec785b4ec",
+     "error": null
+    },
+    {
+     "variant_idx": 16,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "288136b4-c33d-46a6-a0e2-77a79847a4f1",
+     "error": null
+    },
+    {
+     "variant_idx": 17,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "8f5f00d5-5fac-4fa0-8095-e58a99f4f036",
+     "error": null
+    },
+    {
+     "variant_idx": 18,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "ecc623fd-73b6-4b35-9cbf-b940f91fffe9",
+     "error": null
+    },
+    {
+     "variant_idx": 19,
+     "source": "sampled",
+     "stage": "maxmin",
+     "vote_target": "Gray",
+     "target_is_mafia": false,
+     "winner": "Mafia",
+     "rounds": 3,
+     "fork_game_id": "a7ff7f48-990b-46e9-8663-8e41b326d965",
+     "error": null
+    }
+   ]
+  }
+ ]
+}

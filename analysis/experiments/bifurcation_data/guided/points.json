@@ -1,0 +1,523 @@
+{
+ "seed": 20260716,
+ "per_quadrant": 8,
+ "pool_sizes": {
+  "policy_gap": 14,
+  "perception_gap": 17
+ },
+ "skipped": [],
+ "points": [
+  {
+   "game_id": "1fd04804-e77b-4650-b764-50f348cef0bd",
+   "round": 1,
+   "voter": "Finley",
+   "target": "Casey",
+   "winner": "Mafia",
+   "s1": true,
+   "move_good": 0,
+   "quadrant": "policy_gap",
+   "fork": [
+    1,
+    13
+   ],
+   "vote_seq": 14,
+   "alive": [
+    "Alex",
+    "Bailey",
+    "Casey",
+    "Ellis",
+    "Finley",
+    "Jordan"
+   ],
+   "roles_alive": {
+    "Alex": "Mafia",
+    "Casey": "Villager",
+    "Ellis": "Villager",
+    "Finley": "Villager",
+    "Bailey": "Mafia",
+    "Jordan": "Villager"
+   },
+   "in_3b_replay": true,
+   "point_id": "poli_1fd04804_r1_Finley"
+  },
+  {
+   "game_id": "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+   "round": 1,
+   "voter": "Dana",
+   "target": "Casey",
+   "winner": "Mafia",
+   "s1": true,
+   "move_good": 0,
+   "quadrant": "policy_gap",
+   "fork": [
+    1,
+    11
+   ],
+   "vote_seq": 12,
+   "alive": [
+    "Casey",
+    "Dana",
+    "Ellis",
+    "Finley",
+    "Jordan",
+    "Logan"
+   ],
+   "roles_alive": {
+    "Casey": "Doctor",
+    "Dana": "Villager",
+    "Finley": "Mafia",
+    "Ellis": "Mafia",
+    "Jordan": "Villager",
+    "Logan": "Villager"
+   },
+   "in_3b_replay": true,
+   "point_id": "poli_6a66aa14_r1_Dana"
+  },
+  {
+   "game_id": "96c880d7-aa7f-41e3-a386-e505d759cab4",
+   "round": 1,
+   "voter": "Dana",
+   "target": "Indigo",
+   "winner": "Mafia",
+   "s1": true,
+   "move_good": 0,
+   "quadrant": "policy_gap",
+   "fork": [
+    1,
+    12
+   ],
+   "vote_seq": 13,
+   "alive": [
+    "Bailey",
+    "Dana",
+    "Ellis",
+    "Gray",
+    "Harper",
+    "Indigo"
+   ],
+   "roles_alive": {
+    "Ellis": "Mafia",
+    "Bailey": "Villager",
+    "Dana": "Villager",
+    "Harper": "Mafia",
+    "Gray": "Villager",
+    "Indigo": "Doctor"
+   },
+   "in_3b_replay": true,
+   "point_id": "poli_96c880d7_r1_Dana"
+  },
+  {
+   "game_id": "b2a02ac2-a268-406d-b6d6-1cf8bb4d9a07",
+   "round": 1,
+   "voter": "Bailey",
+   "target": "Kennedy",
+   "winner": "Mafia",
+   "s1": true,
+   "move_good": 0,
+   "quadrant": "policy_gap",
+   "fork": [
+    1,
+    12
+   ],
+   "vote_seq": 13,
+   "alive": [
+    "Bailey",
+    "Ellis",
+    "Gray",
+    "Indigo",
+    "Jordan",
+    "Kennedy"
+   ],
+   "roles_alive": {
+    "Kennedy": "Villager",
+    "Ellis": "Villager",
+    "Bailey": "Villager",
+    "Gray": "Mafia",
+    "Jordan": "Mafia",
+    "Indigo": "Villager"
+   },
+   "in_3b_replay": true,
+   "point_id": "poli_b2a02ac2_r1_Bailey"
+  },
+  {
+   "game_id": "3845221c-d963-4e1b-b34c-6c857979a1f0",
+   "round": 1,
+   "voter": "Alex",
+   "target": "Finley",
+   "winner": "Mafia",
+   "s1": true,
+   "move_good": 0,
+   "quadrant": "policy_gap",
+   "fork": [
+    1,
+    10
+   ],
+   "vote_seq": 11,
+   "alive": [
+    "Alex",
+    "Bailey",
+    "Finley",
+    "Harper",
+    "Jordan",
+    "Logan"
+   ],
+   "roles_alive": {
+    "Alex": "Villager",
+    "Logan": "Mafia",
+    "Finley": "Villager",
+    "Bailey": "Doctor",
+    "Harper": "Mafia",
+    "Jordan": "Villager"
+   },
+   "in_3b_replay": false,
+   "point_id": "poli_3845221c_r1_Alex"
+  },
+  {
+   "game_id": "0da78714-88e0-4445-b161-f2eaf029184c",
+   "round": 2,
+   "voter": "Dana",
+   "target": "Finley",
+   "winner": "Mafia",
+   "s1": true,
+   "move_good": 0,
+   "quadrant": "policy_gap",
+   "fork": [
+    2,
+    8
+   ],
+   "vote_seq": 9,
+   "alive": [
+    "Bailey",
+    "Dana",
+    "Finley",
+    "Jordan"
+   ],
+   "roles_alive": {
+    "Finley": "Villager",
+    "Bailey": "Mafia",
+    "Dana": "Villager",
+    "Jordan": "Villager"
+   },
+   "in_3b_replay": false,
+   "point_id": "poli_0da78714_r2_Dana"
+  },
+  {
+   "game_id": "e8dfa6ea-6cff-4a4f-8998-baeb52f81e77",
+   "round": 2,
+   "voter": "Alex",
+   "target": "Gray",
+   "winner": "Mafia",
+   "s1": true,
+   "move_good": 0,
+   "quadrant": "policy_gap",
+   "fork": [
+    2,
+    9
+   ],
+   "vote_seq": 10,
+   "alive": [
+    "Alex",
+    "Finley",
+    "Gray",
+    "Harper"
+   ],
+   "roles_alive": {
+    "Finley": "Mafia",
+    "Gray": "Villager",
+    "Alex": "Villager",
+    "Harper": "Villager"
+   },
+   "in_3b_replay": false,
+   "point_id": "poli_e8dfa6ea_r2_Alex"
+  },
+  {
+   "game_id": "1fd04804-e77b-4650-b764-50f348cef0bd",
+   "round": 1,
+   "voter": "Jordan",
+   "target": "Casey",
+   "winner": "Mafia",
+   "s1": true,
+   "move_good": 0,
+   "quadrant": "policy_gap",
+   "fork": [
+    1,
+    15
+   ],
+   "vote_seq": 16,
+   "alive": [
+    "Alex",
+    "Bailey",
+    "Casey",
+    "Ellis",
+    "Finley",
+    "Jordan"
+   ],
+   "roles_alive": {
+    "Alex": "Mafia",
+    "Casey": "Villager",
+    "Ellis": "Villager",
+    "Finley": "Villager",
+    "Bailey": "Mafia",
+    "Jordan": "Villager"
+   },
+   "in_3b_replay": false,
+   "point_id": "poli_1fd04804_r1_Jordan"
+  },
+  {
+   "game_id": "0da78714-88e0-4445-b161-f2eaf029184c",
+   "round": 2,
+   "voter": "Finley",
+   "target": "Dana",
+   "winner": "Mafia",
+   "s1": false,
+   "move_good": 0,
+   "quadrant": "perception_gap",
+   "fork": [
+    2,
+    6
+   ],
+   "vote_seq": 7,
+   "alive": [
+    "Bailey",
+    "Dana",
+    "Finley",
+    "Jordan"
+   ],
+   "roles_alive": {
+    "Finley": "Villager",
+    "Bailey": "Mafia",
+    "Dana": "Villager",
+    "Jordan": "Villager"
+   },
+   "in_3b_replay": true,
+   "point_id": "perc_0da78714_r2_Finley"
+  },
+  {
+   "game_id": "1fd04804-e77b-4650-b764-50f348cef0bd",
+   "round": 1,
+   "voter": "Ellis",
+   "target": "Jordan",
+   "winner": "Mafia",
+   "s1": false,
+   "move_good": 0,
+   "quadrant": "perception_gap",
+   "fork": [
+    1,
+    12
+   ],
+   "vote_seq": 13,
+   "alive": [
+    "Alex",
+    "Bailey",
+    "Casey",
+    "Ellis",
+    "Finley",
+    "Jordan"
+   ],
+   "roles_alive": {
+    "Alex": "Mafia",
+    "Casey": "Villager",
+    "Ellis": "Villager",
+    "Finley": "Villager",
+    "Bailey": "Mafia",
+    "Jordan": "Villager"
+   },
+   "in_3b_replay": true,
+   "point_id": "perc_1fd04804_r1_Ellis"
+  },
+  {
+   "game_id": "36594b66-05d1-434c-be65-13360eafca9e",
+   "round": 1,
+   "voter": "Alex",
+   "target": "Gray",
+   "winner": "Mafia",
+   "s1": false,
+   "move_good": 0,
+   "quadrant": "perception_gap",
+   "fork": [
+    1,
+    10
+   ],
+   "vote_seq": 11,
+   "alive": [
+    "Alex",
+    "Bailey",
+    "Casey",
+    "Finley",
+    "Gray",
+    "Logan"
+   ],
+   "roles_alive": {
+    "Alex": "Villager",
+    "Gray": "Villager",
+    "Logan": "Mafia",
+    "Finley": "Mafia",
+    "Casey": "Villager",
+    "Bailey": "Doctor"
+   },
+   "in_3b_replay": true,
+   "point_id": "perc_36594b66_r1_Alex"
+  },
+  {
+   "game_id": "36594b66-05d1-434c-be65-13360eafca9e",
+   "round": 1,
+   "voter": "Casey",
+   "target": "Gray",
+   "winner": "Mafia",
+   "s1": false,
+   "move_good": 0,
+   "quadrant": "perception_gap",
+   "fork": [
+    1,
+    14
+   ],
+   "vote_seq": 15,
+   "alive": [
+    "Alex",
+    "Bailey",
+    "Casey",
+    "Finley",
+    "Gray",
+    "Logan"
+   ],
+   "roles_alive": {
+    "Alex": "Villager",
+    "Gray": "Villager",
+    "Logan": "Mafia",
+    "Finley": "Mafia",
+    "Casey": "Villager",
+    "Bailey": "Doctor"
+   },
+   "in_3b_replay": true,
+   "point_id": "perc_36594b66_r1_Casey"
+  },
+  {
+   "game_id": "6a66aa14-4f15-471b-9d16-9c808aea7ff6",
+   "round": 1,
+   "voter": "Jordan",
+   "target": "Dana",
+   "winner": "Mafia",
+   "s1": false,
+   "move_good": 0,
+   "quadrant": "perception_gap",
+   "fork": [
+    1,
+    14
+   ],
+   "vote_seq": 15,
+   "alive": [
+    "Casey",
+    "Dana",
+    "Ellis",
+    "Finley",
+    "Jordan",
+    "Logan"
+   ],
+   "roles_alive": {
+    "Casey": "Doctor",
+    "Dana": "Villager",
+    "Finley": "Mafia",
+    "Ellis": "Mafia",
+    "Jordan": "Villager",
+    "Logan": "Villager"
+   },
+   "in_3b_replay": true,
+   "point_id": "perc_6a66aa14_r1_Jordan"
+  },
+  {
+   "game_id": "8619db8c-f526-4307-a2c4-f1da69db376a",
+   "round": 1,
+   "voter": "Bailey",
+   "target": "Harper",
+   "winner": "Mafia",
+   "s1": false,
+   "move_good": 0,
+   "quadrant": "perception_gap",
+   "fork": [
+    1,
+    14
+   ],
+   "vote_seq": 15,
+   "alive": [
+    "Alex",
+    "Bailey",
+    "Ellis",
+    "Harper",
+    "Jordan",
+    "Kennedy"
+   ],
+   "roles_alive": {
+    "Ellis": "Villager",
+    "Harper": "Doctor",
+    "Kennedy": "Villager",
+    "Alex": "Mafia",
+    "Bailey": "Villager",
+    "Jordan": "Mafia"
+   },
+   "in_3b_replay": true,
+   "point_id": "perc_8619db8c_r1_Bailey"
+  },
+  {
+   "game_id": "96c880d7-aa7f-41e3-a386-e505d759cab4",
+   "round": 1,
+   "voter": "Bailey",
+   "target": "Indigo",
+   "winner": "Mafia",
+   "s1": false,
+   "move_good": 0,
+   "quadrant": "perception_gap",
+   "fork": [
+    1,
+    11
+   ],
+   "vote_seq": 12,
+   "alive": [
+    "Bailey",
+    "Dana",
+    "Ellis",
+    "Gray",
+    "Harper",
+    "Indigo"
+   ],
+   "roles_alive": {
+    "Ellis": "Mafia",
+    "Bailey": "Villager",
+    "Dana": "Villager",
+    "Harper": "Mafia",
+    "Gray": "Villager",
+    "Indigo": "Doctor"
+   },
+   "in_3b_replay": true,
+   "point_id": "perc_96c880d7_r1_Bailey"
+  },
+  {
+   "game_id": "e8dfa6ea-6cff-4a4f-8998-baeb52f81e77",
+   "round": 2,
+   "voter": "Harper",
+   "target": "Gray",
+   "winner": "Mafia",
+   "s1": false,
+   "move_good": 0,
+   "quadrant": "perception_gap",
+   "fork": [
+    2,
+    10
+   ],
+   "vote_seq": 11,
+   "alive": [
+    "Alex",
+    "Finley",
+    "Gray",
+    "Harper"
+   ],
+   "roles_alive": {
+    "Finley": "Mafia",
+    "Gray": "Villager",
+    "Alex": "Villager",
+    "Harper": "Villager"
+   },
+   "in_3b_replay": false,
+   "point_id": "perc_e8dfa6ea_r2_Harper"
+  }
+ ]
+}

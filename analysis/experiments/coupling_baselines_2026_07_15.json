@@ -1,0 +1,1467 @@
+{
+ "_config": {
+  "bootstrap_B": 1000,
+  "seed": 0,
+  "parse_mode_probes": "raw answer_parse_ok (published F4 rule)",
+  "parse_mode_f2_f3": "repaired",
+  "predictors": {
+   "mention_pred": "most-mentioned",
+   "accuse_pred": "most-accused",
+   "prev_pred": "previous-round plurality target (if alive)"
+  }
+ },
+ "corpus32": {
+  "meta": {
+   "n_games": 32,
+   "n_completed": 32,
+   "mafia_wins": 31,
+   "n_probe_records": 20199,
+   "n_ru_games": 11,
+   "n_en_games": 21
+  },
+  "coupling": {
+   "innocent": {
+    "n_votes": 86,
+    "sr_top1": {
+     "k": 48,
+     "n": 74,
+     "rate": 0.6486486486486487,
+     "ci95": [
+      0.5471698113207547,
+      0.7666666666666667
+     ],
+     "chance": 0.27297297297297296
+    },
+    "ra_set": {
+     "k": 57,
+     "n": 80,
+     "rate": 0.7125,
+     "ci95": [
+      0.625,
+      0.7910447761194029
+     ],
+     "chance": 0.41708333333333336
+    },
+    "sr_tally_top1": {
+     "k": 77,
+     "n": 81,
+     "rate": 0.9506172839506173,
+     "ci95": [
+      0.9076923076923077,
+      0.9885057471264368
+     ],
+     "chance": 0.26872427983539093
+    },
+    "transcript_mention_pred": {
+     "k": 53,
+     "n": 85,
+     "rate": 0.6235294117647059,
+     "ci95": [
+      0.5176470588235295,
+      0.735632183908046
+     ],
+     "chance": 0.26823529411764707
+    },
+    "transcript_accuse_pred": {
+     "k": 47,
+     "n": 80,
+     "rate": 0.5875,
+     "ci95": [
+      0.4880952380952381,
+      0.7
+     ],
+     "chance": 0.26416666666666666
+    },
+    "transcript_prev_pred": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "ci95": null,
+     "chance": null
+    }
+   },
+   "mafia": {
+    "n_votes": 35,
+    "sr_top1": {
+     "k": 21,
+     "n": 30,
+     "rate": 0.7,
+     "ci95": [
+      0.5,
+      0.88
+     ],
+     "chance": 0.2711111111111111
+    },
+    "ra_set": {
+     "k": 8,
+     "n": 27,
+     "rate": 0.2962962962962963,
+     "ci95": [
+      0.14285714285714285,
+      0.46153846153846156
+     ],
+     "chance": 0.2518518518518518
+    },
+    "sr_tally_top1": {
+     "k": 28,
+     "n": 33,
+     "rate": 0.8484848484848485,
+     "ci95": [
+      0.7419354838709677,
+      0.9583333333333334
+     ],
+     "chance": 0.2636363636363636
+    },
+    "transcript_mention_pred": {
+     "k": 27,
+     "n": 35,
+     "rate": 0.7714285714285715,
+     "ci95": [
+      0.6666666666666666,
+      0.8823529411764706
+     ],
+     "chance": 0.26142857142857145
+    },
+    "transcript_accuse_pred": {
+     "k": 25,
+     "n": 34,
+     "rate": 0.7352941176470589,
+     "ci95": [
+      0.5945945945945946,
+      0.8611111111111112
+     ],
+     "chance": 0.25931372549019605
+    },
+    "transcript_prev_pred": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "ci95": null,
+     "chance": null
+    }
+   }
+  },
+  "head_to_head": {
+   "innocent": {
+    "mention_pred": {
+     "n": 73,
+     "probe_acc": 0.6575342465753424,
+     "transcript_acc": 0.6027397260273972,
+     "both_right": 35,
+     "both_wrong": 16,
+     "probe_only_right": 13,
+     "transcript_only_right": 9,
+     "mcnemar_p": 0.5234670639038086,
+     "predictor_agreement": 0.6438356164383562
+    },
+    "accuse_pred": {
+     "n": 68,
+     "probe_acc": 0.6470588235294118,
+     "transcript_acc": 0.6029411764705882,
+     "both_right": 32,
+     "both_wrong": 15,
+     "probe_only_right": 12,
+     "transcript_only_right": 9,
+     "mcnemar_p": 0.6636238098144531,
+     "predictor_agreement": 0.6470588235294118
+    },
+    "prev_pred": {
+     "n": 0
+    }
+   },
+   "mafia": {
+    "mention_pred": {
+     "n": 30,
+     "probe_acc": 0.7,
+     "transcript_acc": 0.7666666666666667,
+     "both_right": 19,
+     "both_wrong": 5,
+     "probe_only_right": 2,
+     "transcript_only_right": 4,
+     "mcnemar_p": 0.6875,
+     "predictor_agreement": 0.7333333333333333
+    },
+    "accuse_pred": {
+     "n": 29,
+     "probe_acc": 0.6896551724137931,
+     "transcript_acc": 0.6896551724137931,
+     "both_right": 16,
+     "both_wrong": 5,
+     "probe_only_right": 4,
+     "transcript_only_right": 4,
+     "mcnemar_p": 1.0,
+     "predictor_agreement": 0.6551724137931034
+    },
+    "prev_pred": {
+     "n": 0
+    }
+   }
+  },
+  "f2": {
+   "n": 7016,
+   "ece": 0.1684207525655644,
+   "brier": 0.2833799315849487,
+   "ece_ci95": [
+    0.12969661610268382,
+    0.2034150394682177
+   ],
+   "brier_ci95": [
+    0.26701460469946775,
+    0.29975966633954854
+   ],
+   "bins": {
+    "0-19": {
+     "n": 4,
+     "acc": 0.5,
+     "mean_conf": 13.75
+    },
+    "20-39": {
+     "n": 360,
+     "acc": 0.4638888888888889,
+     "mean_conf": 30.77777777777778
+    },
+    "40-59": {
+     "n": 2320,
+     "acc": 0.42974137931034484,
+     "mean_conf": 49.383620689655174
+    },
+    "60-79": {
+     "n": 3338,
+     "acc": 0.4601557819053325,
+     "mean_conf": 66.11923307369682
+    },
+    "80-99": {
+     "n": 994,
+     "acc": 0.5462776659959758,
+     "mean_conf": 85.2344064386318
+    }
+   }
+  },
+  "f3": {
+   "overall": {
+    "n": 15638,
+    "accuracy": 0.5471287888476787,
+    "majority_baseline": 0.4465404783220361,
+    "acc_ci95": [
+     0.5278224994968806,
+     0.5689632107023411
+    ],
+    "diff_ci95": [
+     0.05659344954271872,
+     0.12444807849550282
+    ],
+    "suspects_ratio": 1.5310464611376466,
+    "ratio_ci95": [
+     1.435110393107162,
+     1.643888354186718
+    ],
+    "pred_suspects": 3526,
+    "actual_suspects": 2303
+   },
+   "innocent_predictors": {
+    "n": 11222,
+    "accuracy": 0.5403671359828908,
+    "majority_baseline": 0.4455533772945999,
+    "acc_ci95": [
+     0.5170633531676584,
+     0.5655601199067392
+    ],
+    "diff_ci95": [
+     0.04720996826870988,
+     0.1086799927966865
+    ],
+    "suspects_ratio": 1.838095238095238,
+    "ratio_ci95": [
+     1.6738987508218277,
+     2.0448328267477205
+    ],
+    "pred_suspects": 2509,
+    "actual_suspects": 1365
+   },
+   "mafia_predictors": {
+    "n": 4416,
+    "accuracy": 0.5643115942028986,
+    "majority_baseline": 0.44904891304347827,
+    "acc_ci95": [
+     0.5309689025957337,
+     0.6017720895889737
+    ],
+    "diff_ci95": [
+     0.060207991242474,
+     0.1655243317340644
+    ],
+    "suspects_ratio": 1.084221748400853,
+    "ratio_ci95": [
+     0.9374407582938389,
+     1.2515337423312884
+    ],
+    "pred_suspects": 1017,
+    "actual_suspects": 938
+   }
+  },
+  "instrument": {
+   "personality_profile": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.215,
+    "n_distinct_templates": 296,
+    "top_template": "You are <NAMES>. Last time you assessed personalities like this: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven the new behavior, for each alive player (<NAMES>), EXCEPT yourself, estimate their Big Five traits (<NUM>-<NUM>). O = Openness, C = Conscientiousness, E = Extraversion, A = Agreeableness, N = Neuroticism. Answer ONLY as JSON: [{\"player\": \"...\", \"O\": N, \"C\": N, \"E\": N, \"A\": N, \"N\": N, \"summary\": \"...\"}, ...]\n"
+   },
+   "planned_action": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 365,
+    "top_template": "You are <NAMES>. Here is your model of the world:\nRole assessment: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nHow you think players feel about you: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven all this, what action do you plan to take next and why? Explain your strategy. Answer ONLY as JSON: {\"action\": \"...\", \"target\": \"...\", \"reasoning\": \"...\"}\n"
+   },
+   "role_assessment": {
+    "n_sampled": 400,
+    "chaining_marker_share": 1.0,
+    "n_distinct_templates": 322,
+    "top_template": "You are <NAMES>. Here is what you thought about players' roles last time: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nNow, given the new information, for every alive player (<NAMES>), INCLUDING yourself, answer: what role do they ACTUALLY have in your opinion, how certain are you (<NUM>-<NUM>), and one short reason. Answer ONLY as JSON: [{\"player\": \"...\", \"guessed_role\": \"Mafia|Villager|Doctor|Unknown\", \"confidence\": N, \"reason\": \"...\"}, ...]\n"
+   },
+   "social_map": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.215,
+    "n_distinct_templates": 382,
+    "top_template": "You are <NAMES>. Here is your current role assessment: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nLast time you thought players felt about you like this: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven the new information, how does each alive player (<NAMES>) feel about YOU specifically now? Answer ONLY as JSON: {\n  \"toward_me\": [{\"player\": \"...\", \"attitude\": \"trusts|neutral|suspects\", \"confidence\": N, \"reason\": \"...\"}, ...]\n}\n"
+   },
+   "suspicion_ranking": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 2,
+    "top_template": "Rank alive players (<NAMES>) from most to least suspicious. Answer ONLY as JSON: [{\"player\": \"...\", \"score\": N}, ...]\n"
+   }
+  },
+  "extra": {
+   "innocent_prev_alive": {
+    "k": 6,
+    "n": 11,
+    "rate": 0.5454545454545454,
+    "chance": 0.3333333333333333
+   },
+   "mafia_prev_alive": {
+    "k": 2,
+    "n": 3,
+    "rate": 0.6666666666666666,
+    "chance": 0.3333333333333333
+   },
+   "mafia_set_partner": {
+    "n_sets": 27,
+    "sets_with_living_partner": 24,
+    "votes_on_partner": 5
+   }
+  }
+ },
+ "main30": {
+  "meta": {
+   "n_games": 30,
+   "n_completed": 30,
+   "mafia_wins": 17,
+   "n_probe_records": 23520,
+   "n_ru_games": 30,
+   "n_en_games": 0
+  },
+  "coupling": {
+   "innocent": {
+    "n_votes": 201,
+    "sr_top1": {
+     "k": 172,
+     "n": 201,
+     "rate": 0.8557213930348259,
+     "ci95": [
+      0.7807486631016043,
+      0.9186602870813397
+     ],
+     "chance": 0.24734660033167497
+    },
+    "ra_set": {
+     "k": 63,
+     "n": 96,
+     "rate": 0.65625,
+     "ci95": [
+      0.5436893203883495,
+      0.75
+     ],
+     "chance": 0.3746527777777778
+    },
+    "sr_tally_top1": {
+     "k": 185,
+     "n": 201,
+     "rate": 0.9203980099502488,
+     "ci95": [
+      0.8795811518324608,
+      0.9571428571428572
+     ],
+     "chance": 0.24734660033167497
+    },
+    "transcript_mention_pred": {
+     "k": 142,
+     "n": 201,
+     "rate": 0.7064676616915423,
+     "ci95": [
+      0.6166666666666667,
+      0.7942583732057417
+     ],
+     "chance": 0.24734660033167497
+    },
+    "transcript_accuse_pred": {
+     "k": 157,
+     "n": 201,
+     "rate": 0.7810945273631841,
+     "ci95": [
+      0.7074468085106383,
+      0.8585858585858586
+     ],
+     "chance": 0.24734660033167497
+    },
+    "transcript_prev_pred": {
+     "k": 2,
+     "n": 4,
+     "rate": 0.5,
+     "ci95": [
+      0.5,
+      0.5
+     ],
+     "chance": 0.5
+    }
+   },
+   "mafia": {
+    "n_votes": 88,
+    "sr_top1": {
+     "k": 71,
+     "n": 88,
+     "rate": 0.8068181818181818,
+     "ci95": [
+      0.7078651685393258,
+      0.8888888888888888
+     ],
+     "chance": 0.24829545454545457
+    },
+    "ra_set": {
+     "k": 15,
+     "n": 58,
+     "rate": 0.25862068965517243,
+     "ci95": [
+      0.1694915254237288,
+      0.3508771929824561
+     ],
+     "chance": 0.21839080459770116
+    },
+    "sr_tally_top1": {
+     "k": 73,
+     "n": 88,
+     "rate": 0.8295454545454546,
+     "ci95": [
+      0.7439024390243902,
+      0.9069767441860465
+     ],
+     "chance": 0.24829545454545457
+    },
+    "transcript_mention_pred": {
+     "k": 62,
+     "n": 88,
+     "rate": 0.7045454545454546,
+     "ci95": [
+      0.6125,
+      0.7954545454545454
+     ],
+     "chance": 0.24829545454545457
+    },
+    "transcript_accuse_pred": {
+     "k": 63,
+     "n": 88,
+     "rate": 0.7159090909090909,
+     "ci95": [
+      0.6222222222222222,
+      0.8085106382978723
+     ],
+     "chance": 0.24829545454545457
+    },
+    "transcript_prev_pred": {
+     "k": 1,
+     "n": 2,
+     "rate": 0.5,
+     "ci95": [
+      0.0,
+      1.0
+     ],
+     "chance": 0.5
+    }
+   }
+  },
+  "head_to_head": {
+   "innocent": {
+    "mention_pred": {
+     "n": 201,
+     "probe_acc": 0.8557213930348259,
+     "transcript_acc": 0.7064676616915423,
+     "both_right": 134,
+     "both_wrong": 21,
+     "probe_only_right": 38,
+     "transcript_only_right": 8,
+     "mcnemar_p": 9.24769992138863e-06,
+     "predictor_agreement": 0.7412935323383084
+    },
+    "accuse_pred": {
+     "n": 201,
+     "probe_acc": 0.8557213930348259,
+     "transcript_acc": 0.7810945273631841,
+     "both_right": 145,
+     "both_wrong": 17,
+     "probe_only_right": 27,
+     "transcript_only_right": 12,
+     "mcnemar_p": 0.023702702470473014,
+     "predictor_agreement": 0.7860696517412935
+    },
+    "prev_pred": {
+     "n": 4,
+     "probe_acc": 1.0,
+     "transcript_acc": 0.5,
+     "both_right": 2,
+     "both_wrong": 0,
+     "probe_only_right": 2,
+     "transcript_only_right": 0,
+     "mcnemar_p": 0.5,
+     "predictor_agreement": 0.5
+    }
+   },
+   "mafia": {
+    "mention_pred": {
+     "n": 88,
+     "probe_acc": 0.8068181818181818,
+     "transcript_acc": 0.7045454545454546,
+     "both_right": 56,
+     "both_wrong": 11,
+     "probe_only_right": 15,
+     "transcript_only_right": 6,
+     "mcnemar_p": 0.0783538818359375,
+     "predictor_agreement": 0.6931818181818182
+    },
+    "accuse_pred": {
+     "n": 88,
+     "probe_acc": 0.8068181818181818,
+     "transcript_acc": 0.7159090909090909,
+     "both_right": 56,
+     "both_wrong": 10,
+     "probe_only_right": 15,
+     "transcript_only_right": 7,
+     "mcnemar_p": 0.13380050659179688,
+     "predictor_agreement": 0.7045454545454546
+    },
+    "prev_pred": {
+     "n": 2,
+     "probe_acc": 1.0,
+     "transcript_acc": 0.5,
+     "both_right": 1,
+     "both_wrong": 0,
+     "probe_only_right": 1,
+     "transcript_only_right": 0,
+     "mcnemar_p": 1.0,
+     "predictor_agreement": 0.5
+    }
+   }
+  },
+  "f2": {
+   "n": 10156,
+   "ece": 0.2224862150452934,
+   "brier": 0.2902270874359984,
+   "ece_ci95": [
+    0.171240159393527,
+    0.27909756812188696
+   ],
+   "brier_ci95": [
+    0.25440948578106737,
+    0.3293517835427643
+   ],
+   "bins": {
+    "20-39": {
+     "n": 47,
+     "acc": 0.44680851063829785,
+     "mean_conf": 31.382978723404257
+    },
+    "40-59": {
+     "n": 538,
+     "acc": 0.5185873605947955,
+     "mean_conf": 50.88289962825279
+    },
+    "60-79": {
+     "n": 3594,
+     "acc": 0.48720089037284364,
+     "mean_conf": 69.26488592097941
+    },
+    "80-99": {
+     "n": 5977,
+     "acc": 0.6248954324912164,
+     "mean_conf": 87.74786682282081
+    }
+   }
+  },
+  "f3": {
+   "overall": {
+    "n": 26664,
+    "accuracy": 0.44805730573057306,
+    "majority_baseline": 0.4915241524152415,
+    "acc_ci95": [
+     0.42678060533052253,
+     0.4715010103320752
+    ],
+    "diff_ci95": [
+     -0.08165583839244506,
+     -0.0014171554540802211
+    ],
+    "suspects_ratio": 1.626703685007572,
+    "ratio_ci95": [
+     1.5254394079555966,
+     1.7443778110944528
+    ],
+    "pred_suspects": 6445,
+    "actual_suspects": 3962
+   },
+   "innocent_predictors": {
+    "n": 19437,
+    "accuracy": 0.3948140145084118,
+    "majority_baseline": 0.57570612748881,
+    "acc_ci95": [
+     0.3730728133109449,
+     0.4187506539709114
+    ],
+    "diff_ci95": [
+     -0.22276926200385744,
+     -0.13776372458158426
+    ],
+    "suspects_ratio": 2.380787037037037,
+    "ratio_ci95": [
+     2.068313953488372,
+     2.882559774964838
+    ],
+    "pred_suspects": 4114,
+    "actual_suspects": 1728
+   },
+   "mafia_predictors": {
+    "n": 7227,
+    "accuracy": 0.5912550159125501,
+    "majority_baseline": 0.42576449425764495,
+    "acc_ci95": [
+     0.5489871847871021,
+     0.634820143884892
+    ],
+    "diff_ci95": [
+     0.12147863130410885,
+     0.20790137293359484
+    ],
+    "suspects_ratio": 1.0434198746642793,
+    "ratio_ci95": [
+     0.9546621043627032,
+     1.140401146131805
+    ],
+    "pred_suspects": 2331,
+    "actual_suspects": 2234
+   }
+  },
+  "instrument": {
+   "personality_profile": {
+    "n_sampled": 400,
+    "chaining_marker_share": 1.0,
+    "n_distinct_templates": 235,
+    "top_template": "Ты — <NAMES>. В прошлый раз ты так оценивал характеры: N/A\nУчитывая новое поведение, для каждого живого игрока (<NAMES>), КРОМЕ себя, оцени его Big Five (<NUM>-<NUM>). O = Открытость, C = Добросовестность, E = Экстраверсия, A = Доброжелательность, N = Нейротизм. Отвечай ТОЛЬКО JSON: [{\"player\": \"...\", \"O\": N, \"C\": N, \"E\": N, \"A\": N, \"N\": N, \"summary\": \"...\"}, ...]\n"
+   },
+   "planned_action": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 400,
+    "top_template": "Ты — <NAMES>. Вот твоя модель мира:\nОценка ролей: [\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Villager\", \"confidence\": <NUM>, \"reason\": \"Я знаю свою роль.\"},\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Unknown\", \"confidence\": <NUM>, \"reason\": \"Только знакомство, нет данных для анализа.\"},\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Unknown\", \"confidence\": <NUM>, \"reason\": \"Только знакомство, нет данных для анализа.\"},\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Unknown\", \"confidence\": <NUM>, \"reason\": \"Только знакомство, нет данных для анализа.\"},\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Unknown\", \"conf"
+   },
+   "role_assessment": {
+    "n_sampled": 400,
+    "chaining_marker_share": 1.0,
+    "n_distinct_templates": 316,
+    "top_template": "Ты — <NAMES>. Вот что ты думал о ролях игроков в прошлый раз: N/A\nТеперь, учитывая новую информацию, для каждого живого игрока (<NAMES>), ВКЛЮЧАЯ себя, ответь: какая у него роль, насколько ты уверен (<NUM>-<NUM>) и почему (кратко). Отвечай ТОЛЬКО JSON: [{\"player\": \"...\", \"guessed_role\": \"Mafia|Villager|Doctor|Unknown\", \"confidence\": N, \"reason\": \"...\"}, ...]\n"
+   },
+   "social_map": {
+    "n_sampled": 400,
+    "chaining_marker_share": 1.0,
+    "n_distinct_templates": 390,
+    "top_template": "Ты — <NAMES>. Вот твоя текущая оценка ролей: [\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Unknown\", \"confidence\": <NUM>, \"reason\": \"Активность нейтральна, нужны дальнейшие действия для оценки.\"},\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Villager\", \"confidence\": <NUM>, \"reason\": \"Я знаю свою роль — мирный житель.\"},\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Unknown\", \"confidence\": <NUM>, \"reason\": \"Спокойный и структурированный подход типичен для осторожного мирного, но мафия тоже может так маскироваться.\"},\n  {\"player\": \"<NAMES>\", \"guessed_role\": \"Unknown\", \"confidence\": <NUM>, \"reason\": \"Нет дан"
+   },
+   "suspicion_ranking": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 1,
+    "top_template": "Расположи живых игроков (<NAMES>) от самого подозрительного к наименее подозрительному. Отвечай ТОЛЬКО JSON: [{\"player\": \"...\", \"score\": N}, ...]\n"
+   }
+  },
+  "extra": {
+   "innocent_prev_alive": {
+    "k": 14,
+    "n": 63,
+    "rate": 0.2222222222222222,
+    "chance": 0.30423280423280424
+   },
+   "mafia_prev_alive": {
+    "k": 9,
+    "n": 23,
+    "rate": 0.391304347826087,
+    "chance": 0.33840579710144925
+   },
+   "mafia_set_partner": {
+    "n_sets": 58,
+    "sets_with_living_partner": 58,
+    "votes_on_partner": 16
+   }
+  }
+ },
+ "gpt4omini": {
+  "meta": {
+   "n_games": 28,
+   "n_completed": 28,
+   "mafia_wins": 18,
+   "n_probe_records": 24587,
+   "n_ru_games": 0,
+   "n_en_games": 28
+  },
+  "coupling": {
+   "innocent": {
+    "n_votes": 214,
+    "sr_top1": {
+     "k": 170,
+     "n": 214,
+     "rate": 0.794392523364486,
+     "ci95": [
+      0.7486338797814208,
+      0.8418367346938775
+     ],
+     "chance": 0.2709501557632399
+    },
+    "ra_set": {
+     "k": 154,
+     "n": 176,
+     "rate": 0.875,
+     "ci95": [
+      0.8188405797101449,
+      0.9177215189873418
+     ],
+     "chance": 0.2896780303030303
+    },
+    "sr_tally_top1": {
+     "k": 175,
+     "n": 214,
+     "rate": 0.8177570093457944,
+     "ci95": [
+      0.7815533980582524,
+      0.8542713567839196
+     ],
+     "chance": 0.2709501557632399
+    },
+    "transcript_mention_pred": {
+     "k": 160,
+     "n": 214,
+     "rate": 0.7476635514018691,
+     "ci95": [
+      0.678391959798995,
+      0.8111111111111111
+     ],
+     "chance": 0.2709501557632399
+    },
+    "transcript_accuse_pred": {
+     "k": 161,
+     "n": 205,
+     "rate": 0.7853658536585366,
+     "ci95": [
+      0.7235023041474654,
+      0.8436018957345972
+     ],
+     "chance": 0.2680487804878049
+    },
+    "transcript_prev_pred": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "ci95": null,
+     "chance": null
+    }
+   },
+   "mafia": {
+    "n_votes": 86,
+    "sr_top1": {
+     "k": 58,
+     "n": 86,
+     "rate": 0.6744186046511628,
+     "ci95": [
+      0.6021505376344086,
+      0.75
+     ],
+     "chance": 0.27674418604651163
+    },
+    "ra_set": {
+     "k": 41,
+     "n": 49,
+     "rate": 0.8367346938775511,
+     "ci95": [
+      0.7058823529411765,
+      0.9411764705882353
+     ],
+     "chance": 0.2789115646258503
+    },
+    "sr_tally_top1": {
+     "k": 60,
+     "n": 86,
+     "rate": 0.6976744186046512,
+     "ci95": [
+      0.6125,
+      0.7767857142857143
+     ],
+     "chance": 0.27674418604651163
+    },
+    "transcript_mention_pred": {
+     "k": 55,
+     "n": 86,
+     "rate": 0.6395348837209303,
+     "ci95": [
+      0.5540540540540541,
+      0.735632183908046
+     ],
+     "chance": 0.27674418604651163
+    },
+    "transcript_accuse_pred": {
+     "k": 57,
+     "n": 84,
+     "rate": 0.6785714285714286,
+     "ci95": [
+      0.5955056179775281,
+      0.7647058823529411
+     ],
+     "chance": 0.2753968253968254
+    },
+    "transcript_prev_pred": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "ci95": null,
+     "chance": null
+    }
+   }
+  },
+  "head_to_head": {
+   "innocent": {
+    "mention_pred": {
+     "n": 214,
+     "probe_acc": 0.794392523364486,
+     "transcript_acc": 0.7476635514018691,
+     "both_right": 159,
+     "both_wrong": 43,
+     "probe_only_right": 11,
+     "transcript_only_right": 1,
+     "mcnemar_p": 0.00634765625,
+     "predictor_agreement": 0.8691588785046729
+    },
+    "accuse_pred": {
+     "n": 205,
+     "probe_acc": 0.8195121951219512,
+     "transcript_acc": 0.7853658536585366,
+     "both_right": 161,
+     "both_wrong": 37,
+     "probe_only_right": 7,
+     "transcript_only_right": 0,
+     "mcnemar_p": 0.015625,
+     "predictor_agreement": 0.8975609756097561
+    },
+    "prev_pred": {
+     "n": 0
+    }
+   },
+   "mafia": {
+    "mention_pred": {
+     "n": 86,
+     "probe_acc": 0.6744186046511628,
+     "transcript_acc": 0.6395348837209303,
+     "both_right": 54,
+     "both_wrong": 27,
+     "probe_only_right": 4,
+     "transcript_only_right": 1,
+     "mcnemar_p": 0.375,
+     "predictor_agreement": 0.8023255813953488
+    },
+    "accuse_pred": {
+     "n": 84,
+     "probe_acc": 0.6904761904761905,
+     "transcript_acc": 0.6785714285714286,
+     "both_right": 56,
+     "both_wrong": 25,
+     "probe_only_right": 2,
+     "transcript_only_right": 1,
+     "mcnemar_p": 1.0,
+     "predictor_agreement": 0.8452380952380952
+    },
+    "prev_pred": {
+     "n": 0
+    }
+   }
+  },
+  "f2": {
+   "n": 8328,
+   "ece": 0.23889889529298744,
+   "brier": 0.31699897934678195,
+   "ece_ci95": [
+    0.15540961709706141,
+    0.3269029421003036
+   ],
+   "brier_ci95": [
+    0.2714333411433928,
+    0.367338777660695
+   ],
+   "bins": {
+    "0-19": {
+     "n": 1,
+     "acc": 1.0,
+     "mean_conf": 0.0
+    },
+    "40-59": {
+     "n": 28,
+     "acc": 0.6428571428571429,
+     "mean_conf": 53.035714285714285
+    },
+    "60-79": {
+     "n": 3851,
+     "acc": 0.5564788366658011,
+     "mean_conf": 69.93638016099715
+    },
+    "80-99": {
+     "n": 4448,
+     "acc": 0.53125,
+     "mean_conf": 85.39006294964028
+    }
+   }
+  },
+  "f3": {
+   "overall": {
+    "n": 19870,
+    "accuracy": 0.4772018117765476,
+    "majority_baseline": 0.49446401610468044,
+    "acc_ci95": [
+     0.4564365915223257,
+     0.4987965983847676
+    ],
+    "diff_ci95": [
+     -0.06209214949574843,
+     0.023803416611091144
+    ],
+    "suspects_ratio": 1.925814536340852,
+    "ratio_ci95": [
+     1.7599633531836922,
+     2.173941798941799
+    ],
+    "pred_suspects": 3842,
+    "actual_suspects": 1995
+   },
+   "innocent_predictors": {
+    "n": 14775,
+    "accuracy": 0.4868358714043993,
+    "majority_baseline": 0.5043654822335025,
+    "acc_ci95": [
+     0.4589939463822427,
+     0.5155612074158357
+    ],
+    "diff_ci95": [
+     -0.07208748698110395,
+     0.024691358024691357
+    ],
+    "suspects_ratio": 2.271391529818496,
+    "ratio_ci95": [
+     1.8406881077038144,
+     3.027972027972028
+    ],
+    "pred_suspects": 2628,
+    "actual_suspects": 1157
+   },
+   "mafia_predictors": {
+    "n": 5095,
+    "accuracy": 0.4492639842983317,
+    "majority_baseline": 0.46575073601570166,
+    "acc_ci95": [
+     0.41133100504462555,
+     0.48472634705133644
+    ],
+    "diff_ci95": [
+     -0.07697563197449325,
+     0.030018083182640154
+    ],
+    "suspects_ratio": 1.4486873508353222,
+    "ratio_ci95": [
+     1.1873727087576376,
+     1.8369565217391304
+    ],
+    "pred_suspects": 1214,
+    "actual_suspects": 838
+   }
+  },
+  "instrument": {
+   "personality_profile": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 237,
+    "top_template": "You are <NAMES>. Last time you assessed personalities like this: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven the new behavior, for each alive player (<NAMES>), EXCEPT yourself, estimate their Big Five traits (<NUM>-<NUM>). O = Openness, C = Conscientiousness, E = Extraversion, A = Agreeableness, N = Neuroticism. Answer ONLY as JSON: [{\"player\": \"...\", \"O\": N, \"C\": N, \"E\": N, \"A\": N, \"N\": N, \"summary\": \"...\"}, ...]\n"
+   },
+   "planned_action": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 372,
+    "top_template": "You are <NAMES>. Here is your model of the world:\nRole assessment: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nHow you think players feel about you: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven all this, what action do you plan to take next and why? Explain your strategy. Answer ONLY as JSON: {\"action\": \"...\", \"target\": \"...\", \"reasoning\": \"...\"}\n"
+   },
+   "role_assessment": {
+    "n_sampled": 400,
+    "chaining_marker_share": 1.0,
+    "n_distinct_templates": 263,
+    "top_template": "You are <NAMES>. Here is what you thought about players' roles last time: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nNow, given the new information, for every alive player (<NAMES>), INCLUDING yourself, answer: what role do they ACTUALLY have in your opinion, how certain are you (<NUM>-<NUM>), and one short reason. Answer ONLY as JSON: [{\"player\": \"...\", \"guessed_role\": \"Mafia|Villager|Doctor|Unknown\", \"confidence\": N, \"reason\": \"...\"}, ...]\n"
+   },
+   "role_beliefs": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 1,
+    "top_template": "For each alive player (<NAMES>), state your current belief about their role (Mafia / Villager / Doctor / Unknown) and a confidence <NUM>-<NUM>. Answer ONLY as JSON: {\"<name>\": {\"role\": \"...\", \"confidence\": N}, ...}\n"
+   },
+   "social_map": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 357,
+    "top_template": "You are <NAMES>. Here is your current role assessment: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nLast time you thought players felt about you like this: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven the new information, how does each alive player (<NAMES>) feel about YOU specifically now? Answer ONLY as JSON: {\n  \"toward_me\": [{\"player\": \"...\", \"attitude\": \"trusts|neutral|suspects\", \"confidence\": N, \"reason\": \"...\"}, ...]\n}\n"
+   },
+   "suspicion_ranking": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 1,
+    "top_template": "Rank alive players (<NAMES>) from most to least suspicious. Answer ONLY as JSON: [{\"player\": \"...\", \"score\": N}, ...]\n"
+   }
+  },
+  "extra": {
+   "innocent_prev_alive": {
+    "k": 3,
+    "n": 8,
+    "rate": 0.375,
+    "chance": 0.25
+   },
+   "mafia_prev_alive": {
+    "k": 1,
+    "n": 2,
+    "rate": 0.5,
+    "chance": 0.26666666666666666
+   },
+   "mafia_set_partner": {
+    "n_sets": 49,
+    "sets_with_living_partner": 21,
+    "votes_on_partner": 19
+   }
+  }
+ },
+ "gpt26_sensitivity": {
+  "meta": {
+   "n_games": 26,
+   "n_completed": 26,
+   "mafia_wins": 18,
+   "n_probe_records": 22990,
+   "n_ru_games": 0,
+   "n_en_games": 26
+  },
+  "coupling": {
+   "innocent": {
+    "n_votes": 192,
+    "sr_top1": {
+     "k": 153,
+     "n": 192,
+     "rate": 0.796875,
+     "ci95": [
+      0.75,
+      0.8464730290456431
+     ],
+     "chance": 0.27395833333333336
+    },
+    "ra_set": {
+     "k": 136,
+     "n": 156,
+     "rate": 0.8717948717948718,
+     "ci95": [
+      0.8046875,
+      0.9227053140096618
+     ],
+     "chance": 0.28814102564102567
+    },
+    "sr_tally_top1": {
+     "k": 156,
+     "n": 192,
+     "rate": 0.8125,
+     "ci95": [
+      0.772972972972973,
+      0.8540772532188842
+     ],
+     "chance": 0.27395833333333336
+    },
+    "transcript_mention_pred": {
+     "k": 145,
+     "n": 192,
+     "rate": 0.7552083333333334,
+     "ci95": [
+      0.6885245901639344,
+      0.8205128205128205
+     ],
+     "chance": 0.27395833333333336
+    },
+    "transcript_accuse_pred": {
+     "k": 146,
+     "n": 183,
+     "rate": 0.7978142076502732,
+     "ci95": [
+      0.7407407407407407,
+      0.8491620111731844
+     ],
+     "chance": 0.27085610200364296
+    },
+    "transcript_prev_pred": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "ci95": null,
+     "chance": null
+    }
+   },
+   "mafia": {
+    "n_votes": 77,
+    "sr_top1": {
+     "k": 53,
+     "n": 77,
+     "rate": 0.6883116883116883,
+     "ci95": [
+      0.6125,
+      0.7741935483870968
+     ],
+     "chance": 0.27965367965367965
+    },
+    "ra_set": {
+     "k": 38,
+     "n": 45,
+     "rate": 0.8444444444444444,
+     "ci95": [
+      0.7111111111111111,
+      0.9545454545454546
+     ],
+     "chance": 0.28555555555555556
+    },
+    "sr_tally_top1": {
+     "k": 55,
+     "n": 77,
+     "rate": 0.7142857142857143,
+     "ci95": [
+      0.625,
+      0.8024691358024691
+     ],
+     "chance": 0.27965367965367965
+    },
+    "transcript_mention_pred": {
+     "k": 51,
+     "n": 77,
+     "rate": 0.6623376623376623,
+     "ci95": [
+      0.569620253164557,
+      0.7590361445783133
+     ],
+     "chance": 0.27965367965367965
+    },
+    "transcript_accuse_pred": {
+     "k": 53,
+     "n": 75,
+     "rate": 0.7066666666666667,
+     "ci95": [
+      0.620253164556962,
+      0.7945205479452054
+     ],
+     "chance": 0.2782222222222222
+    },
+    "transcript_prev_pred": {
+     "k": 0,
+     "n": 0,
+     "rate": null,
+     "ci95": null,
+     "chance": null
+    }
+   }
+  },
+  "head_to_head": {
+   "innocent": {
+    "mention_pred": {
+     "n": 192,
+     "probe_acc": 0.796875,
+     "transcript_acc": 0.7552083333333334,
+     "both_right": 144,
+     "both_wrong": 38,
+     "probe_only_right": 9,
+     "transcript_only_right": 1,
+     "mcnemar_p": 0.021484375,
+     "predictor_agreement": 0.8697916666666666
+    },
+    "accuse_pred": {
+     "n": 183,
+     "probe_acc": 0.825136612021858,
+     "transcript_acc": 0.7978142076502732,
+     "both_right": 146,
+     "both_wrong": 32,
+     "probe_only_right": 5,
+     "transcript_only_right": 0,
+     "mcnemar_p": 0.0625,
+     "predictor_agreement": 0.9016393442622951
+    },
+    "prev_pred": {
+     "n": 0
+    }
+   },
+   "mafia": {
+    "mention_pred": {
+     "n": 77,
+     "probe_acc": 0.6883116883116883,
+     "transcript_acc": 0.6623376623376623,
+     "both_right": 50,
+     "both_wrong": 23,
+     "probe_only_right": 3,
+     "transcript_only_right": 1,
+     "mcnemar_p": 0.625,
+     "predictor_agreement": 0.8051948051948052
+    },
+    "accuse_pred": {
+     "n": 75,
+     "probe_acc": 0.7066666666666667,
+     "transcript_acc": 0.7066666666666667,
+     "both_right": 52,
+     "both_wrong": 21,
+     "probe_only_right": 1,
+     "transcript_only_right": 1,
+     "mcnemar_p": 1.0,
+     "predictor_agreement": 0.8533333333333334
+    },
+    "prev_pred": {
+     "n": 0
+    }
+   }
+  },
+  "f2": {
+   "n": 7367,
+   "ece": 0.26886113750509033,
+   "brier": 0.33038550291841995,
+   "ece_ci95": [
+    0.19741625089094794,
+    0.3402380952380953
+   ],
+   "brier_ci95": [
+    0.2853864432216108,
+    0.37613399041022855
+   ],
+   "bins": {
+    "0-19": {
+     "n": 1,
+     "acc": 1.0,
+     "mean_conf": 0.0
+    },
+    "40-59": {
+     "n": 17,
+     "acc": 0.8823529411764706,
+     "mean_conf": 53.23529411764706
+    },
+    "60-79": {
+     "n": 3109,
+     "acc": 0.5201029269861692,
+     "mean_conf": 70.21871984560953
+    },
+    "80-99": {
+     "n": 4240,
+     "acc": 0.5238207547169811,
+     "mean_conf": 85.58136792452831
+    }
+   }
+  },
+  "f3": {
+   "overall": {
+    "n": 19870,
+    "accuracy": 0.4772018117765476,
+    "majority_baseline": 0.49446401610468044,
+    "acc_ci95": [
+     0.4539016061717466,
+     0.4989836250705816
+    ],
+    "diff_ci95": [
+     -0.06462978254885765,
+     0.02126355492692128
+    ],
+    "suspects_ratio": 1.925814536340852,
+    "ratio_ci95": [
+     1.745791972378075,
+     2.174626865671642
+    ],
+    "pred_suspects": 3842,
+    "actual_suspects": 1995
+   },
+   "innocent_predictors": {
+    "n": 14775,
+    "accuracy": 0.4868358714043993,
+    "majority_baseline": 0.5043654822335025,
+    "acc_ci95": [
+     0.4565030674846626,
+     0.5147739977639355
+    ],
+    "diff_ci95": [
+     -0.0720853254873115,
+     0.02304817275747506
+    ],
+    "suspects_ratio": 2.271391529818496,
+    "ratio_ci95": [
+     1.8637896156439648,
+     3.063858695652174
+    ],
+    "pred_suspects": 2628,
+    "actual_suspects": 1157
+   },
+   "mafia_predictors": {
+    "n": 5095,
+    "accuracy": 0.4492639842983317,
+    "majority_baseline": 0.46575073601570166,
+    "acc_ci95": [
+     0.4135206321334504,
+     0.48310662571303203
+    ],
+    "diff_ci95": [
+     -0.07725405828280851,
+     0.02839833396440744
+    ],
+    "suspects_ratio": 1.4486873508353222,
+    "ratio_ci95": [
+     1.1835164835164835,
+     1.81431334622824
+    ],
+    "pred_suspects": 1214,
+    "actual_suspects": 838
+   }
+  },
+  "instrument": {
+   "personality_profile": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 237,
+    "top_template": "You are <NAMES>. Last time you assessed personalities like this: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven the new behavior, for each alive player (<NAMES>), EXCEPT yourself, estimate their Big Five traits (<NUM>-<NUM>). O = Openness, C = Conscientiousness, E = Extraversion, A = Agreeableness, N = Neuroticism. Answer ONLY as JSON: [{\"player\": \"...\", \"O\": N, \"C\": N, \"E\": N, \"A\": N, \"N\": N, \"summary\": \"...\"}, ...]\n"
+   },
+   "planned_action": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 372,
+    "top_template": "You are <NAMES>. Here is your model of the world:\nRole assessment: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nHow you think players feel about you: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven all this, what action do you plan to take next and why? Explain your strategy. Answer ONLY as JSON: {\"action\": \"...\", \"target\": \"...\", \"reasoning\": \"...\"}\n"
+   },
+   "role_assessment": {
+    "n_sampled": 400,
+    "chaining_marker_share": 1.0,
+    "n_distinct_templates": 263,
+    "top_template": "You are <NAMES>. Here is what you thought about players' roles last time: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nNow, given the new information, for every alive player (<NAMES>), INCLUDING yourself, answer: what role do they ACTUALLY have in your opinion, how certain are you (<NUM>-<NUM>), and one short reason. Answer ONLY as JSON: [{\"player\": \"...\", \"guessed_role\": \"Mafia|Villager|Doctor|Unknown\", \"confidence\": N, \"reason\": \"...\"}, ...]\n"
+   },
+   "social_map": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 357,
+    "top_template": "You are <NAMES>. Here is your current role assessment: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nLast time you thought players felt about you like this: ERROR: ('Connection aborted.', ConnectionResetError(<NUM>, 'Connection reset by peer'))\nGiven the new information, how does each alive player (<NAMES>) feel about YOU specifically now? Answer ONLY as JSON: {\n  \"toward_me\": [{\"player\": \"...\", \"attitude\": \"trusts|neutral|suspects\", \"confidence\": N, \"reason\": \"...\"}, ...]\n}\n"
+   },
+   "suspicion_ranking": {
+    "n_sampled": 400,
+    "chaining_marker_share": 0.0,
+    "n_distinct_templates": 1,
+    "top_template": "Rank alive players (<NAMES>) from most to least suspicious. Answer ONLY as JSON: [{\"player\": \"...\", \"score\": N}, ...]\n"
+   }
+  }
+ },
+ "h2h_diff_cluster_ci": {
+  "corpus32": {
+   "innocent_mention_pred": {
+    "diff": 0.0547945205479452,
+    "ci95": [
+     -0.07142857142857142,
+     0.19736842105263158
+    ]
+   },
+   "innocent_accuse_pred": {
+    "diff": 0.04411764705882353,
+    "ci95": [
+     -0.07272727272727272,
+     0.17582417582417584
+    ]
+   },
+   "mafia_mention_pred": {
+    "diff": -0.06666666666666667,
+    "ci95": [
+     -0.2222222222222222,
+     0.09090909090909091
+    ]
+   },
+   "mafia_accuse_pred": {
+    "diff": 0.0,
+    "ci95": [
+     -0.2,
+     0.1935483870967742
+    ]
+   }
+  },
+  "main30": {
+   "innocent_mention_pred": {
+    "diff": 0.14925373134328357,
+    "ci95": [
+     0.06565656565656566,
+     0.23645320197044334
+    ]
+   },
+   "innocent_accuse_pred": {
+    "diff": 0.07462686567164178,
+    "ci95": [
+     0.0,
+     0.15217391304347827
+    ]
+   },
+   "mafia_mention_pred": {
+    "diff": 0.10227272727272728,
+    "ci95": [
+     0.010526315789473684,
+     0.19540229885057472
+    ]
+   },
+   "mafia_accuse_pred": {
+    "diff": 0.09090909090909091,
+    "ci95": [
+     -0.021739130434782608,
+     0.20253164556962025
+    ]
+   }
+  },
+  "gpt4omini": {
+   "innocent_mention_pred": {
+    "diff": 0.04672897196261682,
+    "ci95": [
+     0.0136986301369863,
+     0.08673469387755102
+    ]
+   },
+   "innocent_accuse_pred": {
+    "diff": 0.03414634146341464,
+    "ci95": [
+     0.010416666666666666,
+     0.05917159763313609
+    ]
+   },
+   "mafia_mention_pred": {
+    "diff": 0.03488372093023256,
+    "ci95": [
+     -0.012658227848101266,
+     0.08333333333333333
+    ]
+   },
+   "mafia_accuse_pred": {
+    "diff": 0.011904761904761904,
+    "ci95": [
+     -0.029411764705882353,
+     0.05263157894736842
+    ]
+   }
+  }
+ },
+ "gpt_odd_battery_games": [
+  "72bad9fc-6618-435c-a7b0-30d7369bdfa5",
+  "97568cc9-2fce-48e5-a5e2-ee39b5320849"
+ ]
+}
