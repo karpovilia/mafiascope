@@ -100,6 +100,27 @@ def _resolve_model_path(model_id: str) -> str:
 # ────────────────────────────────────────────
 _RETRY_STATUSES = {408, 429, 500, 502, 503, 504}
 
+# Process-wide API usage accumulator (filled by _OpenAICompatibleBackend from
+# the `usage` field of every successful response). Purely observational —
+# lets drivers report exact token spend without re-parsing logs.
+_USAGE_LOCK = threading.Lock()
+_USAGE_TOTALS: dict[str, int] = {"prompt_tokens": 0, "completion_tokens": 0, "calls": 0}
+
+
+def get_usage_totals() -> dict[str, int]:
+    """Snapshot of cumulative API token usage in this process."""
+    with _USAGE_LOCK:
+        return dict(_USAGE_TOTALS)
+
+
+def _record_usage(usage: dict[str, Any] | None) -> None:
+    if not isinstance(usage, dict):
+        return
+    with _USAGE_LOCK:
+        _USAGE_TOTALS["prompt_tokens"] += int(usage.get("prompt_tokens") or 0)
+        _USAGE_TOTALS["completion_tokens"] += int(usage.get("completion_tokens") or 0)
+        _USAGE_TOTALS["calls"] += 1
+
 
 class _OpenAICompatibleBackend(LLMBackend):
     """
@@ -168,6 +189,7 @@ class _OpenAICompatibleBackend(LLMBackend):
                 r.raise_for_status()
                 data = r.json()
                 self.served_model = data.get("model", self.served_model)
+                _record_usage(data.get("usage"))
                 return data["choices"][0]["message"]["content"]
             except Exception as exc:
                 last_err = exc

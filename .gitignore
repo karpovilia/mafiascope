@@ -14,7 +14,7 @@ configs/generated/
 pwenv/
 # game logs (dataset; released separately — git add -f for curated corpora)
 logs/
-# screencast pipeline — internal, not part of the public repo
-src/record_screencast.py
-src/build_srt.py
+# screencast video artifacts stay out of git (scripts are tracked)
 *.srt
+*.webm
+video_raw/

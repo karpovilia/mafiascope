@@ -1,0 +1,301 @@
+{
+ "date": "2026-07-18",
+ "task": "top up gpt-4o-mini corpus to 100 completed non-fork games (gpt4omini100)",
+ "parity_check": {
+  "reference_game": "16a6b166-b416-4f5f-8637-5442b593522b",
+  "probes_char_identical": [
+   "role_assessment",
+   "suspicion_ranking",
+   "social_map",
+   "personality_profile",
+   "planned_action"
+  ],
+  "probe_order_identical": true,
+  "backend_params_identical": {
+   "model": "gpt-4o-mini",
+   "max_tokens": 400,
+   "timeout": 90,
+   "temperature": 0.7
+  },
+  "config_changes_needed": [],
+  "snapshots": "already true in config"
+ },
+ "generation": {
+  "driver": "mafia/src/run_gpt100.py",
+  "config": "configs/config_chatgpt_corpus.yaml",
+  "workers": 8,
+  "ledger": "logs/gpt100_done.jsonl",
+  "completed": 72,
+  "errors_rejections": 0,
+  "seeds": [
+   7000,
+   7001,
+   7002,
+   7003,
+   7004,
+   7005,
+   7006,
+   7007,
+   7008,
+   7009,
+   7010,
+   7011,
+   7012,
+   7013,
+   7014,
+   7015,
+   7016,
+   7017,
+   7018,
+   7019,
+   7020,
+   7021,
+   7022,
+   7023,
+   7024,
+   7025,
+   7026,
+   7027,
+   7028,
+   7029,
+   7030,
+   7031,
+   7032,
+   7033,
+   7034,
+   7035,
+   7036,
+   7037,
+   7038,
+   7039,
+   7040,
+   7041,
+   7042,
+   7043,
+   7044,
+   7045,
+   7046,
+   7047,
+   7048,
+   7049,
+   7050,
+   7051,
+   7052,
+   7053,
+   7054,
+   7055,
+   7056,
+   7057,
+   7058,
+   7059,
+   7060,
+   7061,
+   7062,
+   7063,
+   7064,
+   7065,
+   7066,
+   7067,
+   7068,
+   7069,
+   7070,
+   7073
+  ],
+  "wall_seconds": 25348,
+  "err_frac_max": 0.0,
+  "duration_min_per_game": {
+   "min": 27.1,
+   "median": 36.0,
+   "max": 85.3
+  },
+  "orphan_games_not_in_corpus": {
+   "ids": [
+    "08ab4eab-09ce-47d9-9b0a-8785e3cfe082",
+    "2f5ab1c4-f367-452c-9e0a-bd2fd5780f3f"
+   ],
+   "reason": "completed during pool shutdown after target 72 was reached; not in ledger, not registered",
+   "cost_estimate_usd": 1.57
+  }
+ },
+ "cost": {
+  "pricing": {
+   "input_per_1M": 0.15,
+   "output_per_1M": 0.6
+  },
+  "ledgered_72": {
+   "usd": 32.4,
+   "prompt_tokens": 171022784,
+   "completion_tokens": 11244030,
+   "api_calls": 59296
+  },
+  "per_game_usd": {
+   "min": 0.2189,
+   "median": 0.36050000000000004,
+   "mean": 0.45,
+   "max": 1.7312
+  },
+  "grand_total_estimate_usd": 33.97,
+  "budget_stop_60usd": "never triggered (projection peaked at $41.81 early, converged to $32.72)"
+ },
+ "winrates": {
+  "new72": {
+   "Mafia": 52,
+   "Villagers": 20
+  },
+  "old28": {
+   "Mafia": 18,
+   "Villagers": 10
+  },
+  "total100": {
+   "Mafia": 70,
+   "Villagers": 30
+  },
+  "rounds_new72": {
+   "2": 41,
+   "3": 25,
+   "5": 2,
+   "4": 4
+  }
+ },
+ "registration": {
+  "key": "gpt4omini100",
+  "n_games": 100,
+  "gpt4omini28": "untouched, remains pinned subset for the paper's numbers"
+ },
+ "dataset": {
+  "policy": "game.jsonl + introspection.jsonl committed (git add -f), state.jsonl not committed (same as gpt4omini28 in commit 7ab89e4)",
+  "added_files": 144,
+  "added_mb": 179.5,
+  "state_jsonl_mb_not_committed": 247.1,
+  "largest_file_mb": 4.9
+ },
+ "analysis_method": "coupling/run_all.py machinery (session 2026-07-15), metrics_lib.py: mode=repaired for F2/F3, published raw-answer_parse_ok rule for F4; ECE bins width 20 with conf==100 folded into top bin; cluster bootstrap over games B=1000 seed=0. Rerun on pinned 28 reproduces coupling_baselines_2026_07_15.json::gpt4omini bit-exact (ECE, CIs, ratios, F4 cells).",
+ "comparison_28_vs_100": {
+  "gpt4omini28_pinned": {
+   "f2": {
+    "n": 8328,
+    "ece": 0.23889889529298744,
+    "brier": 0.31699897934678195,
+    "ece_ci95": [
+     0.15540961709706141,
+     0.3269029421003036
+    ],
+    "brier_ci95": [
+     0.2714333411433928,
+     0.367338777660695
+    ]
+   },
+   "spotlight": {
+    "overall": {
+     "n": 19870,
+     "suspects_ratio": 1.925814536340852,
+     "ratio_ci95": [
+      1.7599633531836922,
+      2.173941798941799
+     ]
+    },
+    "innocent_predictors": {
+     "n": 14775,
+     "suspects_ratio": 2.271391529818496,
+     "ratio_ci95": [
+      1.8406881077038144,
+      3.027972027972028
+     ]
+    },
+    "mafia_predictors": {
+     "n": 5095,
+     "suspects_ratio": 1.4486873508353222,
+     "ratio_ci95": [
+      1.1873727087576376,
+      1.8369565217391304
+     ]
+    }
+   },
+   "f4_top1": {
+    "innocent": {
+     "k": 170,
+     "n": 214,
+     "rate": 0.794392523364486,
+     "ci95": [
+      0.7486338797814208,
+      0.8418367346938775
+     ],
+     "chance": 0.2709501557632399
+    },
+    "mafia": {
+     "k": 58,
+     "n": 86,
+     "rate": 0.6744186046511628,
+     "ci95": [
+      0.6021505376344086,
+      0.75
+     ],
+     "chance": 0.27674418604651163
+    }
+   }
+  },
+  "gpt4omini100": {
+   "f2": {
+    "n": 22595,
+    "ece": 0.28510953750829826,
+    "brier": 0.3432180792210666,
+    "ece_ci95": [
+     0.24058247015653306,
+     0.32687617941646097
+    ],
+    "brier_ci95": [
+     0.3165259082661715,
+     0.36918395558701234
+    ]
+   },
+   "spotlight": {
+    "overall": {
+     "n": 84996,
+     "suspects_ratio": 1.7377028557051202,
+     "ratio_ci95": [
+      1.6445235756385068,
+      1.8362659503022163
+     ]
+    },
+    "innocent_predictors": {
+     "n": 62305,
+     "suspects_ratio": 2.018348623853211,
+     "ratio_ci95": [
+      1.7963069821119446,
+      2.3211223694466097
+     ]
+    },
+    "mafia_predictors": {
+     "n": 22691,
+     "suspects_ratio": 1.3565707505191338,
+     "ratio_ci95": [
+      1.1696169088507264,
+      1.5943396226415094
+     ]
+    }
+   },
+   "f4_top1": {
+    "innocent": {
+     "k": 607,
+     "n": 730,
+     "rate": 0.8315068493150685,
+     "ci95": [
+      0.8090909090909091,
+      0.8524844720496895
+     ],
+     "chance": 0.250365296803653
+    },
+    "mafia": {
+     "k": 210,
+     "n": 303,
+     "rate": 0.693069306930693,
+     "ci95": [
+      0.6482084690553745,
+      0.7363013698630136
+     ],
+     "chance": 0.24955995599559955
+    }
+   }
+  }
+ }
+}
