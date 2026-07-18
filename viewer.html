@@ -760,10 +760,31 @@ async function fetchJsonProgress(url){
   return JSON.parse(await new Blob(chunks).text());
 }
 
+// The corpus outgrew a single static file (GitHub's 100 MB per-file cap):
+// all_games.json may now be either the games array itself (legacy) or a
+// manifest {format:"sharded", chunks:[{file,n,bytes},...]} pointing at
+// sub-100 MB chunk files. Fetch whichever shape is served, return one array.
+async function fetchCorpus(url, bust){
+  const first = await fetchJsonProgress(url + (bust ? '?t=' + bust : ''));
+  if (Array.isArray(first)) return first;
+  if (first && Array.isArray(first.chunks)) {
+    const out = [];
+    for (let i = 0; i < first.chunks.length; i++) {
+      const c = first.chunks[i];
+      const f = (typeof c === 'string') ? c : c.file;
+      const arr = await fetchJsonProgress(f + (bust ? '?t=' + bust : ''));
+      out.push(...arr);
+      setLoadStatus(`${out.length}${first.n_games ? '/' + first.n_games : ''}`, (i + 1) / first.chunks.length);
+    }
+    return out;
+  }
+  return first;
+}
+
 async function loadData() {
   showLoading();
   let loaded = false;
-  try { const arr = await fetchJsonProgress('all_games.json'); arr.forEach(d=>ALL_GAMES[d.game_id]=d); loaded=true; } catch{}
+  try { const arr = await fetchCorpus('all_games.json'); arr.forEach(d=>ALL_GAMES[d.game_id]=d); loaded=true; } catch{}
   if(!loaded) try { const d = await fetchJsonProgress('viewer_data.json'); ALL_GAMES[d.game_id]=d; loaded=true; } catch{}
   if(!loaded){document.getElementById('main-grid').innerHTML=`<p style="padding:20px;color:${CHROME.destructive};">${esc(STRINGS.noData)}</p>`;return;}
   populateGameSelect();
@@ -1215,11 +1236,9 @@ function pollForkBatch(batchId,total){
 
 async function reloadGames(){
   try{
-    const r=await fetch('all_games.json?t='+Date.now());
-    if(r.ok){
-      (await r.json()).forEach(d=>ALL_GAMES[d.game_id]=d);
-      populateGameSelect();buildTimeline();renderStep(currentStep);
-    }
+    const arr=await fetchCorpus('all_games.json', Date.now());
+    arr.forEach(d=>ALL_GAMES[d.game_id]=d);
+    populateGameSelect();buildTimeline();renderStep(currentStep);
   }catch(e){}
 }
 function updateTimeline(idx){
